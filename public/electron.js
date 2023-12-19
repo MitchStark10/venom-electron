@@ -7,6 +7,7 @@ const { globalShortcut } = require("electron");
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    autoHideMenuBar: true,
     width: 800,
     height: 600,
     // Set the path of an additional "preload" script that can be used to
@@ -27,11 +28,6 @@ function createWindow() {
       })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
-
-  // Automatically open Chrome's DevTools in development mode.
-  if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools();
-  }
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
