@@ -9,4 +9,4 @@ export const projectList: Project[] = [
     id: 2,
     name: "Project 2",
   },
-] as const;
+];
