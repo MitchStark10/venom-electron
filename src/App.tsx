@@ -6,11 +6,13 @@ import { createMuiTheme } from "./muiTheme";
 const App: FC = () => {
   const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
   useEffect(() => {
+    const themeListener = (e: MediaQueryListEvent) => {
+      setThemeMode(e.matches ? "dark" : "light");
+    };
+
     window
       .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        setThemeMode(e.matches ? "dark" : "light");
-      });
+      .addEventListener("change", themeListener);
   }, []);
 
   const theme = createMuiTheme(themeMode);
