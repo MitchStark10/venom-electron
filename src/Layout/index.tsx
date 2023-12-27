@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+import { FocusView } from "./FocusView";
 import { SideBar } from "./Sidebar";
 
 const StyledLayout = styled("div")(({ theme }) => ({
@@ -14,7 +15,7 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <p>TODO: Content in the layout</p>
+      <FocusView />
     </StyledLayout>
   );
 };
