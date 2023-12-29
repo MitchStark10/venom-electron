@@ -5,13 +5,16 @@ const url = require("url");
 const { globalShortcut } = require("electron");
 
 // Create the native browser window.
-function createWindow() {
+function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
+
+  const { width: displayWidth, height: displayHeight } =
+    primaryDisplay.workAreaSize;
+
   const mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
-    width,
-    height,
+    width: isNewTaskOnly ? 800 : displayWidth,
+    height: isNewTaskOnly ? 600 : displayHeight,
 
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
@@ -23,13 +26,14 @@ function createWindow() {
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
   // In development, set it to localhost to allow live/hot-reloading.
+  const extraParams = isNewTaskOnly ? "?isNewTaskOnly=true" : "";
   const appURL = app.isPackaged
     ? url.format({
-        pathname: path.join(__dirname, "index.html"),
+        pathname: path.join(__dirname, "index.html" + extraParams),
         protocol: "file:",
         slashes: true,
       })
-    : "http://localhost:3000";
+    : "http://localhost:3000" + extraParams;
   mainWindow.loadURL(appURL);
 }
 
@@ -94,7 +98,7 @@ app.on("ready", () => {
   // Register a ctrl+. listener
   const ret = globalShortcut.register("CommandOrControl+X", () => {
     console.log("CommandOrControl+X is pressed");
-    createWindow();
+    createWindow({ isNewTaskOnly: true });
   });
 
   if (!ret) {

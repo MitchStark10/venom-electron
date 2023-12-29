@@ -13,6 +13,15 @@ const StyledLayout = styled("div")(({ theme }) => ({
 }));
 
 export const Layout = () => {
+  // const params = new URLSearchParams(global.location.search);
+  // if (params.get("isNewTaskOnly") === "true") {
+  //   return (
+  //     <StyledLayout>
+  //       <NewTaskForm />
+  //     </StyledLayout>
+  //   );
+  // }
+
   return (
     <StyledLayout>
       <SideBar />
