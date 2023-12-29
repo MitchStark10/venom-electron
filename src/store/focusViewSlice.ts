@@ -5,10 +5,12 @@ export type FocusViewOptions = "today" | "upcoming" | "completed" | "project";
 
 export interface FocusViewState {
   focusView: FocusViewOptions;
+  selectedProjectId?: number;
 }
 
 const initialState: FocusViewState = {
   focusView: "today",
+  selectedProjectId: undefined,
 };
 
 export const focusViewSlice = createSlice({
@@ -18,10 +20,16 @@ export const focusViewSlice = createSlice({
     setFocusView: (state, action: PayloadAction<FocusViewOptions>) => {
       state.focusView = action.payload;
     },
+    setSelectedProjectId: (
+      state,
+      action: PayloadAction<number | undefined>
+    ) => {
+      state.selectedProjectId = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFocusView } = focusViewSlice.actions;
+export const { setFocusView, setSelectedProjectId } = focusViewSlice.actions;
 
 export default focusViewSlice.reducer;

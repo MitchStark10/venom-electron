@@ -1,12 +1,18 @@
 import { MenuItem, styled } from "@mui/material";
 import { FC, ReactNode } from "react";
-import { useDispatch } from "react-redux";
-import { FocusViewOptions, setFocusView } from "../../store/focusViewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  FocusViewOptions,
+  setFocusView,
+  setSelectedProjectId,
+} from "../../store/focusViewSlice";
+import { RootState } from "../../store/store";
 
 interface Props {
   icon: ReactNode;
   title: string;
-  focusViewState?: FocusViewOptions;
+  focusViewToSelect?: FocusViewOptions;
+  projectId?: number;
 }
 
 const MenuItemContainer = styled(MenuItem)({
@@ -15,19 +21,46 @@ const MenuItemContainer = styled(MenuItem)({
   gap: "8px",
 });
 
-export const SidebarMenuItem: FC<Props> = ({ icon, title, focusViewState }) => {
+const MenuItemTitle = styled("h4")<{ isSelected: boolean }>(
+  ({ isSelected }) => ({
+    margin: 0,
+    padding: 0,
+    textDecoration: isSelected ? "underline" : "none",
+    fontWeight: isSelected ? "bold" : "normal",
+  })
+);
+
+export const SidebarMenuItem: FC<Props> = ({
+  icon,
+  title,
+  focusViewToSelect,
+  projectId,
+}) => {
+  const { focusView, selectedProjectId } = useSelector(
+    (state: RootState) => state.focusView
+  );
+
   const dispatch = useDispatch();
 
   const internalOnClick = () => {
-    if (focusViewState) {
-      dispatch(setFocusView(focusViewState));
+    if (focusViewToSelect) {
+      dispatch(setFocusView(focusViewToSelect));
     }
+
+    dispatch(setSelectedProjectId(projectId));
   };
+
+  const isProjectViewSelected =
+    Boolean(focusViewToSelect) && focusView === "project";
+
+  const isSelected = isProjectViewSelected
+    ? projectId === selectedProjectId
+    : focusView === focusViewToSelect;
 
   return (
     <MenuItemContainer onClick={internalOnClick}>
       {icon}
-      <b>{title}</b>
+      <MenuItemTitle isSelected={isSelected}>{title}</MenuItemTitle>
     </MenuItemContainer>
   );
 };

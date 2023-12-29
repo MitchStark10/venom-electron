@@ -10,8 +10,14 @@ const FocusContainer = styled("div")(({ theme }) => ({
 }));
 
 export const FocusView = () => {
-  const focusView = useSelector(
-    (state: RootState) => state.focusView.focusView
+  const { focusView, selectedProjectId } = useSelector(
+    (state: RootState) => state.focusView
   );
-  return <FocusContainer>{focusView}</FocusContainer>;
+  return (
+    <FocusContainer>
+      <h1>
+        {focusView} {selectedProjectId}
+      </h1>
+    </FocusContainer>
+  );
 };
