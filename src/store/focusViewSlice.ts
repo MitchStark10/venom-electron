@@ -11,8 +11,8 @@ const initialState: FocusViewState = {
   focusView: "today",
 };
 
-export const counterSlice = createSlice({
-  name: "counter",
+export const focusViewSlice = createSlice({
+  name: "focusView",
   initialState,
   reducers: {
     setFocusView: (state, action: PayloadAction<FocusViewOptions>) => {
@@ -22,6 +22,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setFocusView } = counterSlice.actions;
+export const { setFocusView } = focusViewSlice.actions;
 
-export default counterSlice.reducer;
+export default focusViewSlice.reducer;

@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import focusViewReducer from "./focusViewSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    focusView: focusViewReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
