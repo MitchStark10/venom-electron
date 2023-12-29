@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import focusViewReducer from "./focusViewSlice";
+import focusViewReducer from "./slices/focusViewSlice";
+import modalReducer from "./slices/modalSlice";
 
 export const store = configureStore({
   reducer: {
     focusView: focusViewReducer,
+    modal: modalReducer,
   },
 });
 

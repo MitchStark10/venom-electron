@@ -1,5 +1,6 @@
 import { styled } from "@mui/material";
 import { FocusView } from "./FocusView";
+import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
 
 const StyledLayout = styled("div")(({ theme }) => ({
@@ -16,6 +17,7 @@ export const Layout = () => {
     <StyledLayout>
       <SideBar />
       <FocusView />
+      <ModalEntryPoint />
     </StyledLayout>
   );
 };

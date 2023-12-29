@@ -5,7 +5,7 @@ import {
   FocusViewOptions,
   setFocusView,
   setSelectedProjectId,
-} from "../../store/focusViewSlice";
+} from "../../store/slices/focusViewSlice";
 import { RootState } from "../../store/store";
 
 interface Props {
