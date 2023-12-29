@@ -7,7 +7,7 @@ export const NewListModal = () => {
     <div>
       <ModalTitle>New List</ModalTitle>
       <VerticalAlignmentContainer>
-        <TextField label="List Name" size="small" />
+        <TextField label="List Name" size="small" autoFocus />
         <Button variant="contained">Create</Button>
       </VerticalAlignmentContainer>
     </div>

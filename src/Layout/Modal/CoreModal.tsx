@@ -23,7 +23,11 @@ const ModalBox = styled(Box)(({ theme }) => ({
 export const CoreModal: FC<PropsWithChildren> = ({ children }) => {
   const dispatch = useDispatch();
   return (
-    <Modal open={true} onClose={() => dispatch(setIsModalOpen(false))}>
+    <Modal
+      open={true}
+      onClose={() => dispatch(setIsModalOpen(false))}
+      disableRestoreFocus
+    >
       <ModalBox>{children}</ModalBox>
     </Modal>
   );
