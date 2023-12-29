@@ -1,4 +1,6 @@
 import { styled } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const FocusContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -8,5 +10,8 @@ const FocusContainer = styled("div")(({ theme }) => ({
 }));
 
 export const FocusView = () => {
-  return <FocusContainer>TODO: FocusView</FocusContainer>;
+  const focusView = useSelector(
+    (state: RootState) => state.focusView.focusView
+  );
+  return <FocusContainer>{focusView}</FocusContainer>;
 };

@@ -40,6 +40,7 @@ export const SideBar = () => {
             key={project.id}
             icon={<TaskAlt />}
             title={project.name}
+            focusViewState="project"
           />
         ))}
       </SidebarMenuContainer>

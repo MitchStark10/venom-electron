@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-type FocusViewOptions = "today" | "upcoming" | "completed" | "project";
+export type FocusViewOptions = "today" | "upcoming" | "completed" | "project";
 
 export interface FocusViewState {
   focusView: FocusViewOptions;

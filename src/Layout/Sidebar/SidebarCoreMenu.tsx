@@ -5,9 +5,17 @@ import { SidebarMenuItem } from "./SidebarMenuItem";
 export const SidebarCoreMenu = () => {
   return (
     <>
-      <SidebarMenuItem icon={<Today />} title="Today" />
-      <SidebarMenuItem icon={<Upcoming />} title="Upcoming" />
-      <SidebarMenuItem icon={<Task />} title="Completed" />
+      <SidebarMenuItem icon={<Today />} title="Today" focusViewState="today" />
+      <SidebarMenuItem
+        icon={<Upcoming />}
+        title="Upcoming"
+        focusViewState="upcoming"
+      />
+      <SidebarMenuItem
+        icon={<Task />}
+        title="Completed"
+        focusViewState="completed"
+      />
       <DividerWithPadding />
     </>
   );
