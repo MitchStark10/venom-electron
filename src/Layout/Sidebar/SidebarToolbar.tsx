@@ -6,7 +6,11 @@ export const SidebarToolbar = () => {
   return (
     <span>
       <DividerWithPadding />
-      <SidebarMenuItem title="New List" icon={<PlaylistAdd />} />
+      <SidebarMenuItem
+        title="New List"
+        icon={<PlaylistAdd />}
+        onClick={() => {}}
+      />
     </span>
   );
 };

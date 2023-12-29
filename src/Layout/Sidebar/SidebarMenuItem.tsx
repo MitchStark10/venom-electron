@@ -13,6 +13,7 @@ interface Props {
   title: string;
   focusViewToSelect?: FocusViewOptions;
   projectId?: number;
+  onClick?: () => void;
 }
 
 const MenuItemContainer = styled(MenuItem)({
@@ -35,6 +36,7 @@ export const SidebarMenuItem: FC<Props> = ({
   title,
   focusViewToSelect,
   projectId,
+  onClick,
 }) => {
   const { focusView, selectedProjectId } = useSelector(
     (state: RootState) => state.focusView
@@ -58,7 +60,7 @@ export const SidebarMenuItem: FC<Props> = ({
     : focusView === focusViewToSelect;
 
   return (
-    <MenuItemContainer onClick={internalOnClick}>
+    <MenuItemContainer onClick={onClick ?? internalOnClick}>
       {icon}
       <MenuItemTitle isSelected={isSelected}>{title}</MenuItemTitle>
     </MenuItemContainer>
