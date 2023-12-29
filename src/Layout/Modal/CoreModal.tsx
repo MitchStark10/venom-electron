@@ -6,7 +6,7 @@ import { setIsModalOpen } from "../../store/slices/modalSlice";
 const ModalBox = styled(Box)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
-      ? theme.palette.grey[500]
+      ? theme.palette.grey[800]
       : theme.palette.grey[50],
   display: "flex",
   flexDirection: "row",
