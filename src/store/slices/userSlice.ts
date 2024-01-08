@@ -24,9 +24,19 @@ export const userApi = createApi({
         },
       }),
     }),
+    signup: builder.mutation<LoginResponse, LoginArgs>({
+      query: ({ email, password }) => ({
+        url: "/users/createUser",
+        method: "POST",
+        body: {
+          email,
+          password,
+        },
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation } = userApi;
+export const { useLoginMutation, useSignupMutation } = userApi;

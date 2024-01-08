@@ -1,10 +1,14 @@
-import { styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
+import { useState } from "react";
+import { DividerWithPadding } from "../../components/DividerWithPadding";
 import { LoginForm } from "./LoginForm";
+import { SignUpForm } from "./SignUpForm";
 
 const LoginSignUpContainer = styled("div")(({ theme }) => ({
   height: "100vh",
   width: "100vw",
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
   color: theme.palette.mode === "light" ? "black" : "white",
@@ -15,9 +19,21 @@ const LoginSignUpContainer = styled("div")(({ theme }) => ({
 }));
 
 export const LoginSignUp = () => {
+  const [formMode, setFormMode] = useState<"login" | "signup">("login");
   return (
     <LoginSignUpContainer>
-      <LoginForm />
+      {formMode === "login" ? <LoginForm /> : <SignUpForm />}
+      <DividerWithPadding
+        flexItem
+        uniformSpacing
+        sx={{ width: "200px", marginX: "auto !important" }}
+      />
+      <Button
+        variant="outlined"
+        onClick={() => setFormMode(formMode === "login" ? "signup" : "login")}
+      >
+        {formMode === "login" ? "Sign Up" : "Log In"}
+      </Button>
     </LoginSignUpContainer>
   );
 };

@@ -8,14 +8,15 @@ import {
   hasNestedError,
   isResponseErrorType,
 } from "../../lib/isResponseErrorType";
-import { useLoginMutation } from "../../store/slices/userSlice";
+import { useSignupMutation } from "../../store/slices/userSlice";
 
-interface LoginFormData {
+interface SignUpFormData {
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
-const LoginFormContainer = styled("div")(({ theme }) => ({
+const SignUpFormContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -23,19 +24,24 @@ const LoginFormContainer = styled("div")(({ theme }) => ({
   gap: theme.spacing(4),
 }));
 
-export const LoginForm = () => {
-  const { control, handleSubmit } = useForm<LoginFormData>();
+export const SignUpForm = () => {
+  const { control, handleSubmit } = useForm<SignUpFormData>();
   const [error, setError] = useState<string | null>(null);
-  const [login] = useLoginMutation();
+  const [signup] = useSignupMutation();
 
-  const onLoginClick = handleSubmit(async (formData) => {
-    const response = await login(formData);
+  const onSignUpClick = handleSubmit(async (formData) => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    const response = await signup(formData);
 
     if (isResponseErrorType(response)) {
       if (hasNestedError(response)) {
         setError(response.error.data.error);
       } else {
-        setError("Error logging in");
+        setError("Error signing up");
       }
       return;
     }
@@ -45,8 +51,8 @@ export const LoginForm = () => {
   });
 
   return (
-    <LoginFormContainer>
-      <FormHeader>Log In</FormHeader>
+    <SignUpFormContainer>
+      <FormHeader>Sign Up</FormHeader>
       <Controller
         control={control}
         name="email"
@@ -71,10 +77,22 @@ export const LoginForm = () => {
           />
         )}
       />
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field: { onChange, value } }) => (
+          <TextField
+            label="Confirm Password"
+            type="password"
+            onChange={onChange}
+            value={value}
+          />
+        )}
+      />
       {error ? <ErrorText>{error}</ErrorText> : null}
-      <Button variant="contained" onClick={onLoginClick}>
-        Log In
+      <Button variant="contained" onClick={onSignUpClick}>
+        Sign Up
       </Button>
-    </LoginFormContainer>
+    </SignUpFormContainer>
   );
 };
