@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { getAuthToken } from "../lib/getAuthToken";
+import { getAuthToken } from "../lib/authToken";
 import { FocusView } from "./FocusView";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";

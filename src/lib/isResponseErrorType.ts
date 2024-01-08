@@ -7,12 +7,12 @@ type ResponseErrorType = {
   error: BaseError;
 };
 
-type NestedErrorType = {
-  error: string;
-};
-
 type ResponseWithNestedError = {
-  error: BaseError & NestedErrorType;
+  error: {
+    data: {
+      error: string;
+    };
+  };
 };
 
 export const isResponseErrorType = (
@@ -20,5 +20,6 @@ export const isResponseErrorType = (
 ): potentialErrorObj is ResponseErrorType => "error" in potentialErrorObj;
 
 export const hasNestedError = (
-  errorObj: ResponseErrorType
-): errorObj is ResponseWithNestedError => "error" in errorObj.error;
+  errorObj: any
+): errorObj is ResponseWithNestedError =>
+  errorObj?.error?.data?.error !== undefined;

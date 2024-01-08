@@ -2,6 +2,7 @@ import { Button, TextField, styled } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FormHeader } from "../../components/FormHeader";
+import { writeAuthToken } from "../../lib/authToken";
 import {
   hasNestedError,
   isResponseErrorType,
@@ -30,16 +31,16 @@ export const LoginForm = () => {
     const response = await login(formData);
 
     if (isResponseErrorType(response)) {
-      console.error(response.error);
       if (hasNestedError(response)) {
-        setError(response.error.error);
+        setError(response.error.data.error);
       } else {
         setError("Error logging in");
       }
       return;
     }
 
-    localStorage.setItem("authToken", response.data.token);
+    writeAuthToken(response.data.token);
+    document.location.reload();
   });
 
   return (

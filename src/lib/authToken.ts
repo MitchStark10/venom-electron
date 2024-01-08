@@ -3,3 +3,7 @@ export const getAuthToken = () => {
 
   return authToken || null;
 };
+
+export const writeAuthToken = (token: string) => {
+  localStorage.setItem("AUTH_TOKEN", token);
+};
