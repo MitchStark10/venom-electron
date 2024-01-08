@@ -1,5 +1,7 @@
 import { styled } from "@mui/material";
 import { useSelector } from "react-redux";
+import { capitalize } from "../../lib/capitalize";
+import { useListsQuery } from "../../store/slices/listSlice";
 import { RootState } from "../../store/store";
 
 const FocusContainer = styled("div")(({ theme }) => ({
@@ -10,14 +12,18 @@ const FocusContainer = styled("div")(({ theme }) => ({
 }));
 
 export const FocusView = () => {
-  const { focusView, selectedProjectId } = useSelector(
+  const { focusView, selectedListId } = useSelector(
     (state: RootState) => state.focusView
   );
+  const { data: lists } = useListsQuery();
+
+  const selectedListName = lists?.find(
+    (list) => list.id === selectedListId
+  )?.listName;
+
   return (
     <FocusContainer>
-      <h1>
-        {focusView} {selectedProjectId}
-      </h1>
+      <h1>{focusView === "list" ? selectedListName : capitalize(focusView)}</h1>
     </FocusContainer>
   );
 };

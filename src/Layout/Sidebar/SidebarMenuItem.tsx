@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   FocusViewOptions,
   setFocusView,
-  setSelectedProjectId,
+  setSelectedListId,
 } from "../../store/slices/focusViewSlice";
 import { RootState } from "../../store/store";
 
@@ -12,7 +12,7 @@ interface Props {
   icon: ReactNode;
   title: string;
   focusViewToSelect?: FocusViewOptions;
-  projectId?: number;
+  listId?: number;
   onClick?: () => void;
 }
 
@@ -35,10 +35,10 @@ export const SidebarMenuItem: FC<Props> = ({
   icon,
   title,
   focusViewToSelect,
-  projectId,
+  listId,
   onClick,
 }) => {
-  const { focusView, selectedProjectId } = useSelector(
+  const { focusView, selectedListId } = useSelector(
     (state: RootState) => state.focusView
   );
 
@@ -49,14 +49,13 @@ export const SidebarMenuItem: FC<Props> = ({
       dispatch(setFocusView(focusViewToSelect));
     }
 
-    dispatch(setSelectedProjectId(projectId));
+    dispatch(setSelectedListId(listId));
   };
 
-  const isProjectViewSelected =
-    Boolean(focusViewToSelect) && focusView === "project";
+  const isListViewSelected = Boolean(focusViewToSelect) && focusView === "list";
 
-  const isSelected = isProjectViewSelected
-    ? projectId === selectedProjectId
+  const isSelected = isListViewSelected
+    ? listId === selectedListId
     : focusView === focusViewToSelect;
 
   return (

@@ -1,7 +1,6 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
-import { projectList } from "../../mockData/projectList";
-import { Project } from "../../types/Project";
+import { useListsQuery } from "../../store/slices/listSlice";
 import { SidebarCoreMenu } from "./SidebarCoreMenu";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarToolbar } from "./SidebarToolbar";
@@ -31,17 +30,19 @@ const SidebarMenuContainer = styled("span")(({ theme }) => ({
 }));
 
 export const SideBar = () => {
+  const { data: lists } = useListsQuery();
+
   return (
     <SidebarContainer>
       <SidebarMenuContainer>
         <SidebarCoreMenu />
-        {projectList.map((project: Project) => (
+        {lists?.map((list) => (
           <SidebarMenuItem
-            key={project.id}
+            key={list.id}
             icon={<TaskAlt />}
-            title={project.name}
-            focusViewToSelect="project"
-            projectId={project.id}
+            title={list.listName}
+            focusViewToSelect="list"
+            listId={list.id}
           />
         ))}
       </SidebarMenuContainer>

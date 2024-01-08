@@ -1,16 +1,16 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-export type FocusViewOptions = "today" | "upcoming" | "completed" | "project";
+export type FocusViewOptions = "today" | "upcoming" | "completed" | "list";
 
 export interface FocusViewState {
   focusView: FocusViewOptions;
-  selectedProjectId?: number;
+  selectedListId?: number;
 }
 
 const initialState: FocusViewState = {
   focusView: "today",
-  selectedProjectId: undefined,
+  selectedListId: undefined,
 };
 
 export const focusViewSlice = createSlice({
@@ -20,16 +20,13 @@ export const focusViewSlice = createSlice({
     setFocusView: (state, action: PayloadAction<FocusViewOptions>) => {
       state.focusView = action.payload;
     },
-    setSelectedProjectId: (
-      state,
-      action: PayloadAction<number | undefined>
-    ) => {
-      state.selectedProjectId = action.payload;
+    setSelectedListId: (state, action: PayloadAction<number | undefined>) => {
+      state.selectedListId = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFocusView, setSelectedProjectId } = focusViewSlice.actions;
+export const { setFocusView, setSelectedListId } = focusViewSlice.actions;
 
 export default focusViewSlice.reducer;
