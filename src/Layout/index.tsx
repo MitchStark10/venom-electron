@@ -1,5 +1,7 @@
 import { styled } from "@mui/material";
+import { getAuthToken } from "../lib/getAuthToken";
 import { FocusView } from "./FocusView";
+import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
 
@@ -13,6 +15,14 @@ const StyledLayout = styled("div")(({ theme }) => ({
 }));
 
 export const Layout = () => {
+  if (!getAuthToken()) {
+    return (
+      <StyledLayout>
+        <LoginSignUp />
+      </StyledLayout>
+    );
+  }
+
   // const params = new URLSearchParams(global.location.search);
   // if (params.get("isNewTaskOnly") === "true") {
   //   return (
