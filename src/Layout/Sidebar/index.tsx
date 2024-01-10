@@ -1,6 +1,10 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
-import { useListsQuery } from "../../store/slices/listSlice";
+import { Draggable } from "react-drag-reorder";
+import {
+  useListsQuery,
+  useReorderListsMutation,
+} from "../../store/slices/listSlice";
 import { SidebarCoreMenu } from "./SidebarCoreMenu";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 import { SidebarToolbar } from "./SidebarToolbar";
@@ -31,20 +35,39 @@ const SidebarMenuContainer = styled("span")(({ theme }) => ({
 
 export const SideBar = () => {
   const { data: lists } = useListsQuery();
+  const [reorderLists] = useReorderListsMutation();
+
+  const onReorder = (prevPos: number, newPos: number) => {
+    const listsCopy = [...lists!];
+    const [removed] = listsCopy.splice(prevPos, 1);
+    listsCopy.splice(newPos, 0, removed);
+    const reorderedLists = listsCopy.map((list, index) => ({
+      ...list,
+      order: index,
+    }));
+    reorderLists(reorderedLists);
+  };
 
   return (
     <SidebarContainer>
       <SidebarMenuContainer>
         <SidebarCoreMenu />
-        {lists?.map((list) => (
-          <SidebarMenuItem
-            key={list.id}
-            icon={<TaskAlt />}
-            title={list.listName}
-            focusViewToSelect="list"
-            listId={list.id}
-          />
-        ))}
+        {lists && lists.length > 0 && (
+          <Draggable
+            key={lists?.map((l) => l.listName).join("-")}
+            onPosChange={onReorder}
+          >
+            {lists?.map((list) => (
+              <SidebarMenuItem
+                key={list.id + list.listName}
+                icon={<TaskAlt />}
+                title={list.listName}
+                focusViewToSelect="list"
+                listId={list.id}
+              />
+            ))}
+          </Draggable>
+        )}
       </SidebarMenuContainer>
       <SidebarToolbar />
     </SidebarContainer>

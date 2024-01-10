@@ -53,6 +53,19 @@ export const listsApi = createApi({
       }),
       invalidatesTags: ["Lists"],
     }),
+    reorderLists: builder.mutation<List[], List[]>({
+      query: (lists) => ({
+        url: `/lists/reorder`,
+        method: "PUT",
+        body: {
+          lists,
+        },
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+      invalidatesTags: ["Lists"],
+    }),
   }),
 });
 
@@ -61,4 +74,5 @@ export const {
   useCreateListMutation,
   useUpdateListMutation,
   useDeleteListMutation,
+  useReorderListsMutation,
 } = listsApi;
