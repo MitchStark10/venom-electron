@@ -64,6 +64,7 @@ export const SideBar = () => {
                 title={list.listName}
                 focusViewToSelect="list"
                 listId={list.id}
+                includeMenu
               />
             ))}
           </Draggable>

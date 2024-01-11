@@ -1,11 +1,13 @@
-import { MenuItem, styled } from "@mui/material";
-import { FC, ReactNode } from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { MenuItem, MenuList, Paper, Popper, styled } from "@mui/material";
+import { FC, ReactNode, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FocusViewOptions,
   setFocusView,
   setSelectedListId,
 } from "../../store/slices/focusViewSlice";
+import { useDeleteListMutation } from "../../store/slices/listSlice";
 import { RootState } from "../../store/store";
 
 interface Props {
@@ -14,9 +16,17 @@ interface Props {
   focusViewToSelect?: FocusViewOptions;
   listId?: number;
   onClick?: () => void;
+  includeMenu?: boolean;
 }
 
 const MenuItemContainer = styled(MenuItem)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: "8px",
+});
+
+const TitleAndIconContainer = styled("span")({
   display: "flex",
   alignItems: "center",
   gap: "8px",
@@ -37,10 +47,15 @@ export const SidebarMenuItem: FC<Props> = ({
   focusViewToSelect,
   listId,
   onClick,
+  includeMenu,
 }) => {
   const { focusView, selectedListId } = useSelector(
     (state: RootState) => state.focusView
   );
+  const [showEllipsis, setShowEllipsis] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const popperRef = useRef<HTMLDivElement>(null);
+  const [deleteList] = useDeleteListMutation();
 
   const dispatch = useDispatch();
 
@@ -58,10 +73,38 @@ export const SidebarMenuItem: FC<Props> = ({
     ? listId === selectedListId
     : focusView === focusViewToSelect;
 
+  const onDeleteList = () => {
+    if (listId) {
+      deleteList({ id: listId.toString() });
+    }
+    setShowEllipsis(false);
+  };
+
   return (
-    <MenuItemContainer onClick={onClick ?? internalOnClick}>
-      {icon}
-      <MenuItemTitle isSelected={isSelected}>{title}</MenuItemTitle>
+    <MenuItemContainer
+      onClick={onClick ?? internalOnClick}
+      onMouseEnter={() => includeMenu && setShowEllipsis(true)}
+      onMouseLeave={() => includeMenu && setShowEllipsis(false)}
+    >
+      <TitleAndIconContainer>
+        {icon}
+        <MenuItemTitle isSelected={isSelected}>{title}</MenuItemTitle>
+      </TitleAndIconContainer>
+      <span ref={popperRef}>
+        <SettingsIcon
+          onClick={() => setShowMenu(true)}
+          sx={{ visibility: showEllipsis ? "visible" : "hidden" }}
+        />
+      </span>
+      {showMenu && includeMenu && (
+        <Popper open anchorEl={popperRef.current}>
+          <Paper>
+            <MenuList>
+              <MenuItem onClick={onDeleteList}>Delete</MenuItem>
+            </MenuList>
+          </Paper>
+        </Popper>
+      )}
     </MenuItemContainer>
   );
 };

@@ -1,12 +1,8 @@
-import { TextField, styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { capitalize } from "../../lib/capitalize";
-import {
-  useListsQuery,
-  useUpdateListMutation,
-} from "../../store/slices/listSlice";
 import { RootState } from "../../store/store";
+import { ListFocusView } from "./ListFocusView";
 
 const FocusContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -16,63 +12,14 @@ const FocusContainer = styled("div")(({ theme }) => ({
 }));
 
 export const FocusView = () => {
-  const [isEditingListName, setIsEditingListName] = useState(false);
-  const { focusView, selectedListId } = useSelector(
-    (state: RootState) => state.focusView
-  );
-  const { data: lists } = useListsQuery();
-  const [updateListName] = useUpdateListMutation();
-
-  const [newListName, setNewListName] = useState<string>("");
-
-  useEffect(() => {
-    if (lists && selectedListId) {
-      const selectedList = lists.find((list) => list.id === selectedListId);
-      if (selectedList) {
-        setNewListName(selectedList.listName);
-      }
-    }
-  }, [lists, selectedListId]);
-
-  const handleListNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewListName(e.target.value);
-  };
-
-  const handleListNameBlur = () => {
-    if (newListName && selectedListId) {
-      updateListName({ id: selectedListId.toString(), listName: newListName });
-    }
-    setIsEditingListName(false);
-  };
-
-  const handleNameClick = () => {
-    if (focusView === "list") {
-      setIsEditingListName(true);
-    }
-  };
+  const { focusView } = useSelector((state: RootState) => state.focusView);
 
   return (
     <FocusContainer>
-      {isEditingListName ? (
-        <TextField
-          label="List Name"
-          value={newListName}
-          onChange={handleListNameChange}
-          onBlur={handleListNameBlur}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              e.stopPropagation();
-              handleListNameBlur();
-            }
-          }}
-          sx={{ width: "250px" }}
-          autoFocus
-        />
+      {focusView === "list" ? (
+        <ListFocusView />
       ) : (
-        <h1 onClick={handleNameClick}>
-          {focusView === "list" ? newListName : capitalize(focusView)}
-        </h1>
+        <h1>{capitalize(focusView)}</h1>
       )}
     </FocusContainer>
   );

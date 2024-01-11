@@ -38,6 +38,13 @@ export const NewListModal = () => {
           autoFocus
           value={listName}
           onChange={(e) => setListName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              e.stopPropagation();
+              handleCreateList();
+            }
+          }}
         />
         <Button
           variant="contained"
