@@ -2,7 +2,7 @@ import { styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { capitalize } from "../../lib/capitalize";
 import { RootState } from "../../store/store";
-import { ListFocusView } from "./ListFocusView";
+import { ListFocusView } from "./ListFocusView/ListFocusView";
 
 const FocusContainer = styled("div")(({ theme }) => ({
   display: "flex",

@@ -1,18 +1,24 @@
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import {
   useListsQuery,
   useUpdateListMutation,
-} from "../../store/slices/listSlice";
-import { RootState } from "../../store/store";
+} from "../../../store/slices/listSlice";
+import { RootState } from "../../../store/store";
+import { NewTaskForm } from "./NewTaskForm";
 
 export const ListFocusView = () => {
-  const { selectedListId } = useSelector((state: RootState) => state.focusView);
+  const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const { selectedListId } = useSelector(
+    (state: RootState) => state.focusView,
+    shallowEqual
+  );
   const [isEditingListName, setIsEditingListName] = useState(false);
   const [updateListName] = useUpdateListMutation();
   const [newListName, setNewListName] = useState<string>("");
   const { data: lists } = useListsQuery();
+  const selectedList = lists?.find((list) => list.id === selectedListId);
 
   const handleListNameBlur = () => {
     if (newListName && selectedListId) {
@@ -39,7 +45,7 @@ export const ListFocusView = () => {
   }, [lists, selectedListId]);
 
   return (
-    <>
+    <div>
       {isEditingListName ? (
         <TextField
           label="List Name"
@@ -59,6 +65,23 @@ export const ListFocusView = () => {
       ) : (
         <h1 onClick={handleNameClick}>{newListName}</h1>
       )}
-    </>
+
+      {selectedList?.tasks.map((task) => (
+        <div key={task.id}>
+          <h3>{task.taskName}</h3>
+        </div>
+      ))}
+
+      {showAddTaskForm ? (
+        <NewTaskForm
+          onAddNewTask={() => setShowAddTaskForm(false)}
+          listId={selectedListId}
+        />
+      ) : (
+        <Button variant="contained" onClick={() => setShowAddTaskForm(true)}>
+          Add Task
+        </Button>
+      )}
+    </div>
   );
 };
