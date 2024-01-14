@@ -1,12 +1,13 @@
-import { Button, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import {Button, TextField} from "@mui/material";
+import {useEffect, useState} from "react";
+import {shallowEqual, useSelector} from "react-redux";
 import {
   useListsQuery,
   useUpdateListMutation,
 } from "../../../store/slices/listSlice";
-import { RootState } from "../../../store/store";
-import { NewTaskForm } from "./NewTaskForm";
+import {RootState} from "../../../store/store";
+import {NewTaskForm} from "./NewTaskForm";
+import {TaskCard} from "./TaskCard";
 
 export const ListFocusView = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -67,9 +68,7 @@ export const ListFocusView = () => {
       )}
 
       {selectedList?.tasks.map((task) => (
-        <div key={task.id}>
-          <h3>{task.taskName}</h3>
-        </div>
+        <TaskCard key={task.id} task={task} />
       ))}
 
       {showAddTaskForm ? (
