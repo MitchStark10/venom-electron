@@ -84,7 +84,10 @@ export const SidebarMenuItem: FC<Props> = ({
     <MenuItemContainer
       onClick={onClick ?? internalOnClick}
       onMouseEnter={() => includeMenu && setShowEllipsis(true)}
-      onMouseLeave={() => includeMenu && setShowEllipsis(false)}
+      onMouseLeave={() => {
+        setShowEllipsis(false);
+        setShowMenu(false);
+      }}
     >
       <TitleAndIconContainer>
         {icon}
