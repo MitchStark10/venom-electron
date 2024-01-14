@@ -20,8 +20,7 @@ export const tasksApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
-      onQueryStarted: (arg, api) => {
-        console.log("onQueryStarted");
+      onQueryStarted: (_arg, api) => {
         api.queryFulfilled.then(() => {
           api.dispatch(listsApi.util.invalidateTags(["Lists"]));
         });
@@ -38,8 +37,7 @@ export const tasksApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
-      onQueryStarted: (arg, api) => {
-        console.log("onQueryStarted");
+      onQueryStarted: (_arg, api) => {
         api.queryFulfilled.then(() => {
           api.dispatch(listsApi.util.invalidateTags(["Lists"]));
         });
@@ -53,8 +51,7 @@ export const tasksApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
-      onQueryStarted: (arg, api) => {
-        console.log("onQueryStarted");
+      onQueryStarted: (_arg, api) => {
         api.queryFulfilled.then(() => {
           api.dispatch(listsApi.util.invalidateTags(["Lists"]));
         });
