@@ -73,11 +73,12 @@ export const SidebarMenuItem: FC<Props> = ({
     ? listId === selectedListId
     : focusView === focusViewToSelect;
 
-  const onDeleteList = () => {
+  const onDeleteList = async () => {
     if (listId) {
-      deleteList({ id: listId.toString() });
+      await deleteList({ id: listId.toString() });
     }
     setShowEllipsis(false);
+    setShowMenu(false);
   };
 
   return (
