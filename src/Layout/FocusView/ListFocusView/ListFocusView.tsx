@@ -1,6 +1,7 @@
 import { TaskAlt } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { EditableText } from "../../../components/EditableText";
 import {
@@ -35,9 +36,13 @@ export const ListFocusView = () => {
         displayIcon={<TaskAlt sx={{ marginRight: "10px" }} />}
       />
 
-      {selectedList?.tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
+      {selectedList?.tasks && selectedList?.tasks.length > 0 && (
+        <Draggable key={selectedList.tasks.map((task) => task.id).join("-")}>
+          {selectedList?.tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </Draggable>
+      )}
 
       {showAddTaskForm ? (
         <NewTaskForm

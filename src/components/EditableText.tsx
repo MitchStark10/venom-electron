@@ -22,6 +22,12 @@ export const EditableText: FC<Props> = ({
     setNewText(e.target.value);
   };
 
+  const onTextContainerClick = (e: React.MouseEvent<HTMLParagraphElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditingText(true);
+  };
+
   const onBlur = () => {
     if (newText) {
       onSave(newText);
@@ -51,7 +57,7 @@ export const EditableText: FC<Props> = ({
       autoFocus
     />
   ) : (
-    <TextContainer onClick={() => setIsEditingText(true)}>
+    <TextContainer onClick={onTextContainerClick}>
       {displayIcon}
       {newText}
     </TextContainer>
