@@ -57,6 +57,28 @@ export const tasksApi = createApi({
         });
       },
     }),
+    reorderTask: builder.mutation<
+      Task,
+      {
+        fieldToUpdate: "listViewOrder" | "timeViewOrder";
+        taskId: string;
+        newOrder: number;
+      }
+    >({
+      query: (reqBody) => ({
+        url: "/tasks/reorder",
+        method: "PUT",
+        body: reqBody,
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+      onQueryStarted: (_arg, api) => {
+        api.queryFulfilled.then(() => {
+          api.dispatch(listsApi.util.invalidateTags(["Lists"]));
+        });
+      },
+    }),
   }),
 });
 
@@ -64,4 +86,5 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
+  useReorderTaskMutation,
 } = tasksApi;

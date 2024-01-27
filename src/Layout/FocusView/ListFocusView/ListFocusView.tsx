@@ -8,6 +8,7 @@ import {
   useListsQuery,
   useUpdateListMutation,
 } from "../../../store/slices/listSlice";
+import { useReorderTaskMutation } from "../../../store/slices/taskSlice";
 import { RootState } from "../../../store/store";
 import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
@@ -19,12 +20,28 @@ export const ListFocusView = () => {
     shallowEqual
   );
   const [updateListName] = useUpdateListMutation();
+  const [reorderTask] = useReorderTaskMutation();
   const { data: lists } = useListsQuery();
+
   const selectedList = lists?.find((list) => list.id === selectedListId);
   const handleListNameChange = (newListName: string) => {
     if (newListName && selectedListId) {
       updateListName({ id: selectedListId.toString(), listName: newListName });
     }
+  };
+
+  const onReorder = (prevPos: number, newPos: number) => {
+    const taskId = selectedList?.tasks[prevPos].id?.toString();
+
+    if (!taskId) {
+      return;
+    }
+
+    reorderTask({
+      fieldToUpdate: "listViewOrder",
+      taskId,
+      newOrder: newPos,
+    });
   };
 
   return (
@@ -37,7 +54,10 @@ export const ListFocusView = () => {
       />
 
       {selectedList?.tasks && selectedList?.tasks.length > 0 && (
-        <Draggable key={selectedList.tasks.map((task) => task.id).join("-")}>
+        <Draggable
+          key={selectedList.tasks.map((task) => task.id).join("-")}
+          onPosChange={onReorder}
+        >
           {selectedList?.tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
