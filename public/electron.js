@@ -97,7 +97,6 @@ app.on("web-contents-created", (event, contents) => {
 app.on("ready", () => {
   // Register a ctrl+. listener
   const ret = globalShortcut.register("CommandOrControl+X", () => {
-    console.log("CommandOrControl+X is pressed");
     createWindow({ isNewTaskOnly: true });
   });
 
