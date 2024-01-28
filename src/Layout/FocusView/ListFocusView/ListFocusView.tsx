@@ -50,6 +50,7 @@ export const ListFocusView = () => {
   return (
     <div>
       <EditableText
+        label="List Name"
         displayAs="h1"
         initialValue={selectedList?.listName}
         onSave={handleListNameChange}

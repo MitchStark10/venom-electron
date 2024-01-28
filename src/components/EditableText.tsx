@@ -1,7 +1,8 @@
-import { TextField } from "@mui/material";
+import { TextField, styled } from "@mui/material";
 import { FC, ReactNode, useEffect, useState } from "react";
 
 interface Props {
+  label: string;
   initialValue?: string;
   onSave: (newText: string) => void;
   displayAs: "h1" | "h3";
@@ -9,12 +10,15 @@ interface Props {
 }
 
 export const EditableText: FC<Props> = ({
+  label,
   displayAs,
   initialValue,
   displayIcon,
   onSave,
 }) => {
-  const TextContainer = displayAs;
+  const TextContainer = styled(displayAs)({
+    cursor: "pointer",
+  });
   const [isEditingText, setIsEditingText] = useState(false);
   const [newText, setNewText] = useState(initialValue);
 
@@ -42,7 +46,7 @@ export const EditableText: FC<Props> = ({
 
   return isEditingText ? (
     <TextField
-      label="Task"
+      label={label}
       value={newText}
       onChange={onChange}
       onBlur={onBlur}
@@ -53,8 +57,8 @@ export const EditableText: FC<Props> = ({
           onBlur();
         }
       }}
-      sx={{ width: "250px" }}
       autoFocus
+      fullWidth
     />
   ) : (
     <TextContainer onClick={onTextContainerClick}>

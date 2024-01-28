@@ -1,6 +1,6 @@
-import { Checkbox, FormControlLabel, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { FC } from "react";
-import { EditableText } from "../../../components/EditableText";
+import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
@@ -34,15 +34,11 @@ export const TaskCard: FC<Props> = ({ task }) => {
 
   return (
     <TaskCardContainer>
-      <FormControlLabel
-        label={
-          <EditableText
-            displayAs="h3"
-            initialValue={task.taskName}
-            onSave={onTaskNameChange}
-          />
-        }
-        control={<Checkbox onClick={onCheckTask} />}
+      <CheckboxWithEditableLabel
+        inputLabel="Task"
+        initialValue={task.taskName}
+        onInputChange={onTaskNameChange}
+        onCheckboxClick={onCheckTask}
       />
     </TaskCardContainer>
   );
