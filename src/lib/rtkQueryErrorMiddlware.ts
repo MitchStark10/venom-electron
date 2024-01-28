@@ -14,7 +14,6 @@ export const rtkQueryErrorMiddlware: Middleware =
         action?.payload?.data?.message ||
           "An unexpedted error occurred. Please try again later."
       );
-      return;
     }
 
     return next(action);

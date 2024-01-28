@@ -1,6 +1,7 @@
-import { Button, TextField, styled } from "@mui/material";
+import { TextField, styled } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "../../components/Button";
 import { ErrorText } from "../../components/ErrorText";
 import { FormHeader } from "../../components/FormHeader";
 import { writeAuthToken } from "../../lib/authToken";
@@ -24,9 +25,18 @@ const LoginFormContainer = styled("div")(({ theme }) => ({
 }));
 
 export const LoginForm = () => {
-  const { control, handleSubmit } = useForm<LoginFormData>();
+  const { control, handleSubmit, getValues } = useForm<LoginFormData>();
   const [error, setError] = useState<string | null>(null);
-  const [login] = useLoginMutation();
+  const [login, { isLoading, isError }] = useLoginMutation();
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const { email, password } = getValues();
+      if (email && password) {
+        onLoginClick();
+      }
+    }
+  };
 
   const onLoginClick = handleSubmit(async (formData) => {
     const response = await login(formData);
@@ -56,6 +66,8 @@ export const LoginForm = () => {
             type="email"
             onChange={onChange}
             value={value}
+            onKeyDown={onKeyDown}
+            sx={{ width: "250px" }}
           />
         )}
       />
@@ -68,11 +80,17 @@ export const LoginForm = () => {
             type="password"
             onChange={onChange}
             value={value}
+            onKeyDown={onKeyDown}
+            sx={{ width: "250px" }}
           />
         )}
       />
       {error ? <ErrorText>{error}</ErrorText> : null}
-      <Button variant="contained" onClick={onLoginClick}>
+      <Button
+        variant="contained"
+        onClick={onLoginClick}
+        loading={isLoading && !isError}
+      >
         Log In
       </Button>
     </LoginFormContainer>

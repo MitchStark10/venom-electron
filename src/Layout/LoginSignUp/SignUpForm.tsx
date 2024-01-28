@@ -25,9 +25,18 @@ const SignUpFormContainer = styled("div")(({ theme }) => ({
 }));
 
 export const SignUpForm = () => {
-  const { control, handleSubmit } = useForm<SignUpFormData>();
+  const { control, handleSubmit, getValues } = useForm<SignUpFormData>();
   const [error, setError] = useState<string | null>(null);
-  const [signup] = useSignupMutation();
+  const [signup, { isLoading }] = useSignupMutation();
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const { email, password, confirmPassword } = getValues();
+      if (email && password && confirmPassword) {
+        onSignUpClick();
+      }
+    }
+  };
 
   const onSignUpClick = handleSubmit(async (formData) => {
     if (formData.password !== formData.confirmPassword) {
@@ -62,6 +71,7 @@ export const SignUpForm = () => {
             type="email"
             onChange={onChange}
             value={value}
+            onKeyDown={onKeyDown}
           />
         )}
       />
@@ -74,6 +84,7 @@ export const SignUpForm = () => {
             type="password"
             onChange={onChange}
             value={value}
+            onKeyDown={onKeyDown}
           />
         )}
       />
@@ -86,11 +97,12 @@ export const SignUpForm = () => {
             type="password"
             onChange={onChange}
             value={value}
+            onKeyDown={onKeyDown}
           />
         )}
       />
       {error ? <ErrorText>{error}</ErrorText> : null}
-      <Button variant="contained" onClick={onSignUpClick}>
+      <Button variant="contained" onClick={onSignUpClick} disabled={isLoading}>
         Sign Up
       </Button>
     </SignUpFormContainer>
