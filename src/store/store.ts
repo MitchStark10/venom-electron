@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { rtkQueryErrorMiddlware } from "../lib/rtkQueryErrorMiddlware";
 import focusViewReducer from "./slices/focusViewSlice";
 import { listsApi } from "./slices/listSlice";
 import modalReducer from "./slices/modalSlice";
@@ -15,6 +16,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
+      rtkQueryErrorMiddlware,
       userApi.middleware,
       listsApi.middleware,
       tasksApi.middleware

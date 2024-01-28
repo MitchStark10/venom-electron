@@ -3,6 +3,12 @@ import { getAuthToken } from "../../lib/authToken";
 import { Task } from "../../types/Task";
 import { listsApi } from "./listSlice";
 
+export interface UpdateReorderTask {
+  fieldToUpdate: "listViewOrder" | "timeViewOrder";
+  id: number;
+  newOrder: number;
+}
+
 export const tasksApi = createApi({
   reducerPath: "task",
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_BASE_URL }),
@@ -58,12 +64,8 @@ export const tasksApi = createApi({
       },
     }),
     reorderTask: builder.mutation<
-      Task,
-      {
-        fieldToUpdate: "listViewOrder" | "timeViewOrder";
-        taskId: string;
-        newOrder: number;
-      }
+      { success: boolean },
+      { tasksToUpdate: UpdateReorderTask[] }
     >({
       query: (reqBody) => ({
         url: "/tasks/reorder",

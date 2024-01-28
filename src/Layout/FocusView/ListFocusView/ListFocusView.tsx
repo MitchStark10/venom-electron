@@ -8,7 +8,10 @@ import {
   useListsQuery,
   useUpdateListMutation,
 } from "../../../store/slices/listSlice";
-import { useReorderTaskMutation } from "../../../store/slices/taskSlice";
+import {
+  UpdateReorderTask,
+  useReorderTaskMutation,
+} from "../../../store/slices/taskSlice";
 import { RootState } from "../../../store/store";
 import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
@@ -31,17 +34,17 @@ export const ListFocusView = () => {
   };
 
   const onReorder = (prevPos: number, newPos: number) => {
-    const taskId = selectedList?.tasks[prevPos].id?.toString();
-
-    if (!taskId) {
-      return;
-    }
-
-    reorderTask({
-      fieldToUpdate: "listViewOrder",
-      taskId,
-      newOrder: newPos,
-    });
+    const tasksCopy = [...selectedList!.tasks];
+    const [removed] = tasksCopy.splice(prevPos, 1);
+    tasksCopy.splice(newPos, 0, removed);
+    const reorderedTasksRequestBody: UpdateReorderTask[] = tasksCopy.map(
+      (task, index) => ({
+        fieldToUpdate: "listViewOrder",
+        id: task.id,
+        newOrder: index,
+      })
+    );
+    reorderTask({ tasksToUpdate: reorderedTasksRequestBody });
   };
 
   return (
