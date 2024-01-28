@@ -1,8 +1,8 @@
 import { TaskAlt } from "@mui/icons-material";
-import { Button } from "@mui/material";
 import { useState } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
+import { Button } from "../../../components/Button";
 import { EditableText } from "../../../components/EditableText";
 import {
   useListsQuery,

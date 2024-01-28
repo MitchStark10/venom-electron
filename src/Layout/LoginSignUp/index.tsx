@@ -1,5 +1,6 @@
-import { Button, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { useState } from "react";
+import { Button } from "../../components/Button";
 import { DividerWithPadding } from "../../components/DividerWithPadding";
 import { LoginForm } from "./LoginForm";
 import { SignUpForm } from "./SignUpForm";

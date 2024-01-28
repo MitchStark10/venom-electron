@@ -1,6 +1,7 @@
-import { Button, TextField, styled } from "@mui/material";
+import { TextField, styled } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "../../components/Button";
 import { ErrorText } from "../../components/ErrorText";
 import { FormHeader } from "../../components/FormHeader";
 import { writeAuthToken } from "../../lib/authToken";

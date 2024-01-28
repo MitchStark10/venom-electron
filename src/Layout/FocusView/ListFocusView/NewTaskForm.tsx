@@ -1,6 +1,7 @@
-import { Button, TextField, styled } from "@mui/material";
+import { TextField, styled } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "../../../components/Button";
 import { useCreateTaskMutation } from "../../../store/slices/taskSlice";
 
 interface Props {
