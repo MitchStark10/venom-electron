@@ -54,7 +54,7 @@ export const ListFocusView = () => {
         displayAs="h1"
         initialValue={selectedList?.listName}
         onSave={handleListNameChange}
-        displayIcon={<TaskAlt sx={{ marginRight: "10px" }} />}
+        displayIcon={<TaskAlt sx={{ margin: "0 10px" }} />}
       />
 
       {selectedList?.tasks && selectedList?.tasks.length > 0 && (
