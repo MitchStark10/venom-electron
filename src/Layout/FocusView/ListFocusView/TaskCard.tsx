@@ -1,5 +1,6 @@
 import { SxProps, styled, useTheme } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
 import { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import { useClickOutside } from "../../../hooks/useClickOutside";
@@ -47,6 +48,15 @@ export const TaskCard: FC<Props> = ({ task }) => {
     updateTask({ id: task.id, taskName: newTaskName });
   };
 
+  const onDueDateChange = (newDueDate: any) => {
+    const newDueDateMoment = newDueDate ? moment(newDueDate) : null;
+    updateTask({
+      id: task.id,
+      taskName: task.taskName,
+      dueDate: newDueDateMoment?.toISOString() || null,
+    });
+  };
+
   const onCheckTask = () => {
     deleteTask({ id: task.id.toString() });
   };
@@ -83,6 +93,8 @@ export const TaskCard: FC<Props> = ({ task }) => {
               disablePortal: true,
             },
           }}
+          value={task.dueDate ? moment(task.dueDate) : null}
+          onChange={onDueDateChange}
         />
       )}
     </TaskCardContainer>
