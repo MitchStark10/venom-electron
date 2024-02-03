@@ -7,6 +7,8 @@ interface Props {
   onSave: (newText: string) => void;
   displayAs: "h1" | "h3";
   displayIcon?: ReactNode;
+  onEditingStateChange?: (isEditing: boolean) => void;
+  isEditing?: boolean;
 }
 
 export const EditableText: FC<Props> = ({
@@ -15,11 +17,13 @@ export const EditableText: FC<Props> = ({
   initialValue,
   displayIcon,
   onSave,
+  onEditingStateChange,
+  isEditing,
 }) => {
   const TextContainer = styled(displayAs)({
     cursor: "pointer",
   });
-  const [isEditingText, setIsEditingText] = useState(false);
+  const [localIsEditingText, setLocalIsEditingText] = useState(false);
   const [newText, setNewText] = useState(initialValue);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,8 @@ export const EditableText: FC<Props> = ({
   const onTextContainerClick = (e: React.MouseEvent<HTMLParagraphElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsEditingText(true);
+    onEditingStateChange?.(true);
+    setLocalIsEditingText(true);
   };
 
   const onBlur = () => {
@@ -37,14 +42,15 @@ export const EditableText: FC<Props> = ({
       onSave(newText);
     }
 
-    setIsEditingText(false);
+    onEditingStateChange?.(false);
+    setLocalIsEditingText(false);
   };
 
   useEffect(() => {
     setNewText(initialValue);
   }, [initialValue]);
 
-  return isEditingText ? (
+  return isEditing || localIsEditingText ? (
     <TextField
       label={label}
       value={newText}

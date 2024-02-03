@@ -1,6 +1,8 @@
-import { styled } from "@mui/material";
-import { FC } from "react";
+import { SxProps, styled, useTheme } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 import {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
@@ -20,9 +22,26 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
   },
 }));
 
+const DueDatePicker = styled(DatePicker)(({ theme }) => ({
+  marginLeft: theme.spacing(22),
+  marginTop: theme.spacing(4),
+}));
+
 export const TaskCard: FC<Props> = ({ task }) => {
+  const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   const [deleteTask] = useDeleteTaskMutation();
+  const [isEditing, setIsEditing] = useState(false);
+  const theme = useTheme();
+
+  const clickAwayHandler = () => setIsEditing(false);
+
+  const stEditingContainer: SxProps = {
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.spacing(1),
+    boxShadow: `0 0 3px ${theme.palette.grey[800]}`,
+    padding: `${theme.spacing(10)} ${theme.spacing(5)}`,
+  };
 
   const onTaskNameChange = (newTaskName: string) => {
     updateTask({ id: task.id, taskName: newTaskName });
@@ -32,14 +51,40 @@ export const TaskCard: FC<Props> = ({ task }) => {
     deleteTask({ id: task.id.toString() });
   };
 
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setIsEditing(false);
+    }
+  };
+
+  useClickOutside(cardContainerRef, clickAwayHandler);
+
   return (
-    <TaskCardContainer>
+    <TaskCardContainer
+      sx={isEditing ? stEditingContainer : undefined}
+      ref={cardContainerRef}
+      onKeyDown={onKeyDown}
+    >
       <CheckboxWithEditableLabel
         inputLabel="Task"
         initialValue={task.taskName}
         onInputChange={onTaskNameChange}
         onCheckboxClick={onCheckTask}
+        isEditing={isEditing}
+        // Prevent set of isEditing via blur. Use click outside or
+        // escape key instead.
+        onEditingStateChange={isEditing ? undefined : setIsEditing}
       />
+      {isEditing && (
+        <DueDatePicker
+          label="Due Date"
+          slotProps={{
+            popper: {
+              disablePortal: true,
+            },
+          }}
+        />
+      )}
     </TaskCardContainer>
   );
 };

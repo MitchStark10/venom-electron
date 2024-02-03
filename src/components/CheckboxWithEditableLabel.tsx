@@ -8,6 +8,8 @@ interface Props {
   displayAs?: "h1" | "h3";
   initialValue: string;
   onInputChange: (newText: string) => void;
+  isEditing?: boolean;
+  onEditingStateChange?: (isEditing: boolean) => void;
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -22,6 +24,8 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
   displayAs = "h3",
   initialValue,
   onInputChange,
+  isEditing,
+  onEditingStateChange,
 }) => {
   return (
     <CheckboxAndLabelContainer>
@@ -31,6 +35,8 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
         displayAs={displayAs}
         initialValue={initialValue}
         onSave={onInputChange}
+        isEditing={isEditing}
+        onEditingStateChange={onEditingStateChange}
       />
     </CheckboxAndLabelContainer>
   );

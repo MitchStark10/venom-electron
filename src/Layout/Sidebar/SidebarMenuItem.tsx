@@ -97,7 +97,10 @@ export const SidebarMenuItem: FC<Props> = ({
       <span ref={popperRef}>
         <SettingsIcon
           onClick={() => setShowMenu(true)}
-          sx={{ visibility: showEllipsis ? "visible" : "hidden" }}
+          sx={{
+            visibility: showEllipsis ? "visible" : "hidden",
+            marginTop: "7px",
+          }}
         />
       </span>
       {showMenu && includeMenu && (

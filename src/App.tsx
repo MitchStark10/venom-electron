@@ -1,4 +1,6 @@
 import { ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { FC } from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -12,10 +14,12 @@ const App: FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <ToastContainer />
-        <Layout />
-      </Provider>
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <Provider store={store}>
+          <ToastContainer />
+          <Layout />
+        </Provider>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };
