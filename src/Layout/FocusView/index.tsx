@@ -9,6 +9,7 @@ const FocusContainer = styled("div")(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(16),
+  overflowY: "auto",
 }));
 
 export const FocusView = () => {

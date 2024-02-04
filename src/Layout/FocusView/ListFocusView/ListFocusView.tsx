@@ -42,15 +42,25 @@ export const ListFocusView = () => {
     }
   };
 
-  const onReorder = (prevPos: number, newPos: number) => {
-    const tasksCopy = [...selectedList!.tasks];
+  const onReorder = (prevPos: number, newPos: number, tasks: Task[]) => {
+    const posDiff = newPos - prevPos;
+    const tasksCopy = [...tasks];
     const [removed] = tasksCopy.splice(prevPos, 1);
-    tasksCopy.splice(newPos, 0, removed);
-    const reorderedTasksRequestBody: UpdateReorderTask[] = tasksCopy.map(
+
+    const allTasksCopy = [...selectedList!.tasks].sort(taskSorter);
+    const indexOfTaskToReorder = allTasksCopy.findIndex(
+      (task) => task.id === removed.id
+    );
+    debugger;
+    allTasksCopy.splice(indexOfTaskToReorder, 1);
+    allTasksCopy.splice(indexOfTaskToReorder + posDiff, 0, removed);
+
+    const reorderedTasksRequestBody: UpdateReorderTask[] = allTasksCopy.map(
       (task, index) => ({
         fieldToUpdate: "listViewOrder",
         id: task.id,
         newOrder: index,
+        taskName: task.taskName,
       })
     );
     reorderTask({ tasksToUpdate: reorderedTasksRequestBody });
@@ -87,7 +97,9 @@ export const ListFocusView = () => {
           {tasks.length > 0 && (
             <Draggable
               key={tasks.map((task) => JSON.stringify(task)).join("")}
-              onPosChange={onReorder}
+              onPosChange={(prevOrder, newOrder) =>
+                onReorder(prevOrder, newOrder, tasks)
+              }
             >
               {tasks.map((task) => (
                 <TaskCard key={task.id} task={task} />
