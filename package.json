@@ -62,8 +62,8 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.electron.myapp",
-    "productName": "My Electron App",
+    "appId": "com.electron.venom",
+    "productName": "venom",
     "files": [
       "build/**/*",
       "node_modules/**/*"

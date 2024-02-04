@@ -1,6 +1,7 @@
 import { styled } from "@mui/material";
 import { getAuthToken } from "../lib/authToken";
 import { FocusView } from "./FocusView";
+import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
@@ -23,14 +24,18 @@ export const Layout = () => {
     );
   }
 
-  // const params = new URLSearchParams(global.location.search);
-  // if (params.get("isNewTaskOnly") === "true") {
-  //   return (
-  //     <StyledLayout>
-  //       <NewTaskForm />
-  //     </StyledLayout>
-  //   );
-  // }
+  const onAddNewTask = () => {
+    setTimeout(() => window.close(), 1000);
+  };
+
+  const params = new URLSearchParams(global.location.search);
+  if (params.get("isNewTaskOnly") === "true") {
+    return (
+      <StyledLayout>
+        <NewTaskForm onAddNewTask={onAddNewTask} />
+      </StyledLayout>
+    );
+  }
 
   return (
     <StyledLayout>

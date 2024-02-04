@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAuthToken } from "../../lib/authToken";
+import { API_BASE_URL } from "../../lib/constants";
 import { Task } from "../../types/Task";
 import { listsApi } from "./listSlice";
 
@@ -11,7 +12,7 @@ export interface UpdateReorderTask {
 
 export const tasksApi = createApi({
   reducerPath: "task",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Tasks"],
   endpoints: (builder) => ({
     createTask: builder.mutation<Task, { taskName: string; listId: number }>({

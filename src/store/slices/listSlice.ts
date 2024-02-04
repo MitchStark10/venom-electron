@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAuthToken } from "../../lib/authToken";
+import { API_BASE_URL } from "../../lib/constants";
 import { List } from "../../types/List";
 
 export const listsApi = createApi({
   reducerPath: "list",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Lists"],
   endpoints: (builder) => ({
     lists: builder.query<List[], void>({

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE_URL } from "../../lib/constants";
 
 interface LoginArgs {
   email: string;
@@ -11,7 +12,7 @@ interface LoginResponse {
 
 export const userApi = createApi({
   reducerPath: "user",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginArgs>({
       query: ({ email, password }) => ({
