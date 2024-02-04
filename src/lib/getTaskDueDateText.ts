@@ -1,11 +1,6 @@
 import moment from "moment";
 
 export const getTaskDueDateText = (dueDate?: string | null) => {
-  console.log("testing", {
-    dueDate,
-    moment: moment(dueDate).format("YYYY-MM-DD"),
-    moment2: moment().format("YYYY-MM-DD"),
-  });
   if (
     moment(dueDate).format("YYYY-MM-DD") ===
     moment().startOf("day").format("YYYY-MM-DD")

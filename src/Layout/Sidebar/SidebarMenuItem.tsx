@@ -7,7 +7,10 @@ import {
   setFocusView,
   setSelectedListId,
 } from "../../store/slices/focusViewSlice";
-import { useDeleteListMutation } from "../../store/slices/listSlice";
+import {
+  useDeleteListMutation,
+  useListsQuery,
+} from "../../store/slices/listSlice";
 import { RootState } from "../../store/store";
 
 interface Props {
@@ -56,6 +59,7 @@ export const SidebarMenuItem: FC<Props> = ({
   const [showMenu, setShowMenu] = useState(false);
   const popperRef = useRef<HTMLDivElement>(null);
   const [deleteList] = useDeleteListMutation();
+  const { refetch: refetchLists } = useListsQuery();
 
   const dispatch = useDispatch();
 
@@ -65,6 +69,7 @@ export const SidebarMenuItem: FC<Props> = ({
     }
 
     dispatch(setSelectedListId(listId));
+    refetchLists();
   };
 
   const isListViewSelected = Boolean(focusViewToSelect) && focusView === "list";

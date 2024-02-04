@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { getAuthToken } from "../lib/authToken";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
@@ -13,6 +13,8 @@ const StyledLayout = styled("div")(({ theme }) => ({
       : theme.palette.grey[50],
   display: "flex",
   flexDirection: "row",
+  width: "100vw",
+  height: "100vh",
 }));
 
 export const Layout = () => {
@@ -28,11 +30,13 @@ export const Layout = () => {
     setTimeout(() => window.close(), 1000);
   };
 
-  const params = new URLSearchParams(global.location.search);
-  if (params.get("isNewTaskOnly") === "true") {
+  const isNewTaskOnly = (global as any)?.appInfo?.isNewTaskOnly;
+  if (isNewTaskOnly) {
     return (
       <StyledLayout>
-        <NewTaskForm onAddNewTask={onAddNewTask} />
+        <Box sx={{ padding: "10px" }}>
+          <NewTaskForm onAddNewTask={onAddNewTask} />
+        </Box>
       </StyledLayout>
     );
   }

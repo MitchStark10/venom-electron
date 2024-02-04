@@ -1,8 +1,11 @@
-import { TextField, styled } from "@mui/material";
-import { FC } from "react";
+import { Autocomplete, TextField, styled } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
+import { useListsQuery } from "../../../store/slices/listSlice";
 import { useCreateTaskMutation } from "../../../store/slices/taskSlice";
+import { List } from "../../../types/List";
 
 interface Props {
   onAddNewTask: () => void;
@@ -23,17 +26,35 @@ const NewTaskFormContainer = styled("div")({
 });
 
 export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
-  const { control, handleSubmit } = useForm<NewTaskFormData>();
+  const [hasInitalizedFromLocalStorage, setHasInitalizedFromLocalStorage] =
+    useState(false);
+  const { control, handleSubmit, setValue, getValues } =
+    useForm<NewTaskFormData>();
   const [createTask] = useCreateTaskMutation();
+  const { data: lists } = useListsQuery();
 
   const onClick = handleSubmit(({ taskName, listId: formListId }) => {
     const payloadListId = listId || formListId;
     if (!payloadListId) {
+      toast.error("List is required");
       return;
     }
     onAddNewTask();
     createTask({ taskName, listId: payloadListId });
   });
+
+  useEffect(() => {
+    const listIdFromLocalStorage = localStorage.getItem(
+      "newTaskQuickFormListId"
+    )
+      ? parseInt(localStorage.getItem("newTaskQuickFormListId") || "")
+      : undefined;
+
+    if (listIdFromLocalStorage && !hasInitalizedFromLocalStorage) {
+      setHasInitalizedFromLocalStorage(true);
+      setValue("listId", listIdFromLocalStorage);
+    }
+  }, [setValue, hasInitalizedFromLocalStorage]);
 
   return (
     <NewTaskFormContainer>
@@ -61,14 +82,31 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
         <Controller
           control={control}
           name="listId"
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              label="List Id"
-              sx={{ width: "250px" }}
-              value={value}
-              onChange={onChange}
-            />
-          )}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Autocomplete
+                options={lists || []}
+                getOptionLabel={(option: List) => option.listName}
+                style={{ width: 300 }}
+                onChange={(_, data) => {
+                  localStorage.setItem(
+                    "newTaskQuickFormListId",
+                    data?.id.toString() || ""
+                  );
+                  onChange(data?.id);
+                }}
+                value={(lists || []).find((list) => list.id === value) || null}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="List"
+                    variant="outlined"
+                    value={value}
+                  />
+                )}
+              />
+            );
+          }}
         />
       )}
 

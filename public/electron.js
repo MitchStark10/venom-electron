@@ -14,26 +14,27 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
   const mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
     width: isNewTaskOnly ? 800 : displayWidth,
-    height: isNewTaskOnly ? 600 : displayHeight,
+    height: isNewTaskOnly ? 400 : displayHeight,
 
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      additionalArguments: isNewTaskOnly ? ["--isNewTaskOnly"] : [],
     },
   });
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
   // In development, set it to localhost to allow live/hot-reloading.
-  const extraParams = isNewTaskOnly ? "?isNewTaskOnly=true" : "";
   const appURL = app.isPackaged
     ? url.format({
-        pathname: path.join(__dirname, "index.html" + extraParams),
+        pathname: path.join(__dirname, "index.html"),
         protocol: "file:",
         slashes: true,
       })
-    : "http://localhost:3000" + extraParams;
+    : "http://localhost:3000";
+
   mainWindow.loadURL(appURL);
 }
 
