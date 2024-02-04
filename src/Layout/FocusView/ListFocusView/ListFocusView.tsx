@@ -1,9 +1,12 @@
 import { TaskAlt } from "@mui/icons-material";
+import { styled } from "@mui/material";
 import { useState } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { Button } from "../../../components/Button";
 import { EditableText } from "../../../components/EditableText";
+import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
+import { taskSorter } from "../../../lib/taskSorter";
 import {
   useListsQuery,
   useUpdateListMutation,
@@ -13,8 +16,14 @@ import {
   useReorderTaskMutation,
 } from "../../../store/slices/taskSlice";
 import { RootState } from "../../../store/store";
+import { Task } from "../../../types/Task";
 import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
+
+const DateLabel = styled("h2")(({ theme }) => ({
+  margin: theme.spacing(2),
+  borderBottom: "1px solid black",
+}));
 
 export const ListFocusView = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -47,6 +56,21 @@ export const ListFocusView = () => {
     reorderTask({ tasksToUpdate: reorderedTasksRequestBody });
   };
 
+  const tasksOrganizedByDate =
+    (selectedList?.tasks ? [...selectedList.tasks] : [])
+      .sort(taskSorter)
+      .reduce<Record<string, Task[]>>((acc, task) => {
+        const taskDueDate = getTaskDueDateText(task.dueDate);
+
+        if (!acc[taskDueDate]) {
+          acc[taskDueDate] = [];
+        }
+
+        acc[taskDueDate].push(task);
+
+        return acc;
+      }, {}) || {};
+
   return (
     <div>
       <EditableText
@@ -57,16 +81,21 @@ export const ListFocusView = () => {
         displayIcon={<TaskAlt sx={{ margin: "0 10px" }} />}
       />
 
-      {selectedList?.tasks && selectedList?.tasks.length > 0 && (
-        <Draggable
-          key={selectedList.tasks.map((task) => task.id).join("-")}
-          onPosChange={onReorder}
-        >
-          {selectedList?.tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
-        </Draggable>
-      )}
+      {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
+        <div>
+          <DateLabel>{dateStr}</DateLabel>
+          {tasks.length > 0 && (
+            <Draggable
+              key={tasks.map((task) => JSON.stringify(task)).join("")}
+              onPosChange={onReorder}
+            >
+              {tasks.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
+            </Draggable>
+          )}
+        </div>
+      ))}
 
       {showAddTaskForm ? (
         <NewTaskForm

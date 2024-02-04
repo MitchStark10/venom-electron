@@ -1,11 +1,12 @@
 import { Checkbox, CheckboxProps, styled } from "@mui/material";
 import { FC } from "react";
+import { DisplayAs } from "../types/DisplayAs";
 import { EditableText } from "./EditableText";
 
 interface Props {
   onCheckboxClick: CheckboxProps["onClick"];
   inputLabel: string;
-  displayAs?: "h1" | "h3";
+  displayAs?: DisplayAs;
   initialValue: string;
   onInputChange: (newText: string) => void;
   isEditing?: boolean;

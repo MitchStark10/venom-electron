@@ -76,6 +76,7 @@ export const TaskCard: FC<Props> = ({ task }) => {
       onKeyDown={onKeyDown}
     >
       <CheckboxWithEditableLabel
+        displayAs="h4"
         inputLabel="Task"
         initialValue={task.taskName}
         onInputChange={onTaskNameChange}

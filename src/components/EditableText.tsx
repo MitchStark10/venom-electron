@@ -1,11 +1,12 @@
 import { TextField, styled } from "@mui/material";
 import { FC, ReactNode, useEffect, useState } from "react";
+import { DisplayAs } from "../types/DisplayAs";
 
 interface Props {
   label: string;
   initialValue?: string;
   onSave: (newText: string) => void;
-  displayAs: "h1" | "h3";
+  displayAs: DisplayAs;
   displayIcon?: ReactNode;
   onEditingStateChange?: (isEditing: boolean) => void;
   isEditing?: boolean;
