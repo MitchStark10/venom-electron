@@ -15,13 +15,17 @@ export const tasksApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Tasks"],
   endpoints: (builder) => ({
-    createTask: builder.mutation<Task, { taskName: string; listId: number }>({
-      query: ({ taskName, listId }) => ({
+    createTask: builder.mutation<
+      Task,
+      { taskName: string; listId: number; dueDate?: string }
+    >({
+      query: ({ taskName, listId, dueDate }) => ({
         url: "/tasks",
         method: "POST",
         body: {
           taskName,
           listId,
+          dueDate,
         },
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

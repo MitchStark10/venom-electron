@@ -1,4 +1,5 @@
 import { Autocomplete, TextField, styled } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -15,6 +16,7 @@ interface Props {
 interface NewTaskFormData {
   taskName: string;
   listId?: number;
+  dueDate?: string;
 }
 
 const NewTaskFormContainer = styled("div")({
@@ -28,19 +30,18 @@ const NewTaskFormContainer = styled("div")({
 export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
   const [hasInitalizedFromLocalStorage, setHasInitalizedFromLocalStorage] =
     useState(false);
-  const { control, handleSubmit, setValue, getValues } =
-    useForm<NewTaskFormData>();
+  const { control, handleSubmit, setValue } = useForm<NewTaskFormData>();
   const [createTask] = useCreateTaskMutation();
   const { data: lists } = useListsQuery();
 
-  const onClick = handleSubmit(({ taskName, listId: formListId }) => {
+  const onClick = handleSubmit(({ taskName, listId: formListId, dueDate }) => {
     const payloadListId = listId || formListId;
     if (!payloadListId) {
       toast.error("List is required");
       return;
     }
     onAddNewTask();
-    createTask({ taskName, listId: payloadListId });
+    createTask({ taskName, listId: payloadListId, dueDate });
   });
 
   useEffect(() => {
@@ -73,6 +74,18 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
                 onClick();
               }
             }}
+            value={value}
+            onChange={onChange}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="dueDate"
+        render={({ field: { onChange, value } }) => (
+          <DatePicker
+            label="Due Date"
+            sx={{ width: "250px" }}
             value={value}
             onChange={onChange}
           />
