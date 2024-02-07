@@ -13,7 +13,7 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
 
   const mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
-    width: isNewTaskOnly ? 800 : displayWidth,
+    width: isNewTaskOnly ? 1000 : displayWidth,
     height: isNewTaskOnly ? 400 : displayHeight,
 
     // Set the path of an additional "preload" script that can be used to

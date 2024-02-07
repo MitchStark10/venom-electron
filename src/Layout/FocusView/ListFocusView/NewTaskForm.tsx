@@ -1,9 +1,10 @@
 import { Autocomplete, TextField, styled } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import moment, { Moment } from "moment";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
+import { DatePicker } from "../../../components/DatePicker";
 import { useListsQuery } from "../../../store/slices/listSlice";
 import { useCreateTaskMutation } from "../../../store/slices/taskSlice";
 import { List } from "../../../types/List";
@@ -16,7 +17,7 @@ interface Props {
 interface NewTaskFormData {
   taskName: string;
   listId?: number;
-  dueDate?: string;
+  dueDate?: Moment;
 }
 
 const NewTaskFormContainer = styled("div")({
@@ -41,7 +42,11 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
       return;
     }
     onAddNewTask();
-    createTask({ taskName, listId: payloadListId, dueDate });
+    createTask({
+      taskName,
+      listId: payloadListId,
+      dueDate: dueDate?.startOf("day").format("YYYY-MM-DD"),
+    });
   });
 
   useEffect(() => {
@@ -54,6 +59,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
     if (listIdFromLocalStorage && !hasInitalizedFromLocalStorage) {
       setHasInitalizedFromLocalStorage(true);
       setValue("listId", listIdFromLocalStorage);
+      setValue("dueDate", moment());
     }
   }, [setValue, hasInitalizedFromLocalStorage]);
 
@@ -88,6 +94,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
             sx={{ width: "250px" }}
             value={value}
             onChange={onChange}
+            clearable
           />
         )}
       />

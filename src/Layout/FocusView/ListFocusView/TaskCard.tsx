@@ -1,8 +1,8 @@
 import { SxProps, styled, useTheme } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
+import { DatePicker } from "../../../components/DatePicker";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import {
   useDeleteTaskMutation,
@@ -96,6 +96,7 @@ export const TaskCard: FC<Props> = ({ task }) => {
           }}
           value={task.dueDate ? moment(task.dueDate) : null}
           onChange={onDueDateChange}
+          clearable
         />
       )}
     </TaskCardContainer>
