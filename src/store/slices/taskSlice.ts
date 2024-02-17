@@ -88,6 +88,15 @@ export const tasksApi = createApi({
         });
       },
     }),
+    completedTasks: builder.query<Task[], void>({
+      query: () => ({
+        url: "/tasks/completed",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+    }),
   }),
 });
 
