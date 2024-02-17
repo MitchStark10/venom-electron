@@ -27,7 +27,10 @@ export const Layout = () => {
   }
 
   const onAddNewTask = () => {
-    setTimeout(() => window.close(), 1000);
+    setTimeout(
+      () => (window as any)?.subscribe.sendCloseAndRefreshTasks(),
+      1000
+    );
   };
 
   const isNewTaskOnly = (global as any)?.appInfo?.isNewTaskOnly;

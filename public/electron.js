@@ -1,8 +1,11 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol, screen } = require("electron");
+const { app, BrowserWindow, protocol, screen, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 const { globalShortcut } = require("electron");
+
+let driverWindow = null;
+let tempTaskWindow = null;
 
 // Create the native browser window.
 function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
@@ -11,7 +14,7 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
   const { width: displayWidth, height: displayHeight } =
     primaryDisplay.workAreaSize;
 
-  const mainWindow = new BrowserWindow({
+  const newWindow = new BrowserWindow({
     autoHideMenuBar: true,
     width: isNewTaskOnly ? 1000 : displayWidth,
     height: isNewTaskOnly ? 400 : displayHeight,
@@ -35,7 +38,9 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
       })
     : "http://localhost:3000";
 
-  mainWindow.loadURL(appURL);
+  newWindow.loadURL(appURL);
+
+  return newWindow;
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
@@ -57,7 +62,7 @@ function setupLocalFilesNormalizerProxy() {
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow();
+  driverWindow = createWindow();
   setupLocalFilesNormalizerProxy();
 
   app.on("activate", function () {
@@ -96,9 +101,17 @@ app.on("web-contents-created", (event, contents) => {
 // code. You can also put them in separate files and require them here.
 
 app.on("ready", () => {
+  ipcMain.on("closeAndRefreshTasks", () => {
+    if (tempTaskWindow?.isDestroyed()) {
+      return;
+    }
+    tempTaskWindow?.close();
+    driverWindow.webContents.send("refreshTasks");
+  });
+
   // Register a ctrl+. listener
-  const ret = globalShortcut.register("CommandOrControl+X", () => {
-    createWindow({ isNewTaskOnly: true });
+  const ret = globalShortcut.register("CommandOrControl+G", () => {
+    tempTaskWindow = createWindow({ isNewTaskOnly: true });
   });
 
   if (!ret) {

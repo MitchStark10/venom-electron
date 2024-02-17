@@ -1,6 +1,6 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { Button } from "../../../components/Button";
@@ -33,7 +33,7 @@ export const ListFocusView = () => {
   );
   const [updateListName] = useUpdateListMutation();
   const [reorderTask] = useReorderTaskMutation();
-  const { data: lists } = useListsQuery();
+  const { data: lists, refetch: refetchLists } = useListsQuery();
 
   const selectedList = lists?.find((list) => list.id === selectedListId);
   const handleListNameChange = (newListName: string) => {
@@ -80,6 +80,10 @@ export const ListFocusView = () => {
 
         return acc;
       }, {}) || {};
+
+  useEffect(() => {
+    (window as any)?.subscribe.refreshTasks(() => refetchLists());
+  }, [refetchLists]);
 
   return (
     <div>
