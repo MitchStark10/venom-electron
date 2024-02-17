@@ -4,4 +4,5 @@ export interface Task {
   dueDate?: string | null;
   listViewOrder?: number;
   timeViewOrder?: number;
+  isCompleted?: boolean;
 }

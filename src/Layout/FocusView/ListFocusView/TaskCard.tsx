@@ -4,10 +4,7 @@ import { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import { DatePicker } from "../../../components/DatePicker";
 import { useClickOutside } from "../../../hooks/useClickOutside";
-import {
-  useDeleteTaskMutation,
-  useUpdateTaskMutation,
-} from "../../../store/slices/taskSlice";
+import { useUpdateTaskMutation } from "../../../store/slices/taskSlice";
 import { Task } from "../../../types/Task";
 
 interface Props {
@@ -31,7 +28,7 @@ const DueDatePicker = styled(DatePicker)(({ theme }) => ({
 export const TaskCard: FC<Props> = ({ task }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
-  const [deleteTask] = useDeleteTaskMutation();
+  // const [deleteTask] = useDeleteTaskMutation();
   const [isEditing, setIsEditing] = useState(false);
   const theme = useTheme();
 
@@ -58,7 +55,9 @@ export const TaskCard: FC<Props> = ({ task }) => {
   };
 
   const onCheckTask = () => {
-    deleteTask({ id: task.id.toString() });
+    // TODO: Delete the task if the user is not set up with a paid account
+    updateTask({ ...task, isCompleted: !task.isCompleted });
+    // deleteTask({ id: task.id.toString() });
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {

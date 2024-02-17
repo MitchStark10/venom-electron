@@ -38,12 +38,13 @@ export const tasksApi = createApi({
       },
     }),
     updateTask: builder.mutation<Task, Task>({
-      query: ({ id, taskName, dueDate }) => ({
+      query: ({ id, taskName, dueDate, isCompleted }) => ({
         url: `/tasks/${id}`,
         method: "PUT",
         body: {
           taskName,
           dueDate,
+          isCompleted,
         },
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
