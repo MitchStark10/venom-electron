@@ -9,7 +9,6 @@ import { Task } from "../../../types/Task";
 
 interface Props {
   task: Task;
-  onCheckboxClick?: () => void;
 }
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
@@ -26,7 +25,7 @@ const DueDatePicker = styled(DatePicker)(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
-export const TaskCard: FC<Props> = ({ task, onCheckboxClick }) => {
+export const TaskCard: FC<Props> = ({ task }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   // const [deleteTask] = useDeleteTaskMutation();
@@ -59,7 +58,6 @@ export const TaskCard: FC<Props> = ({ task, onCheckboxClick }) => {
     // TODO: Delete the task if the user is not set up with a paid account
     await updateTask({ ...task, isCompleted: !task.isCompleted });
     // deleteTask({ id: task.id.toString() });
-    onCheckboxClick?.();
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {

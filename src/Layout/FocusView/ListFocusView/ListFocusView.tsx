@@ -46,7 +46,6 @@ export const ListFocusView = () => {
     const indexOfTaskToReorder = allTasksCopy.findIndex(
       (task) => task.id === removed.id
     );
-    debugger;
     allTasksCopy.splice(indexOfTaskToReorder, 1);
     allTasksCopy.splice(indexOfTaskToReorder + posDiff, 0, removed);
 

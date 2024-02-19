@@ -1,11 +1,16 @@
+import { Button } from "@mui/material";
 import { useEffect } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
-import { useCompletedTasksQuery } from "../../../store/slices/taskSlice";
+import {
+  useCompletedTasksQuery,
+  useDeleteCompletedTasksMutation,
+} from "../../../store/slices/taskSlice";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "../ListFocusView/TaskCard";
 
 export const CompletedFocusView = () => {
   const { data: completedTasks, refetch } = useCompletedTasksQuery();
+  const [deleteAllCompletedTasks] = useDeleteCompletedTasksMutation();
 
   useEffect(() => {
     refetch();
@@ -33,11 +38,14 @@ export const CompletedFocusView = () => {
           <div key={listId}>
             <SectionDivider>{tasks[0].list?.listName}</SectionDivider>
             {tasks.map((task) => (
-              <TaskCard key={task.id} task={task} onCheckboxClick={refetch} />
+              <TaskCard key={task.id} task={task} />
             ))}
           </div>
         );
       })}
+      <Button variant="contained" onClick={() => deleteAllCompletedTasks()}>
+        Delete All Tasks
+      </Button>
     </div>
   );
 };
