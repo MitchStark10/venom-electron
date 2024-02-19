@@ -17,6 +17,14 @@ const StyledLayout = styled("div")(({ theme }) => ({
   height: "100vh",
 }));
 
+const FocusContainer = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  padding: theme.spacing(16),
+  overflowY: "auto",
+}));
+
 export const Layout = () => {
   if (!getAuthToken()) {
     return (
@@ -47,7 +55,9 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <FocusView />
+      <FocusContainer>
+        <FocusView />
+      </FocusContainer>
       <ModalEntryPoint />
     </StyledLayout>
   );

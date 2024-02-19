@@ -105,4 +105,5 @@ export const {
   useUpdateTaskMutation,
   useDeleteTaskMutation,
   useReorderTaskMutation,
+  useCompletedTasksQuery,
 } = tasksApi;

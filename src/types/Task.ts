@@ -1,3 +1,5 @@
+import { List } from "./List";
+
 export interface Task {
   id: number;
   taskName: string;
@@ -5,4 +7,5 @@ export interface Task {
   listViewOrder?: number;
   timeViewOrder?: number;
   isCompleted?: boolean;
+  list?: List;
 }

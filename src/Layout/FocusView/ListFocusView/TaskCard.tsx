@@ -9,6 +9,7 @@ import { Task } from "../../../types/Task";
 
 interface Props {
   task: Task;
+  onCheckboxClick?: () => void;
 }
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
@@ -25,7 +26,7 @@ const DueDatePicker = styled(DatePicker)(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
-export const TaskCard: FC<Props> = ({ task }) => {
+export const TaskCard: FC<Props> = ({ task, onCheckboxClick }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   // const [deleteTask] = useDeleteTaskMutation();
@@ -54,10 +55,11 @@ export const TaskCard: FC<Props> = ({ task }) => {
     });
   };
 
-  const onCheckTask = () => {
+  const onCheckTask = async () => {
     // TODO: Delete the task if the user is not set up with a paid account
-    updateTask({ ...task, isCompleted: !task.isCompleted });
+    await updateTask({ ...task, isCompleted: !task.isCompleted });
     // deleteTask({ id: task.id.toString() });
+    onCheckboxClick?.();
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
@@ -84,6 +86,7 @@ export const TaskCard: FC<Props> = ({ task }) => {
         // Prevent set of isEditing via blur. Use click outside or
         // escape key instead.
         onEditingStateChange={isEditing ? undefined : setIsEditing}
+        isChecked={task.isCompleted}
       />
       {isEditing && (
         <DueDatePicker

@@ -1,10 +1,10 @@
 import { TaskAlt } from "@mui/icons-material";
-import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { Button } from "../../../components/Button";
 import { EditableText } from "../../../components/EditableText";
+import { SectionDivider } from "../../../components/SectionDivider";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
 import { taskSorter } from "../../../lib/taskSorter";
 import {
@@ -19,11 +19,6 @@ import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
-
-const DateLabel = styled("h2")(({ theme }) => ({
-  margin: theme.spacing(2),
-  borderBottom: "1px solid black",
-}));
 
 export const ListFocusView = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -97,7 +92,7 @@ export const ListFocusView = () => {
 
       {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
         <div>
-          <DateLabel>{dateStr}</DateLabel>
+          <SectionDivider>{dateStr}</SectionDivider>
           {tasks.length > 0 && (
             <Draggable
               key={tasks.map((task) => JSON.stringify(task)).join("")}

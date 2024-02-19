@@ -11,6 +11,7 @@ interface Props {
   onInputChange: (newText: string) => void;
   isEditing?: boolean;
   onEditingStateChange?: (isEditing: boolean) => void;
+  isChecked?: boolean;
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -27,10 +28,11 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
   onInputChange,
   isEditing,
   onEditingStateChange,
+  isChecked,
 }) => {
   return (
     <CheckboxAndLabelContainer>
-      <Checkbox onClick={onCheckboxClick} />
+      <Checkbox onClick={onCheckboxClick} checked={isChecked} />
       <EditableText
         label={inputLabel}
         displayAs={displayAs}

@@ -1,27 +1,18 @@
-import { styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { capitalize } from "../../lib/capitalize";
 import { RootState } from "../../store/store";
+import { CompletedFocusView } from "./CompletedFocusView";
 import { ListFocusView } from "./ListFocusView/ListFocusView";
-
-const FocusContainer = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  flexGrow: 1,
-  padding: theme.spacing(16),
-  overflowY: "auto",
-}));
 
 export const FocusView = () => {
   const { focusView } = useSelector((state: RootState) => state.focusView);
 
-  return (
-    <FocusContainer>
-      {focusView === "list" ? (
-        <ListFocusView />
-      ) : (
-        <h1>{capitalize(focusView)}</h1>
-      )}
-    </FocusContainer>
-  );
+  switch (focusView) {
+    case "list":
+      return <ListFocusView />;
+    case "completed":
+      return <CompletedFocusView />;
+    default:
+      return <h1>{capitalize(focusView)}</h1>;
+  }
 };
