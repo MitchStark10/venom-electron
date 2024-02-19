@@ -43,9 +43,13 @@ export const CompletedFocusView = () => {
           </div>
         );
       })}
-      <Button variant="contained" onClick={() => deleteAllCompletedTasks()}>
-        Delete All Tasks
-      </Button>
+      {Object.entries(tasksGroupedByList || {}).length > 0 ? (
+        <Button variant="contained" onClick={() => deleteAllCompletedTasks()}>
+          Delete All Tasks
+        </Button>
+      ) : (
+        <p>There are no completed tasks.</p>
+      )}
     </div>
   );
 };
