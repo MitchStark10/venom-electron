@@ -76,7 +76,7 @@ export const ListFocusView = () => {
       }, {}) || {};
 
   useEffect(() => {
-    (window as any)?.subscribe.refreshTasks(() => refetchLists());
+    (window as any)?.subscribe?.refreshTasks(() => refetchLists());
   }, [refetchLists]);
 
   return (

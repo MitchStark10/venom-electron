@@ -36,7 +36,7 @@ export const Layout = () => {
 
   const onAddNewTask = () => {
     setTimeout(
-      () => (window as any)?.subscribe.sendCloseAndRefreshTasks(),
+      () => (window as any)?.subscribe?.sendCloseAndRefreshTasks(),
       1000
     );
   };
