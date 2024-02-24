@@ -1,11 +1,11 @@
 import {
-  DatePickerProps,
-  DatePicker as MuiDatePicker,
+  DesktopDatePickerProps,
+  DesktopDatePicker as MuiDatePicker,
 } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 import { FC } from "react";
 
-interface Props extends DatePickerProps<Moment> {
+interface Props extends DesktopDatePickerProps<Moment> {
   clearable?: boolean;
 }
 
