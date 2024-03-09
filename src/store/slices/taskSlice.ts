@@ -13,7 +13,7 @@ export interface UpdateReorderTask {
 export const tasksApi = createApi({
   reducerPath: "task",
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
-  tagTypes: ["Tasks", "CompletedTasks"],
+  tagTypes: ["Tasks", "CompletedTasks", "TodayTasks", "UpcomingTasks"],
   endpoints: (builder) => ({
     createTask: builder.mutation<
       Task,
@@ -99,6 +99,26 @@ export const tasksApi = createApi({
       }),
       providesTags: ["CompletedTasks"],
     }),
+    todayTasks: builder.query<Task[], void>({
+      query: () => ({
+        url: "/tasks/today",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+      providesTags: ["TodayTasks"],
+    }),
+    upcomingTasks: builder.query<Task[], void>({
+      query: () => ({
+        url: "/tasks/upcoming",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+      providesTags: ["UpcomingTasks"],
+    }),
     deleteCompletedTasks: builder.mutation<void, void>({
       query: () => ({
         url: "/tasks/completed",
@@ -119,4 +139,6 @@ export const {
   useReorderTaskMutation,
   useCompletedTasksQuery,
   useDeleteCompletedTasksMutation,
+  useTodayTasksQuery,
+  useUpcomingTasksQuery,
 } = tasksApi;
