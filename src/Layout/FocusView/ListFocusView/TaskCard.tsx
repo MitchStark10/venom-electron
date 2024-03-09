@@ -42,7 +42,9 @@ export const TaskCard: FC<Props> = ({ task }) => {
   };
 
   const onTaskNameChange = (newTaskName: string) => {
-    updateTask({ id: task.id, taskName: newTaskName });
+    if (newTaskName !== task.taskName) {
+      updateTask({ id: task.id, taskName: newTaskName });
+    }
   };
 
   const onDueDateChange = (newDueDate: any) => {
