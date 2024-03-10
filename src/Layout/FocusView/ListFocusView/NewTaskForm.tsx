@@ -56,10 +56,12 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
       ? parseInt(localStorage.getItem("newTaskQuickFormListId") || "")
       : undefined;
 
-    if (listIdFromLocalStorage && !hasInitalizedFromLocalStorage) {
+    if (!hasInitalizedFromLocalStorage) {
       setHasInitalizedFromLocalStorage(true);
-      setValue("listId", listIdFromLocalStorage);
       setValue("dueDate", moment());
+      if (listIdFromLocalStorage) {
+        setValue("listId", listIdFromLocalStorage);
+      }
     }
   }, [setValue, hasInitalizedFromLocalStorage]);
 
