@@ -8,12 +8,9 @@ export const taskSorter = (a: Task, b: Task) => {
     return 1;
   } else if (!b.dueDate) {
     return -1;
-  } else if (
-    moment(a.dueDate).format("MM/DD/YYYY") ===
-    moment(b.dueDate).format("MM/DD/YYYY")
-  ) {
-    const listAViewOrder = a.listViewOrder || Infinity;
-    const listBViewOrder = b.listViewOrder || Infinity;
+  } else if (a.dueDate === b.dueDate) {
+    const listAViewOrder = a.listViewOrder ?? Infinity;
+    const listBViewOrder = b.listViewOrder ?? Infinity;
 
     // Check the sort order
     if (listAViewOrder > listBViewOrder) {
