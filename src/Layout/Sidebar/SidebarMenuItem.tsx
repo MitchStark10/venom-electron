@@ -11,6 +11,7 @@ import {
   useDeleteListMutation,
   useListsQuery,
 } from "../../store/slices/listSlice";
+import { useTodayTasksQuery } from "../../store/slices/taskSlice";
 import { RootState } from "../../store/store";
 
 interface Props {
@@ -60,6 +61,7 @@ export const SidebarMenuItem: FC<Props> = ({
   const popperRef = useRef<HTMLDivElement>(null);
   const [deleteList] = useDeleteListMutation();
   const { refetch: refetchLists } = useListsQuery();
+  const { refetch: refetchToday } = useTodayTasksQuery();
 
   const dispatch = useDispatch();
 
@@ -68,8 +70,13 @@ export const SidebarMenuItem: FC<Props> = ({
       dispatch(setFocusView(focusViewToSelect));
     }
 
+    if (focusViewToSelect === "today") {
+      refetchToday();
+    } else if (focusViewToSelect === "list") {
+      refetchLists();
+    }
+
     dispatch(setSelectedListId(listId));
-    refetchLists();
   };
 
   const isListViewSelected = Boolean(focusViewToSelect) && focusView === "list";

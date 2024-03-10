@@ -28,7 +28,6 @@ const DueDatePicker = styled(DatePicker)(({ theme }) => ({
 export const TaskCard: FC<Props> = ({ task }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
-  // const [deleteTask] = useDeleteTaskMutation();
   const [isEditing, setIsEditing] = useState(false);
   const theme = useTheme();
 

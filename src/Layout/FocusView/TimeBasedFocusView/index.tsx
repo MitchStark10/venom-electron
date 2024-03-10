@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { Task } from "../../../types/Task";
@@ -7,6 +7,7 @@ import { TaskCard } from "../ListFocusView/TaskCard";
 interface Props {
   title: string;
   tasks: Task[];
+  isLoading: boolean;
   refetch: () => void;
   deleteAllTasks?: () => void;
 }
@@ -14,7 +15,7 @@ interface Props {
 export const TimeBasedFocusView: FC<Props> = ({
   title,
   tasks,
-  refetch,
+  isLoading,
   deleteAllTasks,
 }) => {
   const tasksGroupedByList = tasks?.reduce<Record<number, Task[]>>(
@@ -50,7 +51,8 @@ export const TimeBasedFocusView: FC<Props> = ({
             Delete All Tasks
           </Button>
         )}
-      {Object.keys(tasksGroupedByList || {}).length === 0 && (
+      {isLoading && <CircularProgress />}
+      {!isLoading && Object.keys(tasksGroupedByList || {}).length === 0 && (
         <p>No tasks found</p>
       )}
     </div>
