@@ -45,7 +45,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
     createTask({
       taskName,
       listId: payloadListId,
-      dueDate: dueDate?.startOf("day").format("YYYY-MM-DD"),
+      dueDate: dueDate?.startOf("day").toISOString(),
     });
   });
 
