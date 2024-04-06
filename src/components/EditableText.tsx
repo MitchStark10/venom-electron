@@ -65,7 +65,6 @@ export const EditableText: FC<Props> = ({
         }
       }}
       autoFocus
-      fullWidth
     />
   ) : (
     <TextContainer onClick={onTextContainerClick}>
