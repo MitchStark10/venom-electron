@@ -106,7 +106,7 @@ export const tasksApi = createApi({
     }),
     todayTasks: builder.query<Task[], void>({
       query: () => ({
-        url: "/tasks/today",
+        url: `/tasks/today?today=${new Date().toISOString()}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
