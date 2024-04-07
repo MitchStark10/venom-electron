@@ -1,4 +1,5 @@
 import { TaskAlt } from "@mui/icons-material";
+import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
@@ -19,6 +20,10 @@ import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
+
+const ListNameText = styled(EditableText)({
+  width: "fit-content",
+});
 
 export const ListFocusView = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -81,7 +86,7 @@ export const ListFocusView = () => {
 
   return (
     <div>
-      <EditableText
+      <ListNameText
         label="List Name"
         displayAs="h1"
         initialValue={selectedList?.listName}

@@ -10,6 +10,7 @@ interface Props {
   displayIcon?: ReactNode;
   onEditingStateChange?: (isEditing: boolean) => void;
   isEditing?: boolean;
+  className?: string;
 }
 
 export const EditableText: FC<Props> = ({
@@ -20,6 +21,7 @@ export const EditableText: FC<Props> = ({
   onSave,
   onEditingStateChange,
   isEditing,
+  className,
 }) => {
   const TextContainer = styled(displayAs)({
     cursor: "pointer",
@@ -65,9 +67,11 @@ export const EditableText: FC<Props> = ({
         }
       }}
       autoFocus
+      fullWidth
+      className={className}
     />
   ) : (
-    <TextContainer onClick={onTextContainerClick}>
+    <TextContainer onClick={onTextContainerClick} className={className}>
       {displayIcon}
       {newText}
     </TextContainer>
