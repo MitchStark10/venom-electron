@@ -9,5 +9,6 @@ export const DividerWithPadding = styled(Divider)<Props>(
     margin: `${theme.spacing(uniformSpacing ? 8 : 4)} 0 ${theme.spacing(
       8
     )} 0 !important`,
+    color: theme.palette.mode === "dark" ? "white" : undefined,
   })
 );

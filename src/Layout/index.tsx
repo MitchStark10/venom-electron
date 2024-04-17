@@ -9,8 +9,9 @@ import { SideBar } from "./Sidebar";
 const StyledLayout = styled("div")(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
-      ? theme.palette.grey[600]
+      ? theme.palette.grey[800]
       : theme.palette.grey[50],
+  color: theme.palette.mode === "dark" ? "white" : undefined,
   display: "flex",
   flexDirection: "row",
   width: "100vw",
