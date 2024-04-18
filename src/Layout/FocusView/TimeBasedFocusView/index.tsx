@@ -2,6 +2,7 @@ import { Button, CircularProgress } from "@mui/material";
 import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
+import { taskSorter } from "../../../lib/taskSorter";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "../ListFocusView/TaskCard";
 
@@ -35,14 +36,16 @@ export const TimeBasedFocusView: FC<Props> = ({
           }
           return acc;
         }, {})
-      : tasks?.reduce<Record<string, Task[]>>((acc, task) => {
-          const taskDueDateText = getTaskDueDateText(task.dueDate);
-          if (!acc[taskDueDateText]) {
-            acc[taskDueDateText] = [];
-          }
-          acc[taskDueDateText].push(task);
-          return acc;
-        }, {});
+      : [...(tasks || [])]
+          .sort(taskSorter)
+          .reduce<Record<string, Task[]>>((acc, task) => {
+            const taskDueDateText = getTaskDueDateText(task.dueDate);
+            if (!acc[taskDueDateText]) {
+              acc[taskDueDateText] = [];
+            }
+            acc[taskDueDateText].push(task);
+            return acc;
+          }, {});
 
   return (
     <div>
