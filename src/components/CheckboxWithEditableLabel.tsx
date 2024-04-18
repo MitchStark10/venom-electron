@@ -12,6 +12,7 @@ interface Props {
   isEditing?: boolean;
   onEditingStateChange?: (isEditing: boolean) => void;
   isChecked?: boolean;
+  listName?: string;
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -23,12 +24,13 @@ const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
 export const CheckboxWithEditableLabel: FC<Props> = ({
   onCheckboxClick,
   inputLabel,
-  displayAs = "h3",
+  displayAs = "p",
   initialValue,
   onInputChange,
   isEditing,
   onEditingStateChange,
   isChecked,
+  listName,
 }) => {
   return (
     <CheckboxAndLabelContainer>
@@ -40,6 +42,7 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
         onSave={onInputChange}
         isEditing={isEditing}
         onEditingStateChange={onEditingStateChange}
+        listName={listName}
       />
     </CheckboxAndLabelContainer>
   );

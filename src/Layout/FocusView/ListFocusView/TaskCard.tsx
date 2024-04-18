@@ -9,6 +9,7 @@ import { Task } from "../../../types/Task";
 
 interface Props {
   task: Task;
+  showListName?: boolean;
 }
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
@@ -25,7 +26,7 @@ const DueDatePicker = styled(DatePicker)(({ theme }) => ({
   marginTop: theme.spacing(4),
 }));
 
-export const TaskCard: FC<Props> = ({ task }) => {
+export const TaskCard: FC<Props> = ({ task, showListName }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   const [isEditing, setIsEditing] = useState(false);
@@ -76,7 +77,7 @@ export const TaskCard: FC<Props> = ({ task }) => {
       onKeyDown={onKeyDown}
     >
       <CheckboxWithEditableLabel
-        displayAs="h4"
+        displayAs="p"
         inputLabel="Task"
         initialValue={task.taskName}
         onInputChange={onTaskNameChange}
@@ -86,6 +87,7 @@ export const TaskCard: FC<Props> = ({ task }) => {
         // escape key instead.
         onEditingStateChange={isEditing ? undefined : setIsEditing}
         isChecked={task.isCompleted}
+        listName={showListName ? task.list?.listName : undefined}
       />
       {isEditing && (
         <DueDatePicker

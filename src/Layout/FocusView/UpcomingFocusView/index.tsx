@@ -10,6 +10,7 @@ export const UpcomingFocusView = () => {
       title="Upcoming"
       tasks={upcomingTasks || []}
       refetch={refetch}
+      groupByOption="date"
     />
   );
 };

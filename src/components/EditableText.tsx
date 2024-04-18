@@ -11,7 +11,12 @@ interface Props {
   onEditingStateChange?: (isEditing: boolean) => void;
   isEditing?: boolean;
   className?: string;
+  listName?: String;
 }
+
+const TextAndListContainer = styled("span")(({ theme }) => ({
+  margin: `${theme.spacing(4)} 0`,
+}));
 
 export const EditableText: FC<Props> = ({
   label,
@@ -22,9 +27,11 @@ export const EditableText: FC<Props> = ({
   onEditingStateChange,
   isEditing,
   className,
+  listName,
 }) => {
-  const TextContainer = styled(displayAs)({
+  const TextAndIconContainer = styled(displayAs)({
     cursor: "pointer",
+    margin: "2px 0",
   });
   const [localIsEditingText, setLocalIsEditingText] = useState(false);
   const [newText, setNewText] = useState(initialValue);
@@ -71,9 +78,16 @@ export const EditableText: FC<Props> = ({
       className={className}
     />
   ) : (
-    <TextContainer onClick={onTextContainerClick} className={className}>
-      {displayIcon}
-      {newText}
-    </TextContainer>
+    <TextAndListContainer onClick={onTextContainerClick} className={className}>
+      <TextAndIconContainer>
+        {displayIcon}
+        {newText}
+      </TextAndIconContainer>
+      {Boolean(listName) && (
+        <i style={{ fontSize: "12px" }}>
+          <b>{listName}</b>
+        </i>
+      )}
+    </TextAndListContainer>
   );
 };
