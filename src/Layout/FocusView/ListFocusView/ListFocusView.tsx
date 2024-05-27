@@ -60,6 +60,7 @@ export const ListFocusView = () => {
         id: task.id,
         newOrder: index,
         taskName: task.taskName,
+        newDueDate: task.dueDate,
       })
     );
     reorderTask({ tasksToUpdate: reorderedTasksRequestBody });

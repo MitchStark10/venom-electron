@@ -8,6 +8,7 @@ export interface UpdateReorderTask {
   fieldToUpdate: "listViewOrder" | "timeViewOrder";
   id: number;
   newOrder: number;
+  newDueDate?: string | null;
 }
 
 export const tasksApi = createApi({
