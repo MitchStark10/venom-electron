@@ -18,6 +18,7 @@ interface NewTaskFormData {
   taskName: string;
   listId?: number;
   dueDate?: Moment;
+  tagIds?: number[];
 }
 
 const NewTaskFormContainer = styled("div")({

@@ -77,6 +77,11 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
       sx={isEditing ? stEditingContainer : undefined}
       ref={cardContainerRef}
       onKeyDown={onKeyDown}
+      onClick={() => {
+        if (!isEditing) {
+          setIsEditing(true);
+        }
+      }}
     >
       <CheckboxWithEditableLabel
         displayAs="p"
