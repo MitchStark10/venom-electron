@@ -5,5 +5,4 @@ export const createMuiTheme = (mode: "light" | "dark") =>
     palette: {
       mode: mode,
     },
-    spacing: 2,
   });

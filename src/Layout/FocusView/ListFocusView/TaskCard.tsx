@@ -13,17 +13,19 @@ interface Props {
 }
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
-  padding: theme.spacing(1),
+  margin: theme.spacing(0.5),
+  padding: theme.spacing(0.5),
   marginBottom: theme.spacing(1),
-  "&:focus": {
+  border: "1px solid transparent",
+  borderRadius: theme.spacing(1),
+  "&:focus, &:hover": {
     border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.spacing(1),
   },
 }));
 
 const DueDatePicker = styled(DatePicker)(({ theme }) => ({
-  marginLeft: theme.spacing(22),
-  marginTop: theme.spacing(4),
+  marginLeft: theme.spacing(6),
+  marginTop: theme.spacing(2),
 }));
 
 export const TaskCard: FC<Props> = ({ task, showListName }) => {
@@ -38,7 +40,7 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.spacing(1),
     boxShadow: `0 0 3px ${theme.palette.grey[800]}`,
-    padding: `${theme.spacing(10)} ${theme.spacing(5)}`,
+    padding: `${theme.spacing(2)} ${theme.spacing(1)}`,
   };
 
   const onTaskNameChange = (newTaskName: string) => {

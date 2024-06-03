@@ -22,7 +22,7 @@ const FocusContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
-  padding: theme.spacing(16),
+  padding: theme.spacing(2),
   overflowY: "auto",
 }));
 

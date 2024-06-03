@@ -15,7 +15,7 @@ interface Props {
 }
 
 const TextAndListContainer = styled("span")(({ theme }) => ({
-  margin: `${theme.spacing(4)} 0`,
+  margin: `${theme.spacing(0.5)} 0`,
 }));
 
 export const EditableText: FC<Props> = ({

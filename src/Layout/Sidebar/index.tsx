@@ -21,7 +21,7 @@ const SidebarContainer = styled("span")(({ theme }) => ({
     theme.palette.mode === "dark"
       ? theme.palette.grey[300]
       : theme.palette.grey[900],
-  padding: `${theme.spacing(4)} 0`,
+  padding: `${theme.spacing(1)} 0`,
   height: "100vh",
   boxShadow: `3px 0 5px -2px ${theme.palette.grey[700]}`,
   justifyContent: "space-between",
@@ -30,7 +30,7 @@ const SidebarContainer = styled("span")(({ theme }) => ({
 const SidebarMenuContainer = styled("span")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
 }));
 
 export const SideBar = () => {

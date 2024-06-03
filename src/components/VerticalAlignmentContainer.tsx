@@ -5,5 +5,5 @@ export const VerticalAlignmentContainer = styled("div")(({ theme }) => ({
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-  gap: theme.spacing(4),
+  gap: theme.spacing(1),
 }));

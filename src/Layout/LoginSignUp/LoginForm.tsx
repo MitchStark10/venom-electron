@@ -21,7 +21,7 @@ const LoginFormContainer = styled("div")(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  gap: theme.spacing(4),
+  gap: theme.spacing(1),
 }));
 
 export const LoginForm = () => {

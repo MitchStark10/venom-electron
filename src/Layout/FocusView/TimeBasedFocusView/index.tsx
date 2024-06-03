@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, styled, useTheme } from "@mui/material";
 import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
@@ -17,6 +17,10 @@ interface Props {
   groupByOption?: GroupByOptions;
 }
 
+const Title = styled("h1")(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+}));
+
 export const TimeBasedFocusView: FC<Props> = ({
   title,
   tasks,
@@ -24,6 +28,7 @@ export const TimeBasedFocusView: FC<Props> = ({
   deleteAllTasks,
   groupByOption = "list",
 }) => {
+  const theme = useTheme();
   const groupedTasks =
     groupByOption === "list"
       ? tasks?.reduce<Record<number, Task[]>>((acc, task) => {
@@ -49,7 +54,7 @@ export const TimeBasedFocusView: FC<Props> = ({
 
   return (
     <div>
-      <h1>{title}</h1>
+      <Title>{title}</Title>
       {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
         return (
           <div key={key}>
