@@ -14,7 +14,7 @@ interface Props {
   listName?: String;
 }
 
-const TextAndListContainer = styled("span")(({ theme }) => ({
+const TextAndListContainer = styled("div")(({ theme }) => ({
   margin: `${theme.spacing(0.5)} 0`,
 }));
 
