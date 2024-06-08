@@ -1,6 +1,6 @@
 import { SxProps, styled, useTheme } from "@mui/material";
 import moment from "moment";
-import { FC, useRef, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import { DatePicker } from "../../../components/DatePicker";
 import { useClickOutside } from "../../../hooks/useClickOutside";
@@ -59,7 +59,8 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
     });
   };
 
-  const onCheckTask = async () => {
+  const onCheckTask = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     // TODO: Delete the task if the user is not set up with a paid account
     await updateTask({ ...task, isCompleted: !task.isCompleted });
     // deleteTask({ id: task.id.toString() });
