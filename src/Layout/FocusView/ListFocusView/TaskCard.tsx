@@ -21,6 +21,7 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
   "&:focus, &:hover": {
     border: `1px solid ${theme.palette.divider}`,
   },
+  cursor: "pointer",
 }));
 
 const DueDatePicker = styled(DatePicker)(({ theme }) => ({

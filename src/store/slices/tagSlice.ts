@@ -8,7 +8,7 @@ export const tagsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ["Tags"],
   endpoints: (builder) => ({
-    tags: builder.query<[], void>({
+    tags: builder.query<Tag[], void>({
       query: () => ({
         url: "/tags",
         method: "GET",

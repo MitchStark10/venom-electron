@@ -3,6 +3,7 @@ import { rtkQueryErrorMiddlware } from "../lib/rtkQueryErrorMiddlware";
 import focusViewReducer from "./slices/focusViewSlice";
 import { listsApi } from "./slices/listSlice";
 import modalReducer from "./slices/modalSlice";
+import { tagsApi } from "./slices/tagSlice";
 import { tasksApi } from "./slices/taskSlice";
 import { userApi } from "./slices/userSlice";
 
@@ -13,13 +14,15 @@ export const store = configureStore({
     user: userApi.reducer,
     list: listsApi.reducer,
     task: tasksApi.reducer,
+    tag: tagsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       rtkQueryErrorMiddlware,
       userApi.middleware,
       listsApi.middleware,
-      tasksApi.middleware
+      tasksApi.middleware,
+      tagsApi.middleware
     ),
 });
 

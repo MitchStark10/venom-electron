@@ -1,6 +1,7 @@
-import { Button, CircularProgress, styled } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
+import { Title } from "../../../components/Title";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
 import { taskSorter } from "../../../lib/taskSorter";
 import { Task } from "../../../types/Task";
@@ -16,10 +17,6 @@ interface Props {
   deleteAllTasks?: () => void;
   groupByOption?: GroupByOptions;
 }
-
-const Title = styled("h1")(({ theme }) => ({
-  marginLeft: theme.spacing(1),
-}));
 
 export const TimeBasedFocusView: FC<Props> = ({
   title,
