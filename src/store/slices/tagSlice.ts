@@ -46,7 +46,7 @@ export const tagsApi = createApi({
       }),
       invalidatesTags: ["Tags"],
     }),
-    deleteList: builder.mutation<Tag, { id: string }>({
+    deleteTag: builder.mutation<Tag, { id: string }>({
       query: ({ id }) => ({
         url: `/tags/${id}`,
         method: "DELETE",
@@ -62,6 +62,6 @@ export const tagsApi = createApi({
 export const {
   useTagsQuery,
   useCreateTagMutation,
-  useDeleteListMutation,
+  useDeleteTagMutation,
   useUpdateTagMutation,
 } = tagsApi;

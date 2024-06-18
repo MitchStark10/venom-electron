@@ -1,7 +1,8 @@
-import { TextField, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "../../components/Button";
+import { ControlledTextField } from "../../components/ControlledTextField";
 import { ErrorText } from "../../components/ErrorText";
 import { FormHeader } from "../../components/FormHeader";
 import { writeAuthToken } from "../../lib/authToken";
@@ -63,45 +64,30 @@ export const SignUpForm = () => {
   return (
     <SignUpFormContainer>
       <FormHeader>Sign Up</FormHeader>
-      <Controller
+      <ControlledTextField
         control={control}
         name="email"
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            label="Email"
-            type="email"
-            onChange={onChange}
-            value={value}
-            onKeyDown={onKeyDown}
-          />
-        )}
+        type="email"
+        label="Email"
+        onKeyDown={onKeyDown}
       />
-      <Controller
+
+      <ControlledTextField
         control={control}
         name="password"
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            label="Password"
-            type="password"
-            onChange={onChange}
-            value={value}
-            onKeyDown={onKeyDown}
-          />
-        )}
+        label="Password"
+        type="password"
+        onKeyDown={onKeyDown}
       />
-      <Controller
+
+      <ControlledTextField
         control={control}
         name="confirmPassword"
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            label="Confirm Password"
-            type="password"
-            onChange={onChange}
-            value={value}
-            onKeyDown={onKeyDown}
-          />
-        )}
+        label="Confirm Password"
+        type="password"
+        onKeyDown={onKeyDown}
       />
+
       {error ? <ErrorText>{error}</ErrorText> : null}
       <Button variant="contained" onClick={onSignUpClick} disabled={isLoading}>
         Sign Up

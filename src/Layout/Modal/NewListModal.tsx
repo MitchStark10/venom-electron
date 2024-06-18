@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Box, TextField, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "../../components/Button";
@@ -13,6 +13,7 @@ import { setIsModalOpen } from "../../store/slices/modalSlice";
 import { ModalTitle } from "./ModalTitle";
 
 export const NewListModal = () => {
+  const theme = useTheme();
   const [listName, setListName] = useState("");
   const [createList, { isLoading }] = useCreateListMutation();
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export const NewListModal = () => {
   };
 
   return (
-    <div>
+    <Box sx={{ padding: theme.spacing(2), display: "flex" }}>
       <ModalTitle>New List</ModalTitle>
       <VerticalAlignmentContainer>
         <TextField
@@ -55,6 +56,6 @@ export const NewListModal = () => {
           Create
         </Button>
       </VerticalAlignmentContainer>
-    </div>
+    </Box>
   );
 };
