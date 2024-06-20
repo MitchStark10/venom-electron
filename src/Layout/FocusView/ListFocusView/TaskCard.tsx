@@ -3,8 +3,10 @@ import moment from "moment";
 import React, { FC, useRef, useState } from "react";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import { DatePicker } from "../../../components/DatePicker";
+import { TagDropdown } from "../../../components/TagDropdown";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import { useUpdateTaskMutation } from "../../../store/slices/taskSlice";
+import { Tag } from "../../../types/Tag";
 import { Task } from "../../../types/Task";
 
 interface Props {
@@ -24,9 +26,11 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
   cursor: "pointer",
 }));
 
-const DueDatePicker = styled(DatePicker)(({ theme }) => ({
+const RowContainer = styled("div")(({ theme }) => ({
   marginLeft: theme.spacing(6),
   marginTop: theme.spacing(2),
+  display: "flex",
+  gap: theme.spacing(3),
 }));
 
 export const TaskCard: FC<Props> = ({ task, showListName }) => {
@@ -34,6 +38,7 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
   const [updateTask] = useUpdateTaskMutation();
   const [isEditing, setIsEditing] = useState(false);
   const theme = useTheme();
+  const [tags, setTags] = useState(task.tags || []);
 
   const clickAwayHandler = () => setIsEditing(false);
 
@@ -56,6 +61,14 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
       id: task.id,
       taskName: task.taskName,
       dueDate: newDueDateMoment?.toISOString() || null,
+    });
+  };
+
+  const onTagChange = (newTags: Tag[]) => {
+    setTags(newTags);
+    updateTask({
+      ...task,
+      tagIds: newTags.map((tag) => tag.id),
     });
   };
 
@@ -99,17 +112,20 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
         listName={showListName ? task.list?.listName : undefined}
       />
       {isEditing && (
-        <DueDatePicker
-          label="Due Date"
-          slotProps={{
-            popper: {
-              disablePortal: true,
-            },
-          }}
-          value={task.dueDate ? moment(task.dueDate) : null}
-          onChange={onDueDateChange}
-          clearable
-        />
+        <RowContainer>
+          <DatePicker
+            label="Due Date"
+            slotProps={{
+              popper: {
+                disablePortal: true,
+              },
+            }}
+            value={task.dueDate ? moment(task.dueDate) : null}
+            onChange={onDueDateChange}
+            clearable
+          />
+          <TagDropdown value={tags} onChange={onTagChange} />
+        </RowContainer>
       )}
     </TaskCardContainer>
   );
