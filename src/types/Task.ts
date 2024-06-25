@@ -1,5 +1,5 @@
 import { List } from "./List";
-import { Tag } from "./Tag";
+import { TaskTag } from "./TaskTag";
 
 export interface Task {
   id: number;
@@ -9,6 +9,6 @@ export interface Task {
   timeViewOrder?: number;
   isCompleted?: boolean;
   list?: List;
-  tags?: Tag[];
+  taskTag?: TaskTag[];
   tagIds?: number[];
 }

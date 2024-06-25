@@ -38,7 +38,8 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
   const [updateTask] = useUpdateTaskMutation();
   const [isEditing, setIsEditing] = useState(false);
   const theme = useTheme();
-  const [tags, setTags] = useState(task.tags || []);
+  const initialTags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
+  const [tags, setTags] = useState(initialTags);
 
   const clickAwayHandler = () => setIsEditing(false);
 
