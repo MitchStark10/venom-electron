@@ -1,6 +1,7 @@
 import { Checkbox, CheckboxProps, styled } from "@mui/material";
 import { FC } from "react";
 import { DisplayAs } from "../types/DisplayAs";
+import { Tag } from "../types/Tag";
 import { EditableText } from "./EditableText";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   onEditingStateChange?: (isEditing: boolean) => void;
   isChecked?: boolean;
   listName?: string;
+  tags?: Tag[];
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -31,6 +33,7 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
   onEditingStateChange,
   isChecked,
   listName,
+  tags,
 }) => {
   return (
     <CheckboxAndLabelContainer>
@@ -43,6 +46,7 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
         isEditing={isEditing}
         onEditingStateChange={onEditingStateChange}
         listName={listName}
+        tags={tags}
       />
     </CheckboxAndLabelContainer>
   );

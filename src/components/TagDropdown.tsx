@@ -1,5 +1,6 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Chip, TextField } from "@mui/material";
 import { FC, useMemo } from "react";
+import { TagColorMap, useTagColors } from "../hooks/useTagColors";
 import { useTagsQuery } from "../store/slices/tagSlice";
 import { Tag } from "../types/Tag";
 
@@ -8,17 +9,28 @@ interface Props {
   onChange: (newValue: Tag[]) => void;
 }
 
-const mapTagsToOptions = (tags?: Tag[]) =>
+const mapTagsToOptions = (tags: Tag[] | undefined, colorMap: TagColorMap) =>
   tags?.map((tag) => ({
     id: tag.id,
     label: tag.tagName,
+    color: colorMap.text[tag.tagColor],
+    backgroundColor: colorMap.background[tag.tagColor],
   })) ?? [];
 
 export const TagDropdown: FC<Props> = ({ value, onChange }) => {
   const { data: tags } = useTagsQuery();
+  const colorMap = useTagColors();
 
-  const options = useMemo(() => mapTagsToOptions(tags), [tags]);
-  const autocompleteValue = useMemo(() => mapTagsToOptions(value), [value]);
+  const options = useMemo(
+    () => mapTagsToOptions(tags, colorMap),
+    [tags, colorMap]
+  );
+  const autocompleteValue = useMemo(
+    () => mapTagsToOptions(value, colorMap),
+    [value, colorMap]
+  );
+
+  console.log("tag color", options);
 
   return (
     <Autocomplete
@@ -41,6 +53,19 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
           disablePortal: true,
         },
       }}
+      renderTags={(tagValue, getTagProps) =>
+        tagValue.map((option, index) => (
+          <Chip
+            label={option.label}
+            {...getTagProps({ index })}
+            sx={{
+              fontWeight: "bold",
+              backgroundColor: option.backgroundColor,
+              color: option.color,
+            }}
+          />
+        ))
+      }
     />
   );
 };

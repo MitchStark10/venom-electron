@@ -111,6 +111,7 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
         onEditingStateChange={isEditing ? undefined : setIsEditing}
         isChecked={task.isCompleted}
         listName={showListName ? task.list?.listName : undefined}
+        tags={tags}
       />
       {isEditing && (
         <RowContainer>

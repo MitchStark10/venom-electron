@@ -1,6 +1,8 @@
-import { TextField, styled } from "@mui/material";
+import { Chip, TextField, styled } from "@mui/material";
 import { FC, ReactNode, useEffect, useState } from "react";
+import { useTagColors } from "../hooks/useTagColors";
 import { DisplayAs } from "../types/DisplayAs";
+import { Tag } from "../types/Tag";
 
 interface Props {
   label: string;
@@ -12,10 +14,17 @@ interface Props {
   isEditing?: boolean;
   className?: string;
   listName?: String;
+  tags?: Tag[];
 }
 
 const TextAndListContainer = styled("div")(({ theme }) => ({
   margin: `${theme.spacing(0.5)} 0`,
+}));
+
+const TagContainer = styled("div")(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  display: "flex",
+  gap: theme.spacing(1),
 }));
 
 export const EditableText: FC<Props> = ({
@@ -28,7 +37,9 @@ export const EditableText: FC<Props> = ({
   isEditing,
   className,
   listName,
+  tags,
 }) => {
+  const tagColorMap = useTagColors();
   const TextAndIconContainer = styled(displayAs)({
     cursor: "pointer",
     margin: "2px 0",
@@ -87,6 +98,22 @@ export const EditableText: FC<Props> = ({
         <i style={{ fontSize: "12px" }}>
           <b>{listName}</b>
         </i>
+      )}
+      {Boolean(tags?.length) && (
+        <TagContainer>
+          {tags!!.map((tag) => (
+            <Chip
+              key={tag.id}
+              variant="filled"
+              label={tag.tagName}
+              sx={{
+                backgroundColor: tagColorMap.background[tag.tagColor],
+                color: tagColorMap.text[tag.tagColor],
+                fontWeight: "bold",
+              }}
+            />
+          ))}
+        </TagContainer>
       )}
     </TextAndListContainer>
   );

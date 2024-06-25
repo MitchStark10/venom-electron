@@ -1,8 +1,9 @@
 import { Delete, Label } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, SelectChangeEvent } from "@mui/material";
 import { styled } from "@mui/system";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { useClickOutside } from "../hooks/useClickOutside";
 import { useTagColors } from "../hooks/useTagColors";
 import {
   useDeleteTagMutation,
@@ -10,6 +11,7 @@ import {
 } from "../store/slices/tagSlice";
 import { Tag } from "../types/Tag";
 import { EditableText } from "./EditableText";
+import { TagColorDropdown } from "./TagColorDropdown";
 
 interface Props {
   tag: Tag;
@@ -25,16 +27,19 @@ const TagCardContainer = styled("div")(({ theme }) => ({
   borderRadius: theme.spacing(1),
   "&:hover": {
     border: `1px solid ${theme.palette.divider}`,
+    cursor: "pointer",
   },
 }));
 
 export const TagCard: FC<Props> = ({ tag }) => {
+  const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTag] = useUpdateTagMutation();
   const [deleteTag] = useDeleteTagMutation();
   const colorMap = useTagColors();
+  const [isEditing, setIsEdting] = useState(false);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
-  const onSave = (newTagName: string) => {
+  const onNameChange = (newTagName: string) => {
     if (!newTagName) {
       toast.error("Tag must have a name");
       return;
@@ -45,29 +50,50 @@ export const TagCard: FC<Props> = ({ tag }) => {
     });
   };
 
+  const onColorChange = (event: SelectChangeEvent<string>) => {
+    console.log("on color change", event);
+    updateTag({
+      ...tag,
+      tagColor: event.target.value,
+    });
+  };
+
+  useClickOutside(cardContainerRef, () => setIsEdting(false));
+
   return (
     <TagCardContainer
       onMouseEnter={() => setShowDeleteButton(true)}
       onMouseLeave={() => setShowDeleteButton(false)}
+      onClick={() => setIsEdting(true)}
+      ref={cardContainerRef}
     >
-      <Label sx={{ color: colorMap[tag.tagColor] }} />
+      <Label sx={{ color: colorMap.background[tag.tagColor] }} />
       <EditableText
         label="Tag Name"
         displayAs="p"
         initialValue={tag.tagName}
-        onSave={onSave}
-        onEditingStateChange={(isEditing) => {
-          if (isEditing) {
+        onSave={onNameChange}
+        isEditing={isEditing}
+        onEditingStateChange={(isEditingChange) => {
+          if (isEditingChange) {
             setShowDeleteButton(false);
+            setIsEdting(true);
           }
         }}
       />
+      {isEditing && (
+        <TagColorDropdown value={tag.tagColor} onChange={onColorChange} />
+      )}
 
       <IconButton
         sx={{
           visibility: showDeleteButton ? "visible" : "hidden",
+          marginLeft: "auto",
         }}
-        onClick={() => deleteTag({ id: tag.id.toString() })}
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteTag({ id: tag.id.toString() });
+        }}
       >
         <Delete />
       </IconButton>

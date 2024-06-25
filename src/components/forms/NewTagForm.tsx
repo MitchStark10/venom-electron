@@ -1,10 +1,11 @@
-import { Button, MenuItem, Select } from "@mui/material";
+import { Button } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useCreateTagMutation } from "../../store/slices/tagSlice";
 import { Tag } from "../../types/Tag";
 import { ControlledTextField } from "../ControlledTextField";
+import { TagColorDropdown } from "../TagColorDropdown";
 import { TagFormContainer } from "./NewTagForm.styles";
 
 type FormData = Omit<Tag, "id" | "user">;
@@ -47,12 +48,7 @@ export const NewTagForm: FC<Props> = ({ onSubmit }) => {
         name="tagColor"
         control={control}
         render={({ field: { value, onChange } }) => (
-          <Select value={value} onChange={onChange} fullWidth>
-            <MenuItem value="blue">Blue</MenuItem>
-            <MenuItem value="yellow">Yellow</MenuItem>
-            <MenuItem value="red">Red</MenuItem>
-            <MenuItem value="Green">Green</MenuItem>
-          </Select>
+          <TagColorDropdown value={value} onChange={onChange} />
         )}
       />
       <Button variant="contained" onClick={submitNewTag}>
