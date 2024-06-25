@@ -30,8 +30,6 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
     [value, colorMap]
   );
 
-  console.log("tag color", options);
-
   return (
     <Autocomplete
       sx={{
