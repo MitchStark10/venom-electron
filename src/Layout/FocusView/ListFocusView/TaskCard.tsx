@@ -41,7 +41,7 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
   const initialTags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
   const [tags, setTags] = useState(initialTags);
 
-  const clickAwayHandler = () => setIsEditing(false);
+  const clickAwayHandler = () => setTimeout(() => setIsEditing(false));
 
   const stEditingContainer: SxProps = {
     border: `1px solid ${theme.palette.divider}`,
@@ -51,16 +51,16 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
   };
 
   const onTaskNameChange = (newTaskName: string) => {
+    console.log("task name change", newTaskName);
     if (newTaskName !== task.taskName) {
-      updateTask({ id: task.id, taskName: newTaskName });
+      updateTask({ ...task, taskName: newTaskName });
     }
   };
 
   const onDueDateChange = (newDueDate: any) => {
     const newDueDateMoment = newDueDate ? moment(newDueDate) : null;
     updateTask({
-      id: task.id,
-      taskName: task.taskName,
+      ...task,
       dueDate: newDueDateMoment?.toISOString() || null,
     });
   };

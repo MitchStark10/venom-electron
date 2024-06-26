@@ -59,6 +59,7 @@ export const EditableText: FC<Props> = ({
   };
 
   const onBlur = () => {
+    console.log("on blur triggered");
     if (newText) {
       onSave(newText);
     }
