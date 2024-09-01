@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { Task } from "../../types/Task";
 
 export type FocusViewOptions =
   | "today"
@@ -11,6 +12,7 @@ export type FocusViewOptions =
 export interface FocusViewState {
   focusView: FocusViewOptions;
   selectedListId?: number;
+  selectedTask?: Task;
 }
 
 const initialState: FocusViewState = {
@@ -27,6 +29,9 @@ export const focusViewSlice = createSlice({
     },
     setSelectedListId: (state, action: PayloadAction<number | undefined>) => {
       state.selectedListId = action.payload;
+    },
+    setSelectedTask: (state, action: PayloadAction<Task | undefined>) => {
+      state.selectedTask = action.payload;
     },
   },
 });

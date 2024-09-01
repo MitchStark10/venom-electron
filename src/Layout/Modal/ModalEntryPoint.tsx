@@ -2,9 +2,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { CoreModal } from "./CoreModal";
 import { NewListModal } from "./NewListModal";
+import { TaskModal } from "./TaskModal";
 
 const MODAL_MAP = {
   newList: NewListModal,
+  task: TaskModal,
 };
 
 export const ModalEntryPoint = () => {
