@@ -34,7 +34,7 @@ export const TaskModal = () => {
 
   return (
     <Box sx={{ padding: theme.spacing(2), display: "flex" }}>
-      <ModalTitle>New List</ModalTitle>
+      <ModalTitle>New Task</ModalTitle>
       <VerticalAlignmentContainer>
         <ControlledTextField
           control={control}
