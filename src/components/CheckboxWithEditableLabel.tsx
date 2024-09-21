@@ -15,6 +15,7 @@ interface Props {
   isChecked?: boolean;
   listName?: string;
   tags?: Tag[];
+  preventEdits?: boolean;
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -34,6 +35,7 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
   isChecked,
   listName,
   tags,
+  preventEdits,
 }) => {
   return (
     <CheckboxAndLabelContainer>
@@ -47,6 +49,7 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
         onEditingStateChange={onEditingStateChange}
         listName={listName}
         tags={tags}
+        preventEdits={preventEdits}
       />
     </CheckboxAndLabelContainer>
   );

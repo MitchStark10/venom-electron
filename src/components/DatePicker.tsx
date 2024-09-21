@@ -5,11 +5,15 @@ import {
 import { Moment } from "moment";
 import { FC } from "react";
 
-interface Props extends DesktopDatePickerProps<Moment> {
+export interface CustomDatePickerProps extends DesktopDatePickerProps<Moment> {
   clearable?: boolean;
 }
 
-export const DatePicker: FC<Props> = ({ clearable, slotProps, ...props }) => {
+export const DatePicker: FC<CustomDatePickerProps> = ({
+  clearable,
+  slotProps,
+  ...props
+}) => {
   const slotPropsWrapper = {
     ...slotProps,
   };

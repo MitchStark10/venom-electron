@@ -12,7 +12,7 @@ export type FocusViewOptions =
 export interface FocusViewState {
   focusView: FocusViewOptions;
   selectedListId?: number;
-  selectedTask?: Task;
+  selectedTask?: Task | null;
 }
 
 const initialState: FocusViewState = {
@@ -30,13 +30,17 @@ export const focusViewSlice = createSlice({
     setSelectedListId: (state, action: PayloadAction<number | undefined>) => {
       state.selectedListId = action.payload;
     },
-    setSelectedTask: (state, action: PayloadAction<Task | undefined>) => {
+    setSelectedTask: (
+      state,
+      action: PayloadAction<Task | null | undefined>
+    ) => {
       state.selectedTask = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFocusView, setSelectedListId } = focusViewSlice.actions;
+export const { setFocusView, setSelectedListId, setSelectedTask } =
+  focusViewSlice.actions;
 
 export default focusViewSlice.reducer;

@@ -9,8 +9,7 @@ const ModalBox = styled(Box)(({ theme }) => ({
       ? theme.palette.grey[800]
       : theme.palette.grey[50],
   display: "flex",
-  flexDirection: "row",
-  border: "1px solid black",
+  flexDirection: "column",
   position: "absolute",
   top: "50%",
   left: "50%",

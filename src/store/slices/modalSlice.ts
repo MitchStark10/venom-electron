@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-export type ModalOptions = "newList";
+export type ModalOptions = "newList" | "task" | null;
 
 export interface ModalState {
   modalView: ModalOptions;
@@ -9,7 +9,7 @@ export interface ModalState {
 }
 
 const initialState: ModalState = {
-  modalView: "newList",
+  modalView: null,
   isModalOpen: false,
 };
 

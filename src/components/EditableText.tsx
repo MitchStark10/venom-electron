@@ -15,6 +15,7 @@ interface Props {
   className?: string;
   listName?: String;
   tags?: Tag[];
+  preventEdits?: boolean;
 }
 
 const TextAndListContainer = styled("div")(({ theme }) => ({
@@ -38,6 +39,7 @@ export const EditableText: FC<Props> = ({
   className,
   listName,
   tags,
+  preventEdits,
 }) => {
   const tagColorMap = useTagColors();
   const TextAndIconContainer = styled(displayAs)({
@@ -52,6 +54,10 @@ export const EditableText: FC<Props> = ({
   };
 
   const onTextContainerClick = (e: React.MouseEvent<HTMLParagraphElement>) => {
+    if (preventEdits) {
+      return;
+    }
+
     e.preventDefault();
     e.stopPropagation();
     onEditingStateChange?.(true);
@@ -59,7 +65,6 @@ export const EditableText: FC<Props> = ({
   };
 
   const onBlur = () => {
-    console.log("on blur triggered");
     if (newText) {
       onSave(newText);
     }
