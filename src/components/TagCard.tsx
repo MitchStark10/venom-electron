@@ -51,7 +51,6 @@ export const TagCard: FC<Props> = ({ tag }) => {
   };
 
   const onColorChange = (event: SelectChangeEvent<string>) => {
-    console.log("on color change", event);
     updateTag({
       ...tag,
       tagColor: event.target.value,

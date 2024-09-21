@@ -14,10 +14,6 @@ export const ModalEntryPoint = () => {
     (state: RootState) => state.modal
   );
 
-  console.log("testing", {
-    isModalOpen,
-    modalView,
-  });
   if (!isModalOpen || !modalView) {
     return null;
   }

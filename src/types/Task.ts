@@ -9,6 +9,7 @@ export interface Task {
   timeViewOrder?: number;
   isCompleted?: boolean;
   list?: List;
+  listId?: number;
   taskTag?: TaskTag[];
   tagIds?: number[];
 }

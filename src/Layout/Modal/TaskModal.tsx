@@ -7,7 +7,10 @@ import { ControlledTextField } from "../../components/ControlledTextField";
 import { setSelectedTask } from "../../store/slices/focusViewSlice";
 import { useListsQuery } from "../../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../../store/slices/modalSlice";
-import { useUpdateTaskMutation } from "../../store/slices/taskSlice";
+import {
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+} from "../../store/slices/taskSlice";
 import { RootState } from "../../store/store";
 import { List } from "../../types/List";
 import { Task } from "../../types/Task";
@@ -26,13 +29,14 @@ export const TaskModal = () => {
     shallowEqual
   );
   const [updateTask] = useUpdateTaskMutation();
+  const [createTask] = useCreateTaskMutation();
   const { data: lists } = useListsQuery();
   const dispatch = useDispatch();
 
   const initialTaskData: Partial<FormData> = selectedTask
     ? {
         ...selectedTask,
-        listId: selectedTask.list?.id ?? (lists?.[0].id || -1),
+        listId: selectedTask.listId ?? (lists?.[0].id || -1),
       }
     : {
         listId: selectedListId ?? (lists?.[0].id || -1),
@@ -48,7 +52,14 @@ export const TaskModal = () => {
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     // Save the task
-    await updateTask(data);
+    if (selectedTask) {
+      await updateTask(data);
+    } else {
+      createTask({
+        ...data,
+        dueDate: data.dueDate || undefined,
+      });
+    }
     setIsLoading(false);
     dispatch(setIsModalOpen(false));
     dispatch(setSelectedTask(null));
@@ -98,6 +109,13 @@ export const TaskModal = () => {
         control={control}
         name="taskName"
         label="Task Name"
+        autoFocus
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
       />
       <ControlledDatePicker control={control} name="dueDate" label="Due Date" />
       <Button variant="contained" onClick={onSubmit} disabled={isLoading}>

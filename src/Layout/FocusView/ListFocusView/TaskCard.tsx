@@ -31,7 +31,6 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
   const tags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
 
   const onTaskNameChange = (newTaskName: string) => {
-    console.log("task name change", newTaskName);
     if (newTaskName !== task.taskName) {
       updateTask({ ...task, taskName: newTaskName });
     }
@@ -48,7 +47,6 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
     <TaskCardContainer
       ref={cardContainerRef}
       onClick={() => {
-        console.log("click handler");
         dispatch(setSelectedTask(task));
         dispatch(setModalView("task"));
         dispatch(setIsModalOpen(true));

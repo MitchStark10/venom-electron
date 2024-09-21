@@ -1,9 +1,8 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
-import { Button } from "../../../components/Button";
 import { EditableText } from "../../../components/EditableText";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
@@ -18,7 +17,6 @@ import {
 } from "../../../store/slices/taskSlice";
 import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
-import { NewTaskForm } from "./NewTaskForm";
 import { TaskCard } from "./TaskCard";
 
 const ListNameText = styled(EditableText)({
@@ -26,7 +24,6 @@ const ListNameText = styled(EditableText)({
 });
 
 export const ListFocusView = () => {
-  const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const { selectedListId } = useSelector(
     (state: RootState) => state.focusView,
     shallowEqual
@@ -112,17 +109,6 @@ export const ListFocusView = () => {
           )}
         </div>
       ))}
-
-      {showAddTaskForm ? (
-        <NewTaskForm
-          onAddNewTask={() => setShowAddTaskForm(false)}
-          listId={selectedListId}
-        />
-      ) : (
-        <Button variant="contained" onClick={() => setShowAddTaskForm(true)}>
-          Add Task
-        </Button>
-      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ interface Props {
   type?: string;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   fullWidth?: boolean;
+  autoFocus?: boolean;
 }
 
 export const ControlledTextField: FC<Props> = ({
@@ -18,6 +19,7 @@ export const ControlledTextField: FC<Props> = ({
   type,
   onKeyDown,
   fullWidth,
+  autoFocus,
 }) => {
   return (
     <Controller
@@ -31,6 +33,7 @@ export const ControlledTextField: FC<Props> = ({
           value={value}
           onKeyDown={onKeyDown}
           fullWidth={fullWidth}
+          autoFocus={autoFocus}
         />
       )}
     />

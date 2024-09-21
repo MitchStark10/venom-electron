@@ -1,10 +1,15 @@
-import { Box, styled } from "@mui/material";
+import { Box, Fab, styled } from "@mui/material";
 import { getAuthToken } from "../lib/authToken";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
+import AddIcon from "@mui/icons-material/Add";
+import { useListsQuery } from "../store/slices/listSlice";
+import { useDispatch } from "react-redux";
+import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
+import { setSelectedTask } from "../store/slices/focusViewSlice";
 
 const StyledLayout = styled("div")(({ theme }) => ({
   backgroundColor:
@@ -26,7 +31,15 @@ const FocusContainer = styled("div")(({ theme }) => ({
   overflowY: "auto",
 }));
 
+const PositionedFab = styled(Fab)({
+  position: "fixed",
+  bottom: 40,
+  right: 40,
+});
+
 export const Layout = () => {
+  const { data: lists } = useListsQuery(undefined, { skip: !getAuthToken() });
+  const dispatch = useDispatch();
   if (!getAuthToken()) {
     return (
       <StyledLayout>
@@ -53,6 +66,17 @@ export const Layout = () => {
     );
   }
 
+  const handleAddButtonClick = () => {
+    if (lists?.length === 0) {
+      dispatch(setModalView("newList"));
+      dispatch(setIsModalOpen(true));
+    } else {
+      dispatch(setSelectedTask(null));
+      dispatch(setModalView("task"));
+      dispatch(setIsModalOpen(true));
+    }
+  };
+
   return (
     <StyledLayout>
       <SideBar />
@@ -60,6 +84,13 @@ export const Layout = () => {
         <FocusView />
       </FocusContainer>
       <ModalEntryPoint />
+      <PositionedFab
+        color="primary"
+        aria-label="add"
+        onClick={handleAddButtonClick}
+      >
+        <AddIcon />
+      </PositionedFab>
     </StyledLayout>
   );
 };
