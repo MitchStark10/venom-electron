@@ -32,9 +32,6 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
 
   return (
     <Autocomplete
-      sx={{
-        width: "250px",
-      }}
       value={autocompleteValue}
       options={options}
       onChange={(_, newValue) => {

@@ -16,9 +16,12 @@ import { List } from "../../types/List";
 import { Task } from "../../types/Task";
 import { ModalTitle } from "./ModalTitle";
 import moment from "moment";
+import { TagDropdown } from "../../components/TagDropdown";
+import { Tag } from "../../types/Tag";
 
 interface FormData extends Task {
   listId: number;
+  tags: Tag[];
 }
 
 export const TaskModal = () => {
@@ -37,12 +40,14 @@ export const TaskModal = () => {
     ? {
         ...selectedTask,
         listId: selectedTask.listId ?? (lists?.[0].id || -1),
+        tags: selectedTask.taskTag?.map((taskTag) => taskTag.tag) ?? [],
       }
     : {
         listId: selectedListId ?? (lists?.[0].id || -1),
         taskName: "",
         dueDate: moment().startOf("day").toISOString(),
         isCompleted: false,
+        tags: [],
       };
 
   const { handleSubmit, control } = useForm<FormData>({
@@ -51,12 +56,17 @@ export const TaskModal = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
+
+    const payload = {
+      ...data,
+      tagIds: data.tags.map((tag) => tag.id),
+    };
     // Save the task
     if (selectedTask) {
-      await updateTask(data);
+      await updateTask(payload);
     } else {
       createTask({
-        ...data,
+        ...payload,
         dueDate: data.dueDate || undefined,
       });
     }
@@ -118,6 +128,13 @@ export const TaskModal = () => {
         }}
       />
       <ControlledDatePicker control={control} name="dueDate" label="Due Date" />
+      <Controller
+        control={control}
+        name="tags"
+        render={({ field: { value, onChange } }) => (
+          <TagDropdown value={value} onChange={onChange} />
+        )}
+      />
       <Button variant="contained" onClick={onSubmit} disabled={isLoading}>
         Save
       </Button>
