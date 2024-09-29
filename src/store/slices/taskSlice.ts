@@ -37,6 +37,7 @@ export const tasksApi = createApi({
           api.dispatch(listsApi.util.invalidateTags(["Lists"]));
         });
       },
+      invalidatesTags: ["TodayTasks", "UpcomingTasks"],
     }),
     updateTask: builder.mutation<Task, Task>({
       query: ({ listId, id, taskName, dueDate, isCompleted, tagIds }) => ({
