@@ -1,15 +1,15 @@
+import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
+import { useDispatch } from "react-redux";
 import { getAuthToken } from "../lib/authToken";
+import { setSelectedTask } from "../store/slices/focusViewSlice";
+import { useListsQuery } from "../store/slices/listSlice";
+import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
-import AddIcon from "@mui/icons-material/Add";
-import { useListsQuery } from "../store/slices/listSlice";
-import { useDispatch } from "react-redux";
-import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
-import { setSelectedTask } from "../store/slices/focusViewSlice";
 
 const StyledLayout = styled("div")(({ theme }) => ({
   backgroundColor:
@@ -55,6 +55,7 @@ export const Layout = () => {
     );
   };
 
+  console.log("global", global);
   const isNewTaskOnly = (global as any)?.appInfo?.isNewTaskOnly;
   if (isNewTaskOnly) {
     return (

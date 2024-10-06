@@ -23,7 +23,7 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
     // communicate between node-land and browser-land.
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      additionalArguments: isNewTaskOnly ? ["--isNewTaskOnly"] : [],
+      additionalArguments: isNewTaskOnly ? ["--isnewtaskonly"] : [],
     },
   });
 
