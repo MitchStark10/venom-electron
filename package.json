@@ -73,7 +73,8 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "build/icon.icns"
     },
     "win": {
       "target": "nsis"

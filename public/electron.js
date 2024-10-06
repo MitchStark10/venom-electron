@@ -18,6 +18,7 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
     autoHideMenuBar: true,
     width: isNewTaskOnly ? 1000 : displayWidth,
     height: isNewTaskOnly ? 400 : displayHeight,
+    icon: path.join(__dirname, "public/icon.png"),
 
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
