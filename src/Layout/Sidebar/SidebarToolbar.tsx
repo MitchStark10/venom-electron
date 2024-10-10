@@ -1,4 +1,4 @@
-import { PlaylistAdd } from "@mui/icons-material";
+import { Person, PlaylistAdd } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { DividerWithPadding } from "../../components/DividerWithPadding";
 import { setIsModalOpen, setModalView } from "../../store/slices/modalSlice";
@@ -16,6 +16,12 @@ export const SidebarToolbar = () => {
           dispatch(setModalView("newList"));
           dispatch(setIsModalOpen(true));
         }}
+      />
+      <DividerWithPadding />
+      <SidebarMenuItem
+        title="Settings"
+        icon={<Person />}
+        focusViewToSelect="settings"
       />
     </span>
   );

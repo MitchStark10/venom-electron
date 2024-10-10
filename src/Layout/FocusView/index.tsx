@@ -21,6 +21,8 @@ export const FocusView = () => {
       return <UpcomingFocusView />;
     case "tags":
       return <TagsEditor />;
+    case "settings":
+      return <h1>TODO: Settings</h1>;
     default:
       return <h1>{capitalize(focusView)}</h1>;
   }

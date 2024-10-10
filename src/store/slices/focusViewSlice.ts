@@ -7,7 +7,8 @@ export type FocusViewOptions =
   | "upcoming"
   | "completed"
   | "tags"
-  | "list";
+  | "list"
+  | "settings";
 
 export interface FocusViewState {
   focusView: FocusViewOptions;
