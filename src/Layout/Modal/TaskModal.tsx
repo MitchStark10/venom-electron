@@ -1,9 +1,11 @@
 import { Autocomplete, Box, Button, TextField, useTheme } from "@mui/material";
+import moment from "moment";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { ControlledDatePicker } from "../../components/ControlledDatePicker";
 import { ControlledTextField } from "../../components/ControlledTextField";
+import { TagDropdown } from "../../components/TagDropdown";
 import { setSelectedTask } from "../../store/slices/focusViewSlice";
 import { useListsQuery } from "../../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../../store/slices/modalSlice";
@@ -13,11 +15,9 @@ import {
 } from "../../store/slices/taskSlice";
 import { RootState } from "../../store/store";
 import { List } from "../../types/List";
+import { Tag } from "../../types/Tag";
 import { Task } from "../../types/Task";
 import { ModalTitle } from "./ModalTitle";
-import moment from "moment";
-import { TagDropdown } from "../../components/TagDropdown";
-import { Tag } from "../../types/Tag";
 
 interface FormData extends Task {
   listId: number;
@@ -127,7 +127,7 @@ export const TaskModal = () => {
           }
         }}
       />
-      <ControlledDatePicker control={control} name="dueDate" label="Due Date" />
+      <ControlledDatePicker control={control} name="dueDate" label="Due Date" clearable />
       <Controller
         control={control}
         name="tags"

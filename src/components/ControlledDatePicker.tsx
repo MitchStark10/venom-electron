@@ -1,7 +1,7 @@
+import moment from "moment";
 import { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 import { CustomDatePickerProps, DatePicker } from "./DatePicker";
-import moment from "moment";
 
 interface Props extends CustomDatePickerProps {
   control: Control<any>;
@@ -22,7 +22,7 @@ export const ControlledDatePicker: FC<Props> = ({
       render={({ field: { onChange, value } }) => (
         <DatePicker
           label={label}
-          value={moment(value)}
+          value={value ? moment(value) : null}
           onChange={onChange}
           {...props}
         />
