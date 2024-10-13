@@ -3,6 +3,7 @@ import { capitalize } from "../../lib/capitalize";
 import { RootState } from "../../store/store";
 import { CompletedFocusView } from "./CompletedFocusView";
 import { ListFocusView } from "./ListFocusView/ListFocusView";
+import { SettingsFocusView } from "./SettingsFocusView/SettingsFocusView";
 import { TagsEditor } from "./TagsEditor";
 import { TodayFocusView } from "./TodayFocusView";
 import { UpcomingFocusView } from "./UpcomingFocusView";
@@ -21,6 +22,8 @@ export const FocusView = () => {
       return <UpcomingFocusView />;
     case "tags":
       return <TagsEditor />;
+    case "settings":
+      return <SettingsFocusView />;
     default:
       return <h1>{capitalize(focusView)}</h1>;
   }

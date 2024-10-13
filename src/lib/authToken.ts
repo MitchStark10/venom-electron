@@ -7,3 +7,7 @@ export const getAuthToken = () => {
 export const writeAuthToken = (token: string) => {
   localStorage.setItem("AUTH_TOKEN", token);
 };
+
+export const deleteAuthToken = () => {
+  localStorage.removeItem("AUTH_TOKEN");
+};
