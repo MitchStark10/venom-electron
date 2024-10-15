@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getAuthToken } from "../../lib/authToken";
 import { API_BASE_URL } from "../../lib/constants";
 import { Settings } from "../../types/Settings";
 
@@ -37,12 +38,29 @@ export const userApi = createApi({
     }),
     settings: builder.query<Settings, void>({
       query: () => ({
-        url: "/users/settings",
+        url: "/settings",
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+    }),
+    updateSettings: builder.mutation<Settings, Partial<Settings>>({
+      query: (settings) => ({
+        url: "/settings",
+        method: "PUT",
+        body: settings,
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation, useSettingsQuery } =
-  userApi;
+export const {
+  useLoginMutation,
+  useSignupMutation,
+  useSettingsQuery,
+  useUpdateSettingsMutation,
+} = userApi;

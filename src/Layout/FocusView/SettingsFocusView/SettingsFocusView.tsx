@@ -17,7 +17,11 @@ import { DividerWithPadding } from "../../../components/DividerWithPadding";
 import { Title } from "../../../components/Title";
 import { deleteAuthToken } from "../../../lib/authToken";
 import { useListsQuery } from "../../../store/slices/listSlice";
-import { useSettingsQuery } from "../../../store/slices/userSlice";
+import {
+  useSettingsQuery,
+  useUpdateSettingsMutation,
+} from "../../../store/slices/userSlice";
+import { AutoDeleteOptions } from "../../../types/Settings";
 
 interface AutocompleteOption {
   label: string;
@@ -26,6 +30,7 @@ interface AutocompleteOption {
 
 export const SettingsFocusView = () => {
   const { data: settingsData, isLoading } = useSettingsQuery();
+  const [updateSettings] = useUpdateSettingsMutation();
   const theme = useTheme();
   const [autoDeleteTasksSelection, setAutoDeleteTasksSelection] =
     useState("-1");
@@ -43,9 +48,13 @@ export const SettingsFocusView = () => {
     window.location.reload();
   };
 
-  const handleAutoDeleteTasksSelection = (e: SelectChangeEvent) => {
+  const handleAutoDeleteTasksSelection = async (e: SelectChangeEvent) => {
     setAutoDeleteTasksSelection(e.target.value);
-    // TODO: Send the API call to send this selection
+    const response = await updateSettings({
+      autoDeleteTasks: e.target.value as AutoDeleteOptions,
+    });
+
+    console.log("response", response);
   };
 
   const handleStandupListsSelection = (
