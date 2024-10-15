@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_BASE_URL } from "../../lib/constants";
+import { Settings } from "../../types/Settings";
 
 interface LoginArgs {
   email: string;
@@ -34,7 +35,14 @@ export const userApi = createApi({
         },
       }),
     }),
+    settings: builder.query<Settings, void>({
+      query: () => ({
+        url: "/users/settings",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation } = userApi;
+export const { useLoginMutation, useSignupMutation, useSettingsQuery } =
+  userApi;

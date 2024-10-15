@@ -5,4 +5,5 @@ export interface List {
   order: number;
   listName: string;
   tasks: Task[];
+  isStandupList?: boolean;
 }
