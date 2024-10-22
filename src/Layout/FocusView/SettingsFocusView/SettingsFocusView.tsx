@@ -62,6 +62,11 @@ export const SettingsFocusView = () => {
     newValue: AutocompleteOption[]
   ) => {
     setStandupLists(newValue);
+
+    const standupListIds = newValue.map((list) => list.value);
+    updateSettings({
+      standupListIds,
+    });
   };
 
   const listOptions: AutocompleteOption[] =
