@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getAuthToken } from "../../lib/authToken";
 import { API_BASE_URL } from "../../lib/constants";
 import { Settings } from "../../types/Settings";
+import { listsApi } from "./listSlice";
 
 interface LoginArgs {
   email: string;
@@ -54,6 +55,11 @@ export const userApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
+      onQueryStarted: (_arg, api) => {
+        api.queryFulfilled.then(() => {
+          api.dispatch(listsApi.util.invalidateTags(["Lists"]));
+        });
+      },
     }),
   }),
 });

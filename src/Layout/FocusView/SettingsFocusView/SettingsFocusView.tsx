@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { DividerWithPadding } from "../../../components/DividerWithPadding";
 import { Title } from "../../../components/Title";
 import { deleteAuthToken } from "../../../lib/authToken";
@@ -52,21 +53,33 @@ export const SettingsFocusView = () => {
     setAutoDeleteTasksSelection(e.target.value);
     const response = await updateSettings({
       autoDeleteTasks: e.target.value as AutoDeleteOptions,
+      standupListIds: standupLists.map((list) => list.value),
     });
 
-    console.log("response", response);
+    if (!("error" in response)) {
+      toast.success("Settings updated successfully");
+    } else {
+      toast.error("Failed to update settings");
+    }
   };
 
-  const handleStandupListsSelection = (
+  const handleStandupListsSelection = async (
     _e: SyntheticEvent,
     newValue: AutocompleteOption[]
   ) => {
     setStandupLists(newValue);
 
     const standupListIds = newValue.map((list) => list.value);
-    updateSettings({
+    const response = await updateSettings({
+      autoDeleteTasks: autoDeleteTasksSelection as AutoDeleteOptions,
       standupListIds,
     });
+
+    if (!("error" in response)) {
+      toast.success("Settings updated successfully");
+    } else {
+      toast.error("Failed to update settings");
+    }
   };
 
   const listOptions: AutocompleteOption[] =
