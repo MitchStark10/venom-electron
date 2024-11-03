@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+import moment from "moment";
 import React, { FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
@@ -38,8 +39,15 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
 
   const onCheckTask = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    const newIsCompletedValue = !task.isCompleted;
     // TODO: Delete the task if the user is not set up with a paid account
-    await updateTask({ ...task, isCompleted: !task.isCompleted });
+    await updateTask({
+      ...task,
+      isCompleted: newIsCompletedValue,
+      dateCompleted: newIsCompletedValue
+        ? moment().startOf("day").toISOString()
+        : null,
+    });
     // deleteTask({ id: task.id.toString() });
   };
 

@@ -41,7 +41,15 @@ export const tasksApi = createApi({
       invalidatesTags: ["TodayTasks", "UpcomingTasks"],
     }),
     updateTask: builder.mutation<Task, Task>({
-      query: ({ listId, id, taskName, dueDate, isCompleted, tagIds }) => ({
+      query: ({
+        listId,
+        id,
+        taskName,
+        dueDate,
+        dateCompleted,
+        isCompleted,
+        tagIds,
+      }) => ({
         url: `/tasks/${id}`,
         method: "PUT",
         body: {
@@ -50,6 +58,7 @@ export const tasksApi = createApi({
           dueDate,
           isCompleted,
           tagIds,
+          dateCompleted,
         },
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
