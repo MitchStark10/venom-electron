@@ -7,6 +7,7 @@ import { SettingsFocusView } from "./SettingsFocusView/SettingsFocusView";
 import { TagsEditor } from "./TagsEditor";
 import { TodayFocusView } from "./TodayFocusView";
 import { UpcomingFocusView } from "./UpcomingFocusView";
+import { StandupFocusView } from "./StandupFocusView";
 
 export const FocusView = () => {
   const { focusView } = useSelector((state: RootState) => state.focusView);
@@ -24,6 +25,8 @@ export const FocusView = () => {
       return <TagsEditor />;
     case "settings":
       return <SettingsFocusView />;
+    case "standup":
+      return <StandupFocusView />;
     default:
       return <h1>{capitalize(focusView)}</h1>;
   }

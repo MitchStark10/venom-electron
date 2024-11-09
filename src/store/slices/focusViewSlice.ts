@@ -5,6 +5,7 @@ import { Task } from "../../types/Task";
 export type FocusViewOptions =
   | "today"
   | "upcoming"
+  | "standup"
   | "completed"
   | "tags"
   | "list"

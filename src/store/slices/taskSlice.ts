@@ -11,6 +11,12 @@ export interface UpdateReorderTask {
   newDueDate?: string | null;
 }
 
+export interface StandupTasksResponse {
+  yesterday: Task[];
+  today: Task[];
+  blocked: Task[];
+}
+
 export const tasksApi = createApi({
   reducerPath: "task",
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
@@ -148,6 +154,15 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ["CompletedTasks"],
     }),
+    standupTasks: builder.query<StandupTasksResponse, void>({
+      query: () => ({
+        url: "/tasks/standup",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -160,4 +175,5 @@ export const {
   useDeleteCompletedTasksMutation,
   useTodayTasksQuery,
   useUpcomingTasksQuery,
+  useStandupTasksQuery,
 } = tasksApi;
