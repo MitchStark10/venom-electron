@@ -13,7 +13,6 @@ interface Props {
   title: string;
   tasks: Task[];
   isLoading: boolean;
-  refetch: () => void;
   deleteAllTasks?: () => void;
   groupByOption?: GroupByOptions;
 }

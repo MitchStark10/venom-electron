@@ -1,4 +1,4 @@
-import { Label, Task, Today, Upcoming } from "@mui/icons-material";
+import { Label, Summarize, Task, Today, Upcoming } from "@mui/icons-material";
 import { DividerWithPadding } from "../../components/DividerWithPadding";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 
@@ -14,6 +14,11 @@ export const SidebarCoreMenu = () => {
         icon={<Upcoming />}
         title="Upcoming"
         focusViewToSelect="upcoming"
+      />
+      <SidebarMenuItem
+        icon={<Summarize />}
+        title="Standup"
+        focusViewToSelect="standup"
       />
       <SidebarMenuItem
         icon={<Task />}

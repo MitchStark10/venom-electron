@@ -5,7 +5,7 @@ import {
 import { TimeBasedFocusView } from "../TimeBasedFocusView";
 
 export const CompletedFocusView = () => {
-  const { data: completedTasks, isLoading, refetch } = useCompletedTasksQuery();
+  const { data: completedTasks, isLoading } = useCompletedTasksQuery();
   const [deleteAllCompletedTasks] = useDeleteCompletedTasksMutation();
 
   return (
@@ -13,7 +13,6 @@ export const CompletedFocusView = () => {
       isLoading={isLoading}
       title="Completed"
       tasks={completedTasks || []}
-      refetch={refetch}
       deleteAllTasks={deleteAllCompletedTasks}
     />
   );

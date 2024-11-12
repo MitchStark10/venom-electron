@@ -20,7 +20,13 @@ export interface StandupTasksResponse {
 export const tasksApi = createApi({
   reducerPath: "task",
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
-  tagTypes: ["Tasks", "CompletedTasks", "TodayTasks", "UpcomingTasks"],
+  tagTypes: [
+    "Tasks",
+    "CompletedTasks",
+    "TodayTasks",
+    "UpcomingTasks",
+    "StandupTasks",
+  ],
   endpoints: (builder) => ({
     createTask: builder.mutation<
       Task,
@@ -80,6 +86,7 @@ export const tasksApi = createApi({
         "CompletedTasks",
         "TodayTasks",
         "UpcomingTasks",
+        "StandupTasks",
       ],
     }),
     deleteTask: builder.mutation<Task, { id: string }>({
@@ -156,12 +163,13 @@ export const tasksApi = createApi({
     }),
     standupTasks: builder.query<StandupTasksResponse, void>({
       query: () => ({
-        url: "/tasks/standup",
+        url: `/tasks/standup?today=${new Date().toLocaleDateString()}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
+      providesTags: ["StandupTasks"],
     }),
   }),
 });

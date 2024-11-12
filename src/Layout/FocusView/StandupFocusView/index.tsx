@@ -1,11 +1,13 @@
-import { Title } from "@mui/icons-material";
+import { CircularProgress } from "@mui/material";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { useStandupTasksQuery } from "../../../store/slices/taskSlice";
-import { CircularProgress } from "@mui/material";
 import { TaskCard } from "../ListFocusView/TaskCard";
+import { Title } from "../../../components/Title";
 
 export const StandupFocusView = () => {
-  const { data: standupTasks, isLoading } = useStandupTasksQuery();
+  const { data: standupTasks, isLoading } = useStandupTasksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   if (isLoading) {
     return <CircularProgress />;
