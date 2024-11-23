@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { getAuthToken } from "../lib/authToken";
 import { setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
@@ -40,13 +41,6 @@ const PositionedFab = styled(Fab)({
 export const Layout = () => {
   const { data: lists } = useListsQuery(undefined, { skip: !getAuthToken() });
   const dispatch = useDispatch();
-  if (!getAuthToken()) {
-    return (
-      <StyledLayout>
-        <LoginSignUp />
-      </StyledLayout>
-    );
-  }
 
   const onAddNewTask = () => {
     setTimeout(
@@ -55,17 +49,7 @@ export const Layout = () => {
     );
   };
 
-  console.log("global", global);
   const isNewTaskOnly = (global as any)?.appInfo?.isNewTaskOnly;
-  if (isNewTaskOnly) {
-    return (
-      <StyledLayout>
-        <Box sx={{ padding: "10px" }}>
-          <NewTaskForm onAddNewTask={onAddNewTask} />
-        </Box>
-      </StyledLayout>
-    );
-  }
 
   const handleAddButtonClick = () => {
     if (lists?.length === 0) {
@@ -77,6 +61,26 @@ export const Layout = () => {
       dispatch(setIsModalOpen(true));
     }
   };
+
+  useGlobalShortcut("n", handleAddButtonClick);
+
+  if (!getAuthToken()) {
+    return (
+      <StyledLayout>
+        <LoginSignUp />
+      </StyledLayout>
+    );
+  }
+
+  if (isNewTaskOnly) {
+    return (
+      <StyledLayout>
+        <Box sx={{ padding: "10px" }}>
+          <NewTaskForm onAddNewTask={onAddNewTask} />
+        </Box>
+      </StyledLayout>
+    );
+  }
 
   return (
     <StyledLayout>
