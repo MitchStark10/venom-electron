@@ -2,7 +2,6 @@ import { Box, TextField, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "../../components/Button";
-import { VerticalAlignmentContainer } from "../../components/VerticalAlignmentContainer";
 import { isResponseErrorType } from "../../lib/isResponseErrorType";
 import {
   setFocusView,
@@ -31,31 +30,37 @@ export const NewListModal = () => {
   };
 
   return (
-    <Box sx={{ padding: theme.spacing(2), display: "flex" }}>
+    <Box
+      sx={{
+        padding: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column",
+        gap: theme.spacing(2),
+        minWidth: 300,
+      }}
+    >
       <ModalTitle>New List</ModalTitle>
-      <VerticalAlignmentContainer>
-        <TextField
-          label="List Name"
-          size="small"
-          autoFocus
-          value={listName}
-          onChange={(e) => setListName(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              e.stopPropagation();
-              handleCreateList();
-            }
-          }}
-        />
-        <Button
-          variant="contained"
-          onClick={handleCreateList}
-          disabled={isLoading}
-        >
-          Create
-        </Button>
-      </VerticalAlignmentContainer>
+      <TextField
+        label="List Name"
+        size="small"
+        autoFocus
+        value={listName}
+        onChange={(e) => setListName(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            e.stopPropagation();
+            handleCreateList();
+          }
+        }}
+      />
+      <Button
+        variant="contained"
+        onClick={handleCreateList}
+        disabled={isLoading}
+      >
+        Create
+      </Button>
     </Box>
   );
 };

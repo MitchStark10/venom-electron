@@ -23,6 +23,7 @@ const SidebarContainer = styled("span")(({ theme }) => ({
       : theme.palette.grey[900],
   padding: `${theme.spacing(1)} 0`,
   height: "100vh",
+  overflowY: "auto",
   boxShadow: `3px 0 5px -2px ${theme.palette.grey[700]}`,
   justifyContent: "space-between",
 }));
