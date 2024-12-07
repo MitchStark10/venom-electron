@@ -5,7 +5,7 @@ import { Task } from "../../types/Task";
 import { listsApi } from "./listSlice";
 
 export interface UpdateReorderTask {
-  fieldToUpdate: "listViewOrder" | "timeViewOrder";
+  fieldToUpdate: "listViewOrder";
   id: number;
   newOrder: number;
   newDueDate?: string | null;

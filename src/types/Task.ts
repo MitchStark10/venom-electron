@@ -7,7 +7,6 @@ export interface Task {
   dueDate?: string | null;
   dateCompleted?: string | null;
   listViewOrder?: number;
-  timeViewOrder?: number;
   isCompleted?: boolean;
   list?: List;
   listId?: number;
