@@ -12,7 +12,7 @@ import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
 
-const StyledLayout = styled("div")(({ theme }) => ({
+export const StyledLayout = styled("div")(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
       ? theme.palette.grey[800]

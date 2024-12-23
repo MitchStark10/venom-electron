@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rtkQueryErrorMiddlware } from "../lib/rtkQueryErrorMiddlware";
+import { feedbackApi } from "./slices/feedbackSlice";
 import focusViewReducer from "./slices/focusViewSlice";
 import { listsApi } from "./slices/listSlice";
 import modalReducer from "./slices/modalSlice";
@@ -15,6 +16,7 @@ export const store = configureStore({
     list: listsApi.reducer,
     task: tasksApi.reducer,
     tag: tagsApi.reducer,
+    feedback: feedbackApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -22,7 +24,8 @@ export const store = configureStore({
       userApi.middleware,
       listsApi.middleware,
       tasksApi.middleware,
-      tagsApi.middleware
+      tagsApi.middleware,
+      feedbackApi.middleware
     ),
 });
 

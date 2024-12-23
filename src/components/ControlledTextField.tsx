@@ -10,6 +10,8 @@ interface Props {
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   fullWidth?: boolean;
   autoFocus?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }
 
 export const ControlledTextField: FC<Props> = ({
@@ -20,6 +22,8 @@ export const ControlledTextField: FC<Props> = ({
   onKeyDown,
   fullWidth,
   autoFocus,
+  multiline,
+  rows,
 }) => {
   return (
     <Controller
@@ -34,6 +38,8 @@ export const ControlledTextField: FC<Props> = ({
           onKeyDown={onKeyDown}
           fullWidth={fullWidth}
           autoFocus={autoFocus}
+          multiline={multiline}
+          rows={rows}
         />
       )}
     />
