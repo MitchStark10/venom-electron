@@ -71,7 +71,7 @@ export const Layout = () => {
       if (getAuthToken()) {
         refetchLists();
       }
-    }, 1000 * 60);
+    }, 1000 * 60 * 10);
 
     return () => {
       clearInterval(interval);
