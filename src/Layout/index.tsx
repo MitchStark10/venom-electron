@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { getAuthToken } from "../lib/authToken";
@@ -39,7 +40,9 @@ const PositionedFab = styled(Fab)({
 });
 
 export const Layout = () => {
-  const { data: lists } = useListsQuery(undefined, { skip: !getAuthToken() });
+  const { data: lists, refetch: refetchLists } = useListsQuery(undefined, {
+    skip: !getAuthToken(),
+  });
   const dispatch = useDispatch();
 
   const onAddNewTask = () => {
@@ -63,6 +66,17 @@ export const Layout = () => {
   };
 
   useGlobalShortcut("n", handleAddButtonClick);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (getAuthToken()) {
+        refetchLists();
+      }
+    }, 1000 * 60);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [refetchLists]);
 
   if (!getAuthToken()) {
     return (
