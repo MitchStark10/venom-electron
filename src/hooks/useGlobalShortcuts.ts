@@ -1,10 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-export const useGlobalShortcut = (shortcutKey: string, action: () => void) => {
+interface Options {
+  requireCtrlOrCmd?: boolean;
+}
+
+const defaultOptions: Options = {
+  requireCtrlOrCmd: true,
+};
+
+export const useGlobalShortcut = (
+  shortcutKey: string,
+  action: () => void,
+  options?: Options
+) => {
+  const shortcutOptions = useMemo(() => options ?? defaultOptions, [options]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === shortcutKey) {
-        console.log("processing");
+      const isCtrlOrCmdPressedOrOptedOut =
+        event.ctrlKey || event.metaKey || !shortcutOptions.requireCtrlOrCmd;
+
+      if (isCtrlOrCmdPressedOrOptedOut && event.key === shortcutKey) {
         event.preventDefault();
         action();
       }
@@ -15,5 +31,5 @@ export const useGlobalShortcut = (shortcutKey: string, action: () => void) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [shortcutKey, action]);
+  }, [shortcutKey, action, shortcutOptions]);
 };

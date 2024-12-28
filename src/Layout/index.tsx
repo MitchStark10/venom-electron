@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { getAuthToken } from "../lib/authToken";
@@ -43,6 +43,10 @@ export const Layout = () => {
   const { data: lists, refetch: refetchLists } = useListsQuery(undefined, {
     skip: !getAuthToken(),
   });
+  const [focusedSection, setFocusedSection] = useState<"navbar" | "view">(
+    "view"
+  );
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const dispatch = useDispatch();
 
   const onAddNewTask = () => {
@@ -65,7 +69,14 @@ export const Layout = () => {
     }
   };
 
+  useGlobalShortcut("ArrowUp", () => setFocusedIndex(focusedIndex - 1), {
+    requireCtrlOrCmd: false,
+  });
+  useGlobalShortcut("ArrowDown", () => setFocusedIndex(focusedIndex + 1), {
+    requireCtrlOrCmd: false,
+  });
   useGlobalShortcut("n", handleAddButtonClick);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (getAuthToken()) {
