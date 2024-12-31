@@ -5,7 +5,7 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  requireCtrlOrCmd: true,
+  requireCtrlOrCmd: false,
 };
 
 export const useGlobalShortcut = (

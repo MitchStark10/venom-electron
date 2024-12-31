@@ -1,6 +1,7 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
 import { Draggable } from "react-drag-reorder";
+import { DEFAULT_MENU_ITEMS_COUNT } from "../../lib/constants";
 import {
   useListsQuery,
   useReorderListsMutation,
@@ -58,7 +59,7 @@ export const SideBar = () => {
             key={lists?.map((l) => l.listName).join("-")}
             onPosChange={onReorder}
           >
-            {lists?.map((list) => (
+            {lists?.map((list, index) => (
               <SidebarMenuItem
                 key={list.id + list.listName}
                 icon={<TaskAlt />}
@@ -66,6 +67,7 @@ export const SideBar = () => {
                 focusViewToSelect="list"
                 listId={list.id}
                 includeMenu
+                index={index + DEFAULT_MENU_ITEMS_COUNT}
               />
             ))}
           </Draggable>

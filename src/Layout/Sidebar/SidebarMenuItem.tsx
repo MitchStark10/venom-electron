@@ -21,6 +21,7 @@ interface Props {
   listId?: number;
   onClick?: () => void;
   includeMenu?: boolean;
+  index: number;
 }
 
 const MenuItemContainer = styled(MenuItem)({
@@ -52,6 +53,7 @@ export const SidebarMenuItem: FC<Props> = ({
   listId,
   onClick,
   includeMenu,
+  index,
 }) => {
   const { focusView, selectedListId } = useSelector(
     (state: RootState) => state.focusView
@@ -101,6 +103,7 @@ export const SidebarMenuItem: FC<Props> = ({
         setShowEllipsis(false);
         setShowMenu(false);
       }}
+      tabIndex={index}
     >
       <TitleAndIconContainer>
         {icon}
