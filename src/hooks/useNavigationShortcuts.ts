@@ -5,14 +5,38 @@ export const useNavigationShortcuts = () => {
   const [focusedSection, setFocusedSection] = useState<"navbar" | "focus-view">(
     "focus-view"
   );
-  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
 
-  useGlobalShortcut("ArrowUp", () => setFocusedIndex(focusedIndex - 1), {
-    requireCtrlOrCmd: false,
-  });
-  useGlobalShortcut("ArrowDown", () => setFocusedIndex(focusedIndex + 1), {
-    requireCtrlOrCmd: false,
-  });
+  useGlobalShortcut(
+    "ArrowUp",
+    () => {
+      const focusableElement = document.querySelector(
+        `.${focusedSection} [tabindex="${focusedIndex - 1}"]`
+      );
+
+      if (focusableElement) {
+        setFocusedIndex(focusedIndex - 1);
+      }
+    },
+    {
+      requireCtrlOrCmd: false,
+    }
+  );
+  useGlobalShortcut(
+    "ArrowDown",
+    () => {
+      const focusableElement = document.querySelector(
+        `.${focusedSection} [tabindex="${focusedIndex + 1}"]`
+      );
+
+      if (focusableElement) {
+        setFocusedIndex(focusedIndex + 1);
+      }
+    },
+    {
+      requireCtrlOrCmd: false,
+    }
+  );
 
   useGlobalShortcut(
     "ArrowLeft",
@@ -39,11 +63,7 @@ export const useNavigationShortcuts = () => {
     const focusableElement = document.querySelector(
       `.${focusedSection} [tabindex="${focusedIndex}"]`
     );
-    console.log("testing focus change", {
-      focusedSection,
-      focusedIndex,
-      focusableElement,
-    });
+
     if (focusableElement) {
       (focusableElement as HTMLElement).focus();
       focusableElement.scrollIntoView({ behavior: "smooth", block: "center" });

@@ -20,7 +20,7 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(1),
   border: "1px solid transparent",
   borderRadius: theme.spacing(1),
-  "&:focus, &:hover": {
+  "&:hover": {
     border: `1px solid ${theme.palette.divider}`,
   },
   cursor: "pointer",
