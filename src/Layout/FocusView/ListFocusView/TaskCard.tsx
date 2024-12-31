@@ -31,6 +31,9 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   const [updateTask] = useUpdateTaskMutation();
   const dispatch = useDispatch();
   const tags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
+  const [isCheckedOverride, setIsCheckedOverride] = React.useState<boolean>(
+    Boolean(task.isCompleted)
+  );
 
   const onTaskNameChange = (newTaskName: string) => {
     if (newTaskName !== task.taskName) {
@@ -38,10 +41,10 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
     }
   };
 
-  const onCheckTask = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const onCheckTask = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     const newIsCompletedValue = !task.isCompleted;
-    // TODO: Delete the task if the user is not set up with a paid account
+    setIsCheckedOverride(newIsCompletedValue);
     await updateTask({
       ...task,
       isCompleted: newIsCompletedValue,
@@ -49,18 +52,28 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
         ? moment().startOf("day").toISOString()
         : null,
     });
-    // deleteTask({ id: task.id.toString() });
+  };
+
+  const onOpenTask = () => {
+    dispatch(setSelectedTask(task));
+    dispatch(setModalView("task"));
+    dispatch(setIsModalOpen(true));
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      onOpenTask();
+    } else if (e.key === " " || e.code === "Space") {
+      onCheckTask();
+    }
   };
 
   return (
     <TaskCardContainer
       ref={cardContainerRef}
-      onClick={() => {
-        dispatch(setSelectedTask(task));
-        dispatch(setModalView("task"));
-        dispatch(setIsModalOpen(true));
-      }}
+      onClick={onOpenTask}
       tabIndex={index}
+      onKeyDown={onKeyDown}
     >
       <CheckboxWithEditableLabel
         displayAs="p"
@@ -68,7 +81,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
         initialValue={task.taskName}
         onInputChange={onTaskNameChange}
         onCheckboxClick={onCheckTask}
-        isChecked={task.isCompleted}
+        isChecked={isCheckedOverride}
         listName={showListName ? task.list?.listName : undefined}
         tags={tags}
         preventEdits
