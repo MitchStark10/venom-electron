@@ -11,6 +11,7 @@ import { Task } from "../../../types/Task";
 interface Props {
   task: Task;
   showListName?: boolean;
+  index: number;
 }
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
@@ -25,7 +26,7 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
   cursor: "pointer",
 }));
 
-export const TaskCard: FC<Props> = ({ task, showListName }) => {
+export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ export const TaskCard: FC<Props> = ({ task, showListName }) => {
         dispatch(setModalView("task"));
         dispatch(setIsModalOpen(true));
       }}
+      tabIndex={index}
     >
       <CheckboxWithEditableLabel
         displayAs="p"

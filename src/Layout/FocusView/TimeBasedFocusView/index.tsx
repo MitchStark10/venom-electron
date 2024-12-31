@@ -47,6 +47,8 @@ export const TimeBasedFocusView: FC<Props> = ({
             return acc;
           }, {});
 
+  let index = 0;
+
   return (
     <div>
       <Title>{title}</Title>
@@ -61,6 +63,7 @@ export const TimeBasedFocusView: FC<Props> = ({
                 key={task.id}
                 task={task}
                 showListName={groupByOption === "date"}
+                index={index++}
               />
             ))}
           </div>

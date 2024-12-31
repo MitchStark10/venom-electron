@@ -82,6 +82,8 @@ export const ListFocusView = () => {
     (window as any)?.subscribe?.refreshTasks(() => refetchLists());
   }, [refetchLists]);
 
+  let index = 0;
+
   return (
     <div>
       <ListNameText
@@ -103,7 +105,7 @@ export const ListFocusView = () => {
               }
             >
               {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard key={task.id} task={task} index={index++} />
               ))}
             </Draggable>
           )}

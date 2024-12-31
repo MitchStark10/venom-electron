@@ -1,8 +1,9 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
+import { useNavigationShortcuts } from "../hooks/useNavigationShortcuts";
 import { getAuthToken } from "../lib/authToken";
 import { setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
@@ -43,10 +44,7 @@ export const Layout = () => {
   const { data: lists, refetch: refetchLists } = useListsQuery(undefined, {
     skip: !getAuthToken(),
   });
-  const [focusedSection, setFocusedSection] = useState<"navbar" | "view">(
-    "view"
-  );
-  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+
   const dispatch = useDispatch();
 
   const onAddNewTask = () => {
@@ -69,12 +67,7 @@ export const Layout = () => {
     }
   };
 
-  useGlobalShortcut("ArrowUp", () => setFocusedIndex(focusedIndex - 1), {
-    requireCtrlOrCmd: false,
-  });
-  useGlobalShortcut("ArrowDown", () => setFocusedIndex(focusedIndex + 1), {
-    requireCtrlOrCmd: false,
-  });
+  useNavigationShortcuts();
   useGlobalShortcut("n", handleAddButtonClick);
 
   useEffect(() => {
@@ -110,7 +103,7 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <FocusContainer>
+      <FocusContainer className="focus-view">
         <FocusView />
       </FocusContainer>
       <ModalEntryPoint />

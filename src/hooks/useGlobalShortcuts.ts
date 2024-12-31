@@ -20,7 +20,13 @@ export const useGlobalShortcut = (
       const isCtrlOrCmdPressedOrOptedOut =
         event.ctrlKey || event.metaKey || !shortcutOptions.requireCtrlOrCmd;
 
-      if (isCtrlOrCmdPressedOrOptedOut && event.key === shortcutKey) {
+      const isInputFocused = document.activeElement?.tagName === "INPUT";
+
+      if (
+        isCtrlOrCmdPressedOrOptedOut &&
+        event.key === shortcutKey &&
+        !isInputFocused
+      ) {
         event.preventDefault();
         action();
       }

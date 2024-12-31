@@ -50,7 +50,7 @@ export const SideBar = () => {
   };
 
   return (
-    <SidebarContainer>
+    <SidebarContainer className="sidebar">
       <SidebarMenuContainer>
         <SidebarCoreMenu />
         {lists && lists.length > 0 && (

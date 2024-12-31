@@ -4,10 +4,10 @@ import { RootState } from "../../store/store";
 import { CompletedFocusView } from "./CompletedFocusView";
 import { ListFocusView } from "./ListFocusView/ListFocusView";
 import { SettingsFocusView } from "./SettingsFocusView/SettingsFocusView";
+import { StandupFocusView } from "./StandupFocusView";
 import { TagsEditor } from "./TagsEditor";
 import { TodayFocusView } from "./TodayFocusView";
 import { UpcomingFocusView } from "./UpcomingFocusView";
-import { StandupFocusView } from "./StandupFocusView";
 
 export const FocusView = () => {
   const { focusView } = useSelector((state: RootState) => state.focusView);
