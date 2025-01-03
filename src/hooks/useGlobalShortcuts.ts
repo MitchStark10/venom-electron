@@ -2,10 +2,12 @@ import { useEffect, useMemo } from "react";
 
 interface Options {
   requireCtrlOrCmd?: boolean;
+  skip?: boolean;
 }
 
 const defaultOptions: Options = {
   requireCtrlOrCmd: false,
+  skip: false,
 };
 
 export const useGlobalShortcut = (
@@ -25,7 +27,8 @@ export const useGlobalShortcut = (
       if (
         isCtrlOrCmdPressedOrOptedOut &&
         event.key === shortcutKey &&
-        !isInputFocused
+        !isInputFocused &&
+        !shortcutOptions.skip
       ) {
         event.preventDefault();
         action();

@@ -62,8 +62,12 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      e.preventDefault();
+      e.stopPropagation();
       onOpenTask();
     } else if (e.key === " " || e.code === "Space") {
+      e.preventDefault();
+      e.stopPropagation();
       onCheckTask();
     }
   };

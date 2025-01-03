@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useGlobalShortcut } from "./useGlobalShortcuts";
@@ -9,41 +9,74 @@ export const useNavigationShortcuts = () => {
     (state: RootState) => state.focusView,
     shallowEqual
   );
+  const { isModalOpen } = useSelector((state: RootState) => state.modal);
 
   const [focusedSection, setFocusedSection] = useState<
     "sidebar" | "focus-view"
   >("focus-view");
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [sidebarFocusIndex, setSidebarFocusIndex] = useState<number>(0);
+  const [viewFocusIndex, setViewFocusIndex] = useState<number>(0);
+  const [focusedIndex, setFocusedIndex] = useMemo(() => {
+    return focusedSection === "sidebar"
+      ? [sidebarFocusIndex, setSidebarFocusIndex]
+      : [viewFocusIndex, setViewFocusIndex];
+  }, [focusedSection, sidebarFocusIndex, viewFocusIndex]);
 
-  useGlobalShortcut("ArrowUp", () => {
-    const focusableElement = document.querySelector(
-      `.${focusedSection} [tabindex="${focusedIndex - 1}"]`
-    );
+  useGlobalShortcut(
+    "ArrowUp",
+    () => {
+      const focusableElement = document.querySelector(
+        `.${focusedSection} [tabindex="${focusedIndex - 1}"]`
+      );
 
-    if (focusableElement) {
-      setFocusedIndex(focusedIndex - 1);
+      if (focusableElement) {
+        setFocusedIndex(focusedIndex - 1);
+      }
+    },
+    {
+      skip: isModalOpen,
     }
-  });
-  useGlobalShortcut("ArrowDown", () => {
-    const focusableElement = document.querySelector(
-      `.${focusedSection} [tabindex="${focusedIndex + 1}"]`
-    );
+  );
+  useGlobalShortcut(
+    "ArrowDown",
+    () => {
+      const focusableElement = document.querySelector(
+        `.${focusedSection} [tabindex="${focusedIndex + 1}"]`
+      );
 
-    if (focusableElement) {
-      setFocusedIndex(focusedIndex + 1);
+      if (focusableElement) {
+        setFocusedIndex(focusedIndex + 1);
+      }
+    },
+    {
+      skip: isModalOpen,
     }
-  });
+  );
 
-  useGlobalShortcut("ArrowLeft", () => {
-    setFocusedSection("sidebar");
-    setFocusedIndex(0);
-  });
-  useGlobalShortcut("ArrowRight", () => {
-    setFocusedSection("focus-view");
-    setFocusedIndex(0);
-  });
+  useGlobalShortcut(
+    "ArrowLeft",
+    () => {
+      setFocusedSection("sidebar");
+    },
+    {
+      skip: isModalOpen,
+    }
+  );
+  useGlobalShortcut(
+    "ArrowRight",
+    () => {
+      setFocusedSection("focus-view");
+    },
+    {
+      skip: isModalOpen,
+    }
+  );
 
   useEffect(() => {
+    console.log(
+      "query to test",
+      `.${focusedSection} [tabindex="${focusedIndex}"]`
+    );
     const focusableElement: HTMLElement | null = document.querySelector(
       `.${focusedSection} [tabindex="${focusedIndex}"]`
     );
@@ -59,8 +92,6 @@ export const useNavigationShortcuts = () => {
   }, [focusedIndex, focusedSection]);
 
   useEffect(() => {
-    if (focusedSection === "focus-view") {
-      setFocusedIndex(-1);
-    }
-  }, [focusView, selectedListId, focusedSection]);
+    setViewFocusIndex(0);
+  }, [focusView, selectedListId]);
 };
