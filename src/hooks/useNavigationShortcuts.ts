@@ -22,61 +22,59 @@ export const useNavigationShortcuts = () => {
       : [viewFocusIndex, setViewFocusIndex];
   }, [focusedSection, sidebarFocusIndex, viewFocusIndex]);
 
-  useGlobalShortcut(
-    "ArrowUp",
-    () => {
-      const focusableElement = document.querySelector(
-        `.${focusedSection} [tabindex="${focusedIndex - 1}"]`
-      );
+  const handleArrowUp = () => {
+    const focusableElement = document.querySelector(
+      `.${focusedSection} [tabindex="${focusedIndex - 1}"]`
+    );
 
-      if (focusableElement) {
-        setFocusedIndex(focusedIndex - 1);
-      }
-    },
-    {
-      skip: isModalOpen,
+    if (focusableElement) {
+      setFocusedIndex(focusedIndex - 1);
     }
-  );
-  useGlobalShortcut(
-    "ArrowDown",
-    () => {
-      const focusableElement = document.querySelector(
-        `.${focusedSection} [tabindex="${focusedIndex + 1}"]`
-      );
+  };
+  const handleArrowDown = () => {
+    const focusableElement = document.querySelector(
+      `.${focusedSection} [tabindex="${focusedIndex + 1}"]`
+    );
 
-      if (focusableElement) {
-        setFocusedIndex(focusedIndex + 1);
-      }
-    },
-    {
-      skip: isModalOpen,
+    if (focusableElement) {
+      setFocusedIndex(focusedIndex + 1);
     }
-  );
+  };
+  const handleArrowLeft = () => {
+    setFocusedSection("sidebar");
+  };
+  const handleArrowRight = () => {
+    setFocusedSection("focus-view");
+  };
 
-  useGlobalShortcut(
-    "ArrowLeft",
-    () => {
-      setFocusedSection("sidebar");
-    },
-    {
-      skip: isModalOpen,
-    }
-  );
-  useGlobalShortcut(
-    "ArrowRight",
-    () => {
-      setFocusedSection("focus-view");
-    },
-    {
-      skip: isModalOpen,
-    }
-  );
+  useGlobalShortcut("ArrowUp", handleArrowUp, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("ArrowDown", handleArrowDown, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("ArrowLeft", handleArrowLeft, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("ArrowRight", handleArrowRight, {
+    skip: isModalOpen,
+  });
+
+  // Vim keybindings
+  useGlobalShortcut("k", handleArrowUp, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("j", handleArrowDown, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("h", handleArrowLeft, {
+    skip: isModalOpen,
+  });
+  useGlobalShortcut("l", handleArrowRight, {
+    skip: isModalOpen,
+  });
 
   useEffect(() => {
-    console.log(
-      "query to test",
-      `.${focusedSection} [tabindex="${focusedIndex}"]`
-    );
     const focusableElement: HTMLElement | null = document.querySelector(
       `.${focusedSection} [tabindex="${focusedIndex}"]`
     );
