@@ -17,7 +17,7 @@ export const StandupFocusView = () => {
 
   return (
     <div>
-      <Title>Standup</Title>
+      <Title>Daily Report</Title>
       <div>
         <SectionDivider>Yesterday</SectionDivider>
         {standupTasks?.yesterday.length === 0 && (

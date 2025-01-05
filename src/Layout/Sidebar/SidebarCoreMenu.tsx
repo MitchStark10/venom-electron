@@ -12,15 +12,15 @@ export const SidebarCoreMenu = () => {
         index={0}
       />
       <SidebarMenuItem
-        icon={<Upcoming />}
-        title="Upcoming"
-        focusViewToSelect="upcoming"
+        icon={<Summarize />}
+        title="Daily Report"
+        focusViewToSelect="standup"
         index={1}
       />
       <SidebarMenuItem
-        icon={<Summarize />}
-        title="Standup"
-        focusViewToSelect="standup"
+        icon={<Upcoming />}
+        title="Upcoming"
+        focusViewToSelect="upcoming"
         index={2}
       />
       <SidebarMenuItem

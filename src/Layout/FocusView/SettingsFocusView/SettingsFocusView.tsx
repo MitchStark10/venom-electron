@@ -2,8 +2,10 @@ import {
   Autocomplete,
   Box,
   Button,
+  Checkbox,
   CircularProgress,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -44,6 +46,9 @@ export const SettingsFocusView = () => {
         value: list.id,
       })) || []
   );
+  const [dailyReportIgnoreWeekends, setDailyReportIgnoreWeekends] =
+    useState(false);
+
   const handleLogout = () => {
     deleteAuthToken();
     window.location.reload();
@@ -54,6 +59,22 @@ export const SettingsFocusView = () => {
     const response = await updateSettings({
       autoDeleteTasks: e.target.value as AutoDeleteOptions,
       standupListIds: standupLists.map((list) => list.value),
+      dailyReportIgnoreWeekends: settingsData?.dailyReportIgnoreWeekends,
+    });
+
+    if (!("error" in response)) {
+      toast.success("Settings updated successfully");
+    } else {
+      toast.error("Failed to update settings");
+    }
+  };
+
+  const handleChangeIgnoreWeekends = async () => {
+    setDailyReportIgnoreWeekends(!dailyReportIgnoreWeekends);
+    const response = await updateSettings({
+      autoDeleteTasks: autoDeleteTasksSelection as AutoDeleteOptions,
+      standupListIds: standupLists.map((list) => list.value),
+      dailyReportIgnoreWeekends: !dailyReportIgnoreWeekends,
     });
 
     if (!("error" in response)) {
@@ -91,6 +112,7 @@ export const SettingsFocusView = () => {
   useEffect(() => {
     if (settingsData) {
       setAutoDeleteTasksSelection(settingsData.autoDeleteTasks);
+      setDailyReportIgnoreWeekends(settingsData.dailyReportIgnoreWeekends);
     }
   }, [settingsData]);
 
@@ -101,7 +123,7 @@ export const SettingsFocusView = () => {
         <CircularProgress />
       ) : (
         <Box sx={{ px: theme.spacing(1) }}>
-          <Typography variant="h6">Standup</Typography>
+          <Typography variant="h6">Daily Report</Typography>
           <DividerWithPadding />
           <Box
             sx={{
@@ -131,11 +153,20 @@ export const SettingsFocusView = () => {
             <Autocomplete
               options={listOptions}
               renderInput={(params) => (
-                <TextField {...params} label="Standup Lists" />
+                <TextField {...params} label="Daily Report Lists" />
               )}
               multiple
               value={standupLists}
               onChange={handleStandupListsSelection}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={dailyReportIgnoreWeekends}
+                  onChange={handleChangeIgnoreWeekends}
+                />
+              }
+              label="Use work week calendar for daily report"
             />
           </Box>
           <DividerWithPadding />
