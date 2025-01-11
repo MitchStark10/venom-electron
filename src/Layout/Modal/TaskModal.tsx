@@ -83,6 +83,7 @@ export const TaskModal = () => {
         display: "flex",
         flexDirection: "column",
         gap: theme.spacing(2),
+        minWidth: "400px",
       }}
     >
       <ModalTitle>{selectedTask ? "Edit Task" : "New Task"}</ModalTitle>
@@ -94,7 +95,6 @@ export const TaskModal = () => {
             <Autocomplete
               options={lists || []}
               getOptionLabel={(option: List) => option.listName}
-              style={{ width: 300 }}
               onChange={(_, data) => {
                 localStorage.setItem(
                   "newTaskQuickFormListId",
@@ -109,8 +109,10 @@ export const TaskModal = () => {
                   label="List"
                   variant="outlined"
                   value={value}
+                  fullWidth
                 />
               )}
+              fullWidth
             />
           );
         }}
@@ -119,6 +121,7 @@ export const TaskModal = () => {
         control={control}
         name="taskName"
         label="Task Name"
+        multiline
         autoFocus
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -127,7 +130,12 @@ export const TaskModal = () => {
           }
         }}
       />
-      <ControlledDatePicker control={control} name="dueDate" label="Due Date" clearable />
+      <ControlledDatePicker
+        control={control}
+        name="dueDate"
+        label="Due Date"
+        clearable
+      />
       <Controller
         control={control}
         name="tags"

@@ -22,7 +22,9 @@ export const useGlobalShortcut = (
       const isCtrlOrCmdPressedOrOptedOut =
         event.ctrlKey || event.metaKey || !shortcutOptions.requireCtrlOrCmd;
 
-      const isInputFocused = document.activeElement?.tagName === "INPUT";
+      const isInputFocused =
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA";
 
       if (
         isCtrlOrCmdPressedOrOptedOut &&
