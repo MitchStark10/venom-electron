@@ -22,6 +22,7 @@ const App: FC = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/feedback" element={<Feedback />} />
+              <Route path="/delete-account" element={<Layout />} />
               <Route path="*" element={<Layout />} />
             </Routes>
           </BrowserRouter>

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { useNavigationShortcuts } from "../hooks/useNavigationShortcuts";
 import { getAuthToken } from "../lib/authToken";
-import { setSelectedTask } from "../store/slices/focusViewSlice";
+import { setFocusView, setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
 import { FocusView } from "./FocusView";
@@ -13,6 +13,7 @@ import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
+import { useLocation, useNavigate } from "react-router";
 
 export const StyledLayout = styled("div")(({ theme }) => ({
   backgroundColor:
@@ -45,6 +46,8 @@ export const Layout = () => {
     skip: !getAuthToken(),
   });
 
+  const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onAddNewTask = () => {
@@ -81,6 +84,14 @@ export const Layout = () => {
       clearInterval(interval);
     };
   }, [refetchLists]);
+
+  useEffect(() => {
+    const isOnDeletePage = location.pathname === "/delete-account";
+    if (isOnDeletePage && getAuthToken()) {
+      dispatch(setFocusView("settings"));
+      navigate("/");
+    }
+  }, [location.pathname, dispatch, navigate]);
 
   if (!getAuthToken()) {
     return (

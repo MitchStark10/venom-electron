@@ -61,6 +61,15 @@ export const userApi = createApi({
         });
       },
     }),
+    deleteAccount: builder.mutation<void, void>({
+      query: () => ({
+        url: "/settings/full-account",
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -69,4 +78,5 @@ export const {
   useSignupMutation,
   useSettingsQuery,
   useUpdateSettingsMutation,
+  useDeleteAccountMutation,
 } = userApi;

@@ -15,11 +15,13 @@ import {
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { DividerWithPadding } from "../../../components/DividerWithPadding";
 import { Title } from "../../../components/Title";
 import { deleteAuthToken } from "../../../lib/authToken";
 import { useListsQuery } from "../../../store/slices/listSlice";
+import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import {
   useSettingsQuery,
   useUpdateSettingsMutation,
@@ -48,6 +50,7 @@ export const SettingsFocusView = () => {
   );
   const [dailyReportIgnoreWeekends, setDailyReportIgnoreWeekends] =
     useState(false);
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     deleteAuthToken();
@@ -170,9 +173,26 @@ export const SettingsFocusView = () => {
             />
           </Box>
           <DividerWithPadding />
-          <Button variant="outlined" onClick={() => handleLogout()}>
-            Logout
-          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              gap: theme.spacing(2),
+            }}
+          >
+            <Button variant="outlined" onClick={() => handleLogout()}>
+              Logout
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                dispatch(setIsModalOpen(true));
+                dispatch(setModalView("deleteAccount"));
+              }}
+            >
+              Delete Account
+            </Button>
+          </Box>
         </Box>
       )}
     </div>
