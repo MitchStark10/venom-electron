@@ -74,6 +74,22 @@ export const Layout = () => {
   useGlobalShortcut("n", handleAddButtonClick);
 
   useEffect(() => {
+    const onVisbiilityChange = () => {
+      if (document.visibilityState === "visible" && getAuthToken()) {
+        refetchLists();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisbiilityChange);
+    window.addEventListener("focus", onVisbiilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisbiilityChange);
+      window.removeEventListener("focus", onVisbiilityChange);
+    };
+  }, [refetchLists]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (getAuthToken()) {
         refetchLists();
