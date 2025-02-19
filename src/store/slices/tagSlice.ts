@@ -56,6 +56,17 @@ export const tagsApi = createApi({
       }),
       invalidatesTags: ["Tags"],
     }),
+    reorderTags: builder.mutation<Tag[], Tag[]>({
+      query: (tags) => ({
+        url: "/tags/reorder",
+        method: "PUT",
+        body: { tags },
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }),
+      invalidatesTags: ["Tags"],
+    }),
   }),
 });
 
@@ -64,4 +75,5 @@ export const {
   useCreateTagMutation,
   useDeleteTagMutation,
   useUpdateTagMutation,
+  useReorderTagsMutation,
 } = tagsApi;
