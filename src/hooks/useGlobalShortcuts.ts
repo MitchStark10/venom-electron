@@ -19,15 +19,18 @@ export const useGlobalShortcut = (
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const isCtrlOrCmdPressedOrOptedOut =
-        event.ctrlKey || event.metaKey || !shortcutOptions.requireCtrlOrCmd;
+      const isCtrlOrCmdPressed =
+        (event.ctrlKey || event.metaKey) && shortcutOptions.requireCtrlOrCmd;
+
+      const isCtrlAndCmdOptedOut =
+        !shortcutOptions.requireCtrlOrCmd && !event.ctrlKey && !event.metaKey;
 
       const isInputFocused =
         document.activeElement?.tagName === "INPUT" ||
         document.activeElement?.tagName === "TEXTAREA";
 
       if (
-        isCtrlOrCmdPressedOrOptedOut &&
+        (isCtrlOrCmdPressed || isCtrlAndCmdOptedOut) &&
         event.key === shortcutKey &&
         !isInputFocused &&
         !shortcutOptions.skip
