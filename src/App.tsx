@@ -10,6 +10,7 @@ import { Layout } from "./Layout";
 import { Feedback } from "./components/Feedback";
 import { useTheme } from "./hooks/useTheme";
 import { store } from "./store/store";
+import { ResetPassword } from "./components/ResetPassword";
 
 const App: FC = () => {
   const theme = useTheme();
@@ -23,6 +24,7 @@ const App: FC = () => {
             <Routes>
               <Route path="/feedback" element={<Feedback />} />
               <Route path="/delete-account" element={<Layout />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<Layout />} />
             </Routes>
           </BrowserRouter>
