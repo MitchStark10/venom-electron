@@ -72,7 +72,7 @@ export const userApi = createApi({
     }),
     resetPassword: builder.mutation<
       LoginResponse,
-      { token: string; password: string; userId: string }
+      { token: string; password: string; userId: number }
     >({
       query: (data) => ({
         url: "/users/reset_password",

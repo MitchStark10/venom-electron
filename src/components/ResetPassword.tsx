@@ -6,7 +6,6 @@ import { Button } from "./Button";
 import { StyledLayout } from "../Layout";
 import { useSearchParams } from "react-router";
 import { writeAuthToken } from "../lib/authToken";
-import { toast } from "react-toastify";
 
 interface ResetPasswordFormData {
   password: string;
@@ -66,7 +65,7 @@ export const ResetPassword = () => {
 
       // Reset password logic here
       const response = await resetPassword({
-        userId: userId!,
+        userId: Number(userId),
         token: token!,
         password,
       });
