@@ -6,6 +6,7 @@ import { Button } from "./Button";
 import { StyledLayout } from "../Layout";
 import { useSearchParams } from "react-router";
 import { writeAuthToken } from "../lib/authToken";
+import { ErrorText } from "./ErrorText";
 
 interface ResetPasswordFormData {
   password: string;
@@ -105,6 +106,9 @@ export const ResetPassword = () => {
             />
           )}
         />
+        {formState.errors.password && (
+          <ErrorText>{formState.errors.password.message}</ErrorText>
+        )}
         <Controller
           control={control}
           name="confirmPassword"
@@ -119,6 +123,9 @@ export const ResetPassword = () => {
             />
           )}
         />
+        {formState.errors.confirmPassword && (
+          <ErrorText>{formState.errors.confirmPassword.message}</ErrorText>
+        )}
         <Button
           variant="contained"
           onClick={onResetPasswordClick}
