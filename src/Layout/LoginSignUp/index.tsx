@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Button } from "../../components/Button";
 import { DividerWithPadding } from "../../components/DividerWithPadding";
@@ -21,6 +21,8 @@ const LoginSignUpContainer = styled("div")(({ theme }) => ({
 
 export const LoginSignUp = () => {
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
+  const theme = useTheme();
+
   return (
     <LoginSignUpContainer>
       {formMode === "login" ? <LoginForm /> : <SignUpForm />}
@@ -32,6 +34,7 @@ export const LoginSignUp = () => {
       <Button
         variant="outlined"
         onClick={() => setFormMode(formMode === "login" ? "signup" : "login")}
+        sx={{ mt: theme.spacing(2) }}
       >
         {formMode === "login" ? "Sign Up" : "Log In"}
       </Button>

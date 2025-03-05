@@ -9,7 +9,11 @@ import {
   hasNestedError,
   isResponseErrorType,
 } from "../../lib/isResponseErrorType";
-import { useLoginMutation } from "../../store/slices/userSlice";
+import {
+  useLoginMutation,
+  useRequestPasswordResetEmailMutation,
+} from "../../store/slices/userSlice";
+import { toast } from "react-toastify";
 
 interface LoginFormData {
   email: string;
@@ -21,13 +25,18 @@ const LoginFormContainer = styled("div")(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  gap: theme.spacing(1),
+  gap: theme.spacing(3),
 }));
 
 export const LoginForm = () => {
   const { control, handleSubmit, getValues } = useForm<LoginFormData>();
   const [error, setError] = useState<string | null>(null);
-  const [login, { isLoading, isError }] = useLoginMutation();
+  const [isInResetPassword, setIsInResetPassword] = useState(false);
+  const [login, { isLoading: isLoginLoading, isError }] = useLoginMutation();
+  const [requestPasswordReset, { isLoading: isPasswordResetRequestLoading }] =
+    useRequestPasswordResetEmailMutation();
+
+  const isLoading = isLoginLoading || isPasswordResetRequestLoading;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -54,9 +63,31 @@ export const LoginForm = () => {
     document.location.reload();
   });
 
+  const requestPasswordResetEmail = async () => {
+    const { email } = getValues();
+    if (!email) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    // Send email to user
+    const response = await requestPasswordReset({ email });
+
+    if (isResponseErrorType(response)) {
+      if (hasNestedError(response)) {
+        setError(response.error.data.error);
+      } else {
+        setError("Error sending email");
+      }
+      return;
+    }
+
+    toast.success("Email sent. Check your inbox for further instructions.");
+  };
+
   return (
     <LoginFormContainer>
-      <FormHeader>Log In</FormHeader>
+      <FormHeader>{isInResetPassword ? "Reset Password" : "Log In"}</FormHeader>
       <Controller
         control={control}
         name="email"
@@ -71,27 +102,38 @@ export const LoginForm = () => {
           />
         )}
       />
-      <Controller
-        control={control}
-        name="password"
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            label="Password"
-            type="password"
-            onChange={onChange}
-            value={value}
-            onKeyDown={onKeyDown}
-            sx={{ width: "250px" }}
-          />
-        )}
-      />
+      {!isInResetPassword && (
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, value } }) => (
+            <TextField
+              label="Password"
+              type="password"
+              onChange={onChange}
+              value={value}
+              onKeyDown={onKeyDown}
+              sx={{ width: "250px" }}
+            />
+          )}
+        />
+      )}
       {error ? <ErrorText>{error}</ErrorText> : null}
       <Button
         variant="contained"
-        onClick={onLoginClick}
+        onClick={isInResetPassword ? requestPasswordResetEmail : onLoginClick}
         loading={isLoading && !isError}
       >
-        Log In
+        {isInResetPassword ? "Reset Password" : "Log In"}
+      </Button>
+      <Button
+        variant="text"
+        sx={{ textTransform: "none", fontSize: "16px" }}
+        onClick={() => setIsInResetPassword(!isInResetPassword)}
+      >
+        {isInResetPassword
+          ? "Remembered your password? Click here to return back to login"
+          : "Forgot your password? Click here to reset it."}
       </Button>
     </LoginFormContainer>
   );

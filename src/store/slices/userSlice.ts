@@ -80,6 +80,14 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+
+    requestPasswordResetEmail: builder.mutation<void, { email: string }>({
+      query: (email) => ({
+        url: "/users/request_password_reset",
+        method: "POST",
+        body: email,
+      }),
+    }),
   }),
 });
 
@@ -90,4 +98,5 @@ export const {
   useUpdateSettingsMutation,
   useDeleteAccountMutation,
   useResetPasswordMutation,
+  useRequestPasswordResetEmailMutation,
 } = userApi;
