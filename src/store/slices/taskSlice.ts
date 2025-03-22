@@ -5,7 +5,6 @@ import { Task } from "../../types/Task";
 import { listsApi } from "./listSlice";
 
 export interface UpdateReorderTask {
-  fieldToUpdate: "listViewOrder";
   id: number;
   newOrder: number;
   newDueDate?: string | null;
@@ -115,6 +114,12 @@ export const tasksApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
+      invalidatesTags: [
+        "Tasks",
+        "CompletedTasks",
+        "TodayTasks",
+        "UpcomingTasks",
+      ],
       onQueryStarted: (_arg, api) => {
         api.queryFulfilled.then(() => {
           api.dispatch(listsApi.util.invalidateTags(["Lists"]));

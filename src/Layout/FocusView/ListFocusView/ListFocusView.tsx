@@ -5,16 +5,13 @@ import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { EditableText } from "../../../components/EditableText";
 import { SectionDivider } from "../../../components/SectionDivider";
+import { useReorder } from "../../../hooks/useReorder";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
-import { taskSorter } from "../../../lib/taskSorter";
+import { useTaskSorter } from "../../../lib/taskSorter";
 import {
   useListsQuery,
   useUpdateListMutation,
 } from "../../../store/slices/listSlice";
-import {
-  UpdateReorderTask,
-  useReorderTaskMutation,
-} from "../../../store/slices/taskSlice";
 import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
@@ -29,38 +26,15 @@ export const ListFocusView = () => {
     shallowEqual
   );
   const [updateListName] = useUpdateListMutation();
-  const [reorderTask] = useReorderTaskMutation();
   const { data: lists, refetch: refetchLists } = useListsQuery();
+  const onReorder = useReorder();
+  const taskSorter = useTaskSorter();
 
   const selectedList = lists?.find((list) => list.id === selectedListId);
   const handleListNameChange = (newListName: string) => {
     if (newListName && selectedListId) {
       updateListName({ id: selectedListId.toString(), listName: newListName });
     }
-  };
-
-  const onReorder = (prevPos: number, newPos: number, tasks: Task[]) => {
-    const posDiff = newPos - prevPos;
-    const tasksCopy = [...tasks];
-    const [removed] = tasksCopy.splice(prevPos, 1);
-
-    const allTasksCopy = [...selectedList!.tasks].sort(taskSorter);
-    const indexOfTaskToReorder = allTasksCopy.findIndex(
-      (task) => task.id === removed.id
-    );
-    allTasksCopy.splice(indexOfTaskToReorder, 1);
-    allTasksCopy.splice(indexOfTaskToReorder + posDiff, 0, removed);
-
-    const reorderedTasksRequestBody: UpdateReorderTask[] = allTasksCopy.map(
-      (task, index) => ({
-        fieldToUpdate: "listViewOrder",
-        id: task.id,
-        newOrder: index,
-        taskName: task.taskName,
-        newDueDate: task.dueDate,
-      })
-    );
-    reorderTask({ tasksToUpdate: reorderedTasksRequestBody });
   };
 
   const tasksOrganizedByDate =

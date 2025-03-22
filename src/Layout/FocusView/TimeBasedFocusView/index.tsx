@@ -3,9 +3,11 @@ import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { Title } from "../../../components/Title";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
-import { taskSorter } from "../../../lib/taskSorter";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "../ListFocusView/TaskCard";
+import { Draggable } from "react-drag-reorder";
+import { useReorder } from "../../../hooks/useReorder";
+import { useTaskSorter } from "../../../lib/taskSorter";
 
 type GroupByOptions = "date" | "list";
 
@@ -24,6 +26,9 @@ export const TimeBasedFocusView: FC<Props> = ({
   deleteAllTasks,
   groupByOption = "list",
 }) => {
+  const onReorder = useReorder();
+  const taskSorter = useTaskSorter();
+
   const groupedTasks =
     groupByOption === "list"
       ? tasks?.reduce<Record<number, Task[]>>((acc, task) => {
@@ -58,14 +63,21 @@ export const TimeBasedFocusView: FC<Props> = ({
             <SectionDivider>
               {groupByOption === "list" ? tasks[0].list?.listName : key}
             </SectionDivider>
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                showListName={groupByOption === "date"}
-                index={index++}
-              />
-            ))}
+            <Draggable
+              key={tasks.map((task) => JSON.stringify(task)).join("")}
+              onPosChange={(prevOrder, newOrder) =>
+                onReorder(prevOrder, newOrder, tasks)
+              }
+            >
+              {tasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  showListName={groupByOption === "date"}
+                  index={index++}
+                />
+              ))}
+            </Draggable>
           </div>
         );
       })}

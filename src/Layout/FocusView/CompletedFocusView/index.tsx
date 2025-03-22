@@ -14,6 +14,7 @@ export const CompletedFocusView = () => {
       title="Completed"
       tasks={completedTasks || []}
       deleteAllTasks={deleteAllCompletedTasks}
+      groupByOption="date"
     />
   );
 };
