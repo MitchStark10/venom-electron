@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Task } from "../types/Task";
 
-export const useTaskSorter = () => {
+export const useTaskSorter = (field: "listViewOrder" | "combinedViewOrder") => {
   const taskSorter = (a: Task, b: Task) => {
     if (!a.dueDate && !b.dueDate) {
       return 0;
@@ -10,8 +10,8 @@ export const useTaskSorter = () => {
     } else if (!b.dueDate) {
       return -1;
     } else if (a.dueDate === b.dueDate) {
-      const listAViewOrder = a.listViewOrder ?? Infinity;
-      const listBViewOrder = b.listViewOrder ?? Infinity;
+      const listAViewOrder = a[field] ?? Infinity;
+      const listBViewOrder = b[field] ?? Infinity;
 
       // Check the sort order
       if (listAViewOrder > listBViewOrder) {

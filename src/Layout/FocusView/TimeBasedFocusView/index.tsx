@@ -27,7 +27,9 @@ export const TimeBasedFocusView: FC<Props> = ({
   groupByOption = "list",
 }) => {
   const onReorder = useReorder();
-  const taskSorter = useTaskSorter();
+  const taskSorter = useTaskSorter(
+    groupByOption === "list" ? "listViewOrder" : "combinedViewOrder"
+  );
 
   const groupedTasks =
     groupByOption === "list"

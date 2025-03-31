@@ -28,7 +28,7 @@ export const ListFocusView = () => {
   const [updateListName] = useUpdateListMutation();
   const { data: lists, refetch: refetchLists } = useListsQuery();
   const onReorder = useReorder();
-  const taskSorter = useTaskSorter();
+  const taskSorter = useTaskSorter("listViewOrder");
 
   const selectedList = lists?.find((list) => list.id === selectedListId);
   const handleListNameChange = (newListName: string) => {

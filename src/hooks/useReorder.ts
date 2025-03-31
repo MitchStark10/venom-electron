@@ -17,18 +17,15 @@ export const useReorder = () => {
 
     const reorderedTasksRequestBody: UpdateReorderTask[] = tasksCopy.map(
       (task, index) => {
-        // If on the list view, swap out the order from whatever value exists at this index in the original array.
-        // this logic preserves the order of the tasks across all views
-        const newOrder =
-          focusView === "list" && tasks[index].listViewOrder
-            ? tasks[index].listViewOrder
-            : index;
-
         return {
           id: task.id,
-          newOrder,
+          newOrder: index,
           taskName: task.taskName,
           newDueDate: task.dueDate,
+          fieldToUpdate:
+            focusView === "list" || focusView === "today"
+              ? "listViewOrder"
+              : "combinedViewOrder",
         };
       }
     );

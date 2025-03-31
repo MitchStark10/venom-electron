@@ -8,6 +8,7 @@ export interface UpdateReorderTask {
   id: number;
   newOrder: number;
   newDueDate?: string | null;
+  fieldToUpdate: "listViewOrder" | "combinedViewOrder";
 }
 
 export interface StandupTasksResponse {
