@@ -10,7 +10,7 @@ export const listsApi = createApi({
   endpoints: (builder) => ({
     lists: builder.query<List[], void>({
       query: () => ({
-        url: "/lists",
+        url: `/lists?today=${new Date().toLocaleDateString()}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
