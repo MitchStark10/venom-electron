@@ -25,6 +25,7 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
     () => mapTagsToOptions(tags, colorMap),
     [tags, colorMap]
   );
+
   const autocompleteValue = useMemo(
     () => mapTagsToOptions(value, colorMap),
     [value, colorMap]
@@ -39,6 +40,13 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
         const selectedTags = tags?.filter((tag) =>
           newValueIds.includes(tag.id)
         );
+
+        // Check for the auto-generated overdue tag, and leave it selected if it already was.
+        const existingOverdueTag = value.find((tag) => tag.id === -1);
+        if (existingOverdueTag) {
+          selectedTags?.push(existingOverdueTag);
+        }
+
         onChange(selectedTags ?? []);
       }}
       multiple
@@ -58,6 +66,9 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
               backgroundColor: option.backgroundColor,
               color: option.color,
             }}
+            onDelete={
+              option.id === -1 ? undefined : getTagProps({ index }).onDelete
+            }
           />
         ))
       }
