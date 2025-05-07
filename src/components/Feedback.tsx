@@ -7,6 +7,7 @@ import {
   useSubmitFeedbackMutation,
 } from "../store/slices/feedbackSlice";
 import { ControlledTextField } from "./ControlledTextField";
+import { Header } from "./Header";
 
 export const Feedback = () => {
   const { control, handleSubmit, reset, watch } = useForm<FeedbackFormData>();
@@ -34,59 +35,62 @@ export const Feedback = () => {
   });
 
   return (
-    <StyledLayout>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: 2,
-          width: "100vw",
-          padding: "20px",
-        }}
-      >
+    <>
+      <Header />{" "}
+      <StyledLayout accountForHeader>
         <Box
           sx={{
-            width: "100%",
-            maxWidth: "600px",
             display: "flex",
-            gap: "8px",
+            justifyContent: "flex-start",
+            alignItems: "center",
             flexDirection: "column",
+            gap: 2,
+            width: "100vw",
+            padding: "20px",
           }}
         >
-          <Typography variant="h3" component="h1">
-            Feedback
-          </Typography>
-          <ControlledTextField
-            control={control}
-            name="message"
-            label="Feedback"
-            multiline
-            rows={4}
-            fullWidth
-          />
-          <ControlledTextField
-            control={control}
-            name="email"
-            label="Email"
-            fullWidth
-          />
-          <ControlledTextField
-            control={control}
-            name="name"
-            label="Name"
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            onClick={onSubmit}
-            disabled={!name || !message || !email}
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              display: "flex",
+              gap: "8px",
+              flexDirection: "column",
+            }}
           >
-            Submit
-          </Button>
+            <Typography variant="h3" component="h1">
+              Feedback
+            </Typography>
+            <ControlledTextField
+              control={control}
+              name="message"
+              label="Feedback"
+              multiline
+              rows={4}
+              fullWidth
+            />
+            <ControlledTextField
+              control={control}
+              name="email"
+              label="Email"
+              fullWidth
+            />
+            <ControlledTextField
+              control={control}
+              name="name"
+              label="Name"
+              fullWidth
+            />
+            <Button
+              variant="contained"
+              onClick={onSubmit}
+              disabled={!name || !message || !email}
+            >
+              Submit
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </StyledLayout>
+      </StyledLayout>
+    </>
   );
 };

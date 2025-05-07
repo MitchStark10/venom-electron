@@ -6,3 +6,5 @@ export const createMuiTheme = (mode: "light" | "dark") =>
       mode: mode,
     },
   });
+
+export const HEADER_HEIGHT = "80px";

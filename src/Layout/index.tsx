@@ -14,8 +14,11 @@ import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
 import { useLocation, useNavigate } from "react-router";
+import { HEADER_HEIGHT } from "../muiTheme";
 
-export const StyledLayout = styled("div")(({ theme }) => ({
+export const StyledLayout = styled("div", {
+  shouldForwardProp: (prop) => prop !== "accountForHeader",
+})<{ accountForHeader?: boolean }>(({ theme, accountForHeader = false }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
       ? theme.palette.grey[800]
@@ -24,7 +27,7 @@ export const StyledLayout = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   width: "100vw",
-  height: "100vh",
+  height: accountForHeader ? `calc(100vh - ${HEADER_HEIGHT})` : "100vh",
 }));
 
 const FocusContainer = styled("div")(({ theme }) => ({

@@ -7,6 +7,7 @@ import { StyledLayout } from "../Layout";
 import { useSearchParams } from "react-router";
 import { writeAuthToken } from "../lib/authToken";
 import { ErrorText } from "./ErrorText";
+import { Header } from "./Header";
 
 interface ResetPasswordFormData {
   password: string;
@@ -89,52 +90,55 @@ export const ResetPassword = () => {
   }
 
   return (
-    <StyledLayout>
-      <ResetPasswordFormContainer>
-        <FormHeader>Reset Password</FormHeader>
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              label="Password"
-              type="password"
-              onChange={onChange}
-              value={value}
-              onKeyDown={onKeyDown}
-              sx={{ width: "250px" }}
-            />
+    <>
+      <Header />
+      <StyledLayout accountForHeader>
+        <ResetPasswordFormContainer>
+          <FormHeader>Reset Password</FormHeader>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                label="Password"
+                type="password"
+                onChange={onChange}
+                value={value}
+                onKeyDown={onKeyDown}
+                sx={{ width: "250px" }}
+              />
+            )}
+          />
+          {formState.errors.password && (
+            <ErrorText>{formState.errors.password.message}</ErrorText>
           )}
-        />
-        {formState.errors.password && (
-          <ErrorText>{formState.errors.password.message}</ErrorText>
-        )}
-        <Controller
-          control={control}
-          name="confirmPassword"
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              label="Confirm Password"
-              type="password"
-              onChange={onChange}
-              value={value}
-              onKeyDown={onKeyDown}
-              sx={{ width: "250px" }}
-            />
+          <Controller
+            control={control}
+            name="confirmPassword"
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                label="Confirm Password"
+                type="password"
+                onChange={onChange}
+                value={value}
+                onKeyDown={onKeyDown}
+                sx={{ width: "250px" }}
+              />
+            )}
+          />
+          {formState.errors.confirmPassword && (
+            <ErrorText>{formState.errors.confirmPassword.message}</ErrorText>
           )}
-        />
-        {formState.errors.confirmPassword && (
-          <ErrorText>{formState.errors.confirmPassword.message}</ErrorText>
-        )}
-        <Button
-          variant="contained"
-          onClick={onResetPasswordClick}
-          loading={isLoading}
-          disabled={!formState.isDirty}
-        >
-          Reset Passsword
-        </Button>
-      </ResetPasswordFormContainer>
-    </StyledLayout>
+          <Button
+            variant="contained"
+            onClick={onResetPasswordClick}
+            loading={isLoading}
+            disabled={!formState.isDirty}
+          >
+            Reset Passsword
+          </Button>
+        </ResetPasswordFormContainer>
+      </StyledLayout>
+    </>
   );
 };
