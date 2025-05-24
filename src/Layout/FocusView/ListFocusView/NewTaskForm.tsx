@@ -85,6 +85,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
             }}
             value={value}
             onChange={onChange}
+            autoComplete="off"
           />
         )}
       />
@@ -125,6 +126,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
                     label="List"
                     variant="outlined"
                     value={value}
+                    autoComplete="off"
                   />
                 )}
               />
