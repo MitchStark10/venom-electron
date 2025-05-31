@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 import { FC, KeyboardEventHandler } from "react";
 import { Control, Controller } from "react-hook-form";
 
@@ -12,6 +12,7 @@ interface Props {
   autoFocus?: boolean;
   multiline?: boolean;
   rows?: number;
+  autoComplete?: TextFieldProps['autoComplete'];
 }
 
 export const ControlledTextField: FC<Props> = ({
@@ -24,6 +25,7 @@ export const ControlledTextField: FC<Props> = ({
   autoFocus,
   multiline,
   rows,
+  autoComplete,
 }) => {
   return (
     <Controller
@@ -40,6 +42,7 @@ export const ControlledTextField: FC<Props> = ({
           autoFocus={autoFocus}
           multiline={multiline}
           rows={rows}
+          autoComplete={autoComplete}
         />
       )}
     />

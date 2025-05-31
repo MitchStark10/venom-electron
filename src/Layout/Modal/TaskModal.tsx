@@ -129,6 +129,7 @@ export const TaskModal = () => {
             onSubmit();
           }
         }}
+        autoComplete="off"
       />
       <ControlledDatePicker
         control={control}

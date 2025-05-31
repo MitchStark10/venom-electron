@@ -21,7 +21,7 @@ interface NewTaskFormData {
   tagIds?: number[];
 }
 
-const NewTaskFormContainer = styled("div")({
+const NewTaskFormContainer = styled("form")({
   width: "fit-content",
   display: "flex",
   alignItems: "center",
@@ -67,7 +67,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
   }, [setValue, hasInitalizedFromLocalStorage]);
 
   return (
-    <NewTaskFormContainer>
+    <NewTaskFormContainer autoComplete="off">
       <Controller
         control={control}
         name="taskName"
@@ -86,6 +86,8 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
             value={value}
             onChange={onChange}
             autoComplete="off"
+            InputProps={{ autoComplete: "off" }}
+            inputProps={{ autoComplete: "off" }}
           />
         )}
       />
