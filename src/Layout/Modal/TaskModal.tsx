@@ -16,13 +16,13 @@ import {
 import { RootState } from "../../store/store";
 import { List } from "../../types/List";
 import { Tag } from "../../types/Tag";
-import { Task } from "../../types/Task";
+import { CadenceOptions, Task } from "../../types/Task";
 import { ModalTitle } from "./ModalTitle";
 
 interface FormData extends Task {
   listId: number;
   tags: Tag[];
-  recurrence?: "none" | "daily" | "weekly" | "monthly" | "yearly";
+  recurrence?: CadenceOptions | "NONE";
 }
 
 export const TaskModal = () => {
@@ -42,7 +42,7 @@ export const TaskModal = () => {
         ...selectedTask,
         listId: selectedTask.listId ?? (lists?.[0].id || -1),
         tags: selectedTask.taskTag?.map((taskTag) => taskTag.tag) ?? [],
-        recurrence: selectedTask.recurrence || "none",
+        recurrence: selectedTask.recurringSchedule?.cadence || "NONE",
       }
     : {
         listId: selectedListId ?? (lists?.[0].id || -1),
@@ -50,7 +50,7 @@ export const TaskModal = () => {
         dueDate: moment().startOf("day").toISOString(),
         isCompleted: false,
         tags: [],
-        recurrence: "none",
+        recurrence: "NONE",
       };
 
   const { handleSubmit, control } = useForm<FormData>({
@@ -63,7 +63,8 @@ export const TaskModal = () => {
     const payload = {
       ...data,
       tagIds: data.tags.map((tag) => tag.id),
-      recurrence: data.recurrence || "none",
+      recurringSchedule:
+        data.recurrence === "NONE" ? undefined : { cadence: data.recurrence! },
     };
     // Save the task
     if (selectedTask) {
@@ -148,17 +149,17 @@ export const TaskModal = () => {
           <TextField
             select
             label="Recurrence"
-            value={value || "none"}
-            onChange={onChange}
+            value={(value || "NONE").toUpperCase()}
+            onChange={(e) => onChange(e.target.value.toUpperCase())}
             fullWidth
             SelectProps={{ native: true }}
             sx={{ minWidth: 120 }}
           >
-            <option value="none">None</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
+            <option value="NONE">None</option>
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+            <option value="YEARLY">Yearly</option>
           </TextField>
         )}
       />

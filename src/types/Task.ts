@@ -1,6 +1,8 @@
 import { List } from "./List";
 import { TaskTag } from "./TaskTag";
 
+export type CadenceOptions = "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+
 export interface Task {
   id: number;
   taskName: string;
@@ -13,5 +15,7 @@ export interface Task {
   listId?: number;
   taskTag?: TaskTag[];
   tagIds?: number[];
-  recurrence?: "none" | "daily" | "weekly" | "monthly" | "yearly";
+  recurringSchedule?: {
+    cadence: CadenceOptions;
+  };
 }
