@@ -61,6 +61,7 @@ export const tasksApi = createApi({
         dateCompleted,
         isCompleted,
         tagIds,
+        recurrence,
       }) => ({
         url: `/tasks/${id}`,
         method: "PUT",
@@ -71,6 +72,7 @@ export const tasksApi = createApi({
           isCompleted,
           tagIds,
           dateCompleted,
+          recurrence,
         },
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,

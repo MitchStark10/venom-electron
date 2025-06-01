@@ -12,7 +12,7 @@ interface Props {
   autoFocus?: boolean;
   multiline?: boolean;
   rows?: number;
-  autoComplete?: TextFieldProps['autoComplete'];
+  autoComplete?: TextFieldProps["autoComplete"];
 }
 
 export const ControlledTextField: FC<Props> = ({

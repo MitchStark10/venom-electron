@@ -22,6 +22,7 @@ import { ModalTitle } from "./ModalTitle";
 interface FormData extends Task {
   listId: number;
   tags: Tag[];
+  recurrence?: "none" | "daily" | "weekly" | "monthly" | "yearly";
 }
 
 export const TaskModal = () => {
@@ -41,6 +42,7 @@ export const TaskModal = () => {
         ...selectedTask,
         listId: selectedTask.listId ?? (lists?.[0].id || -1),
         tags: selectedTask.taskTag?.map((taskTag) => taskTag.tag) ?? [],
+        recurrence: selectedTask.recurrence || "none",
       }
     : {
         listId: selectedListId ?? (lists?.[0].id || -1),
@@ -48,6 +50,7 @@ export const TaskModal = () => {
         dueDate: moment().startOf("day").toISOString(),
         isCompleted: false,
         tags: [],
+        recurrence: "none",
       };
 
   const { handleSubmit, control } = useForm<FormData>({
@@ -60,6 +63,7 @@ export const TaskModal = () => {
     const payload = {
       ...data,
       tagIds: data.tags.map((tag) => tag.id),
+      recurrence: data.recurrence || "none",
     };
     // Save the task
     if (selectedTask) {
@@ -139,11 +143,33 @@ export const TaskModal = () => {
       />
       <Controller
         control={control}
+        name="recurrence"
+        render={({ field: { value, onChange } }) => (
+          <TextField
+            select
+            label="Recurrence"
+            value={value || "none"}
+            onChange={onChange}
+            fullWidth
+            SelectProps={{ native: true }}
+            sx={{ minWidth: 120 }}
+          >
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </TextField>
+        )}
+      />
+      <Controller
+        control={control}
         name="tags"
         render={({ field: { value, onChange } }) => (
           <TagDropdown value={value} onChange={onChange} />
         )}
       />
+
       <Button variant="contained" onClick={onSubmit} disabled={isLoading}>
         Save
       </Button>

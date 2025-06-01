@@ -13,4 +13,5 @@ export interface Task {
   listId?: number;
   taskTag?: TaskTag[];
   tagIds?: number[];
+  recurrence?: "none" | "daily" | "weekly" | "monthly" | "yearly";
 }
