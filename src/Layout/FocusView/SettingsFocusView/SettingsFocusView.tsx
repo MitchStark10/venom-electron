@@ -169,7 +169,7 @@ export const SettingsFocusView = () => {
                   onChange={handleChangeIgnoreWeekends}
                 />
               }
-              label="Factor weekends into calculations for daily report and recurring tasks (for work lists only)"
+              label="Factor weekends into calculations for daily report and daily recurring tasks (for work lists only)"
             />
           </Box>
           <DividerWithPadding />
