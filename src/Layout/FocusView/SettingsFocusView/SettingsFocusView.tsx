@@ -156,7 +156,7 @@ export const SettingsFocusView = () => {
             <Autocomplete
               options={listOptions}
               renderInput={(params) => (
-                <TextField {...params} label="Daily Report Lists" />
+                <TextField {...params} label="Work Lists" />
               )}
               multiple
               value={standupLists}
@@ -169,7 +169,7 @@ export const SettingsFocusView = () => {
                   onChange={handleChangeIgnoreWeekends}
                 />
               }
-              label="Use work week calendar for daily report"
+              label="Factor weekends into calculations for daily report and recurring tasks (for work lists only)"
             />
           </Box>
           <DividerWithPadding />
