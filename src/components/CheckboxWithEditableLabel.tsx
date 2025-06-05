@@ -1,3 +1,4 @@
+import { Refresh } from "@mui/icons-material";
 import { Checkbox, CheckboxProps, styled } from "@mui/material";
 import { FC } from "react";
 import { DisplayAs } from "../types/DisplayAs";
@@ -16,6 +17,7 @@ interface Props {
   listName?: string;
   tags?: Tag[];
   preventEdits?: boolean;
+  isRecurring?: boolean;
 }
 
 const CheckboxAndLabelContainer = styled("div")(({ theme }) => ({
@@ -36,10 +38,16 @@ export const CheckboxWithEditableLabel: FC<Props> = ({
   listName,
   tags,
   preventEdits,
+  isRecurring = false,
 }) => {
   return (
     <CheckboxAndLabelContainer>
-      <Checkbox onClick={onCheckboxClick} checked={isChecked} />
+      <Checkbox
+        onClick={onCheckboxClick}
+        checked={isChecked}
+        icon={isRecurring ? <Refresh /> : undefined}
+      />
+
       <EditableText
         label={inputLabel}
         displayAs={displayAs}

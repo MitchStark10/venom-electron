@@ -89,6 +89,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
         listName={showListName ? task.list?.listName : undefined}
         tags={tags}
         preventEdits
+        isRecurring={Boolean(task.recurringSchedule)}
       />
     </TaskCardContainer>
   );

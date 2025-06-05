@@ -16,6 +16,7 @@ interface Props {
   listName?: String;
   tags?: Tag[];
   preventEdits?: boolean;
+  endIcon?: ReactNode;
 }
 
 const TextAndListContainer = styled("div")(({ theme }) => ({
@@ -40,11 +41,14 @@ export const EditableText: FC<Props> = ({
   listName,
   tags,
   preventEdits,
+  endIcon,
 }) => {
   const tagColorMap = useTagColors();
   const TextAndIconContainer = styled(displayAs)({
     cursor: "pointer",
     margin: "2px 0",
+    display: "flex",
+    alignItems: "center",
   });
   const [localIsEditingText, setLocalIsEditingText] = useState(false);
   const [newText, setNewText] = useState(initialValue);
@@ -99,6 +103,7 @@ export const EditableText: FC<Props> = ({
       <TextAndIconContainer>
         {displayIcon}
         {newText}
+        {endIcon}
       </TextAndIconContainer>
       {Boolean(listName) && (
         <i style={{ fontSize: "12px" }}>
