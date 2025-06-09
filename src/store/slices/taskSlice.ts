@@ -30,9 +30,15 @@ export const tasksApi = createApi({
   endpoints: (builder) => ({
     createTask: builder.mutation<
       Task,
-      { taskName: string; listId: number; dueDate?: string; tagIds?: number[] }
+      {
+        taskName: string;
+        listId: number;
+        dueDate?: string;
+        tagIds?: number[];
+        recurringSchedule?: { cadence: string };
+      }
     >({
-      query: ({ taskName, listId, dueDate, tagIds }) => ({
+      query: ({ taskName, listId, dueDate, tagIds, recurringSchedule }) => ({
         url: "/tasks",
         method: "POST",
         body: {
@@ -40,6 +46,7 @@ export const tasksApi = createApi({
           listId,
           dueDate,
           tagIds,
+          recurringSchedule,
         },
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
