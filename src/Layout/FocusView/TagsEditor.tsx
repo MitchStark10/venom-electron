@@ -7,7 +7,6 @@ import {
   useReorderTagsMutation,
   useTagsQuery,
 } from "../../store/slices/tagSlice";
-import { Draggable } from "react-drag-reorder";
 
 export const TagsEditor = () => {
   const theme = useTheme();
@@ -33,14 +32,9 @@ export const TagsEditor = () => {
   return (
     <div>
       <Title>Tags</Title>
-      <Draggable
-        key={tags?.map((t) => JSON.stringify(t)).join("-")}
-        onPosChange={onReorder}
-      >
-        {tags?.map((tag) => (
-          <TagCard tag={tag} key={tag.id} />
-        ))}
-      </Draggable>
+      {tags?.map((tag) => (
+        <TagCard tag={tag} key={tag.id} />
+      ))}
 
       {showNewTagUI ? (
         <NewTagForm onSubmit={() => setShowNewTagUI(false)} />

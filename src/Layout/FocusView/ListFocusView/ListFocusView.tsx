@@ -1,7 +1,6 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
 import { useEffect } from "react";
-import { Draggable } from "react-drag-reorder";
 import { shallowEqual, useSelector } from "react-redux";
 import { EditableText } from "../../../components/EditableText";
 import { SectionDivider } from "../../../components/SectionDivider";
@@ -71,18 +70,9 @@ export const ListFocusView = () => {
       {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
         <div>
           <SectionDivider>{dateStr}</SectionDivider>
-          {tasks.length > 0 && (
-            <Draggable
-              key={tasks.map((task) => JSON.stringify(task)).join("")}
-              onPosChange={(prevOrder, newOrder) =>
-                onReorder(prevOrder, newOrder, tasks)
-              }
-            >
-              {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} index={index++} />
-              ))}
-            </Draggable>
-          )}
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} index={index++} />
+          ))}
         </div>
       ))}
     </div>

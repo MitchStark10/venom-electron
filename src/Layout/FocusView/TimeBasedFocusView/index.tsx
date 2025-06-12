@@ -2,12 +2,11 @@ import { Button, CircularProgress } from "@mui/material";
 import { FC } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { Title } from "../../../components/Title";
+import { useReorder } from "../../../hooks/useReorder";
 import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
+import { useTaskSorter } from "../../../lib/taskSorter";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "../ListFocusView/TaskCard";
-import { Draggable } from "react-drag-reorder";
-import { useReorder } from "../../../hooks/useReorder";
-import { useTaskSorter } from "../../../lib/taskSorter";
 
 type GroupByOptions = "date" | "list";
 
@@ -65,21 +64,14 @@ export const TimeBasedFocusView: FC<Props> = ({
             <SectionDivider>
               {groupByOption === "list" ? tasks[0].list?.listName : key}
             </SectionDivider>
-            <Draggable
-              key={tasks.map((task) => JSON.stringify(task)).join("")}
-              onPosChange={(prevOrder, newOrder) =>
-                onReorder(prevOrder, newOrder, tasks)
-              }
-            >
-              {tasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  showListName={groupByOption === "date"}
-                  index={index++}
-                />
-              ))}
-            </Draggable>
+            {tasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                showListName={groupByOption === "date"}
+                index={index++}
+              />
+            ))}
           </div>
         );
       })}
