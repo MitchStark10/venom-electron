@@ -15,6 +15,7 @@ import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
 import { useLocation, useNavigate } from "react-router";
 import { HEADER_HEIGHT } from "../muiTheme";
+import { DndContext } from "@dnd-kit/core";
 
 export const StyledLayout = styled("div", {
   shouldForwardProp: (prop) => prop !== "accountForHeader",
@@ -56,7 +57,7 @@ export const Layout = () => {
   const onAddNewTask = () => {
     setTimeout(
       () => (window as any)?.subscribe?.sendCloseAndRefreshTasks(),
-      1000
+      1000,
     );
   };
 
@@ -93,11 +94,14 @@ export const Layout = () => {
   }, [refetchLists]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (getAuthToken()) {
-        refetchLists();
-      }
-    }, 1000 * 60 * 10);
+    const interval = setInterval(
+      () => {
+        if (getAuthToken()) {
+          refetchLists();
+        }
+      },
+      1000 * 60 * 10,
+    );
 
     return () => {
       clearInterval(interval);
@@ -133,9 +137,11 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <FocusContainer className="focus-view">
-        <FocusView />
-      </FocusContainer>
+      <DndContext>
+        <FocusContainer className="focus-view">
+          <FocusView />
+        </FocusContainer>
+      </DndContext>
       <ModalEntryPoint />
       <PositionedFab
         color="primary"

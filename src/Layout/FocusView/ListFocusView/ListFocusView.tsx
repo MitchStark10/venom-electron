@@ -1,3 +1,4 @@
+import { DndContext } from "@dnd-kit/core";
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
 import { useEffect } from "react";
@@ -14,6 +15,8 @@ import {
 import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
+import { Droppable } from "../../../components/Dropppable";
+import {Draggable} from "../../../components/Draggable";
 
 const ListNameText = styled(EditableText)({
   width: "fit-content",
@@ -22,7 +25,7 @@ const ListNameText = styled(EditableText)({
 export const ListFocusView = () => {
   const { selectedListId } = useSelector(
     (state: RootState) => state.focusView,
-    shallowEqual
+    shallowEqual,
   );
   const [updateListName] = useUpdateListMutation();
   const { data: lists, refetch: refetchLists } = useListsQuery();
@@ -68,12 +71,16 @@ export const ListFocusView = () => {
       />
 
       {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
-        <div>
+        <>
           <SectionDivider>{dateStr}</SectionDivider>
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} index={index++} />
-          ))}
-        </div>
+          <Droppable key={dateStr} id={dateStr}>
+            {tasks.map((task) => (
+              <Draggable key={task.id} id={String(task.id)}>
+                <TaskCard key={task.id} task={task} index={index++} />
+              </Draggable>
+            ))}
+          </Droppable>
+        </>
       ))}
     </div>
   );
