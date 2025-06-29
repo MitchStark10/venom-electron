@@ -31,6 +31,7 @@
   },
   "scripts": {
     "start": "vite --port 3000",
+    "dev": "vite --port 3000 --host",
     "build": "vite build",
     "serve": "vite preview",
     "type-check": "tsc --noEmit",

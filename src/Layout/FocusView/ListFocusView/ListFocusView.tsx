@@ -1,8 +1,8 @@
-import { DndContext } from "@dnd-kit/core";
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
 import { useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
+import { Draggable } from "../../../components/Draggable";
 import { EditableText } from "../../../components/EditableText";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { useReorder } from "../../../hooks/useReorder";
@@ -15,8 +15,7 @@ import {
 import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
-import { Droppable } from "../../../components/Dropppable";
-import {Draggable} from "../../../components/Draggable";
+import { Droppable } from "../../../components/Droppable";
 
 const ListNameText = styled(EditableText)({
   width: "fit-content",
@@ -73,7 +72,7 @@ export const ListFocusView = () => {
       {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
         <>
           <SectionDivider>{dateStr}</SectionDivider>
-          <Droppable key={dateStr} id={dateStr}>
+          <Droppable id={dateStr}>
             {tasks.map((task) => (
               <Draggable key={task.id} id={String(task.id)}>
                 <TaskCard key={task.id} task={task} index={index++} />

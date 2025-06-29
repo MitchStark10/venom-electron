@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import {FC} from "react";
+import { CSSProperties, FC } from "react";
 
 interface DroppableProps {
   id: string;
@@ -8,11 +8,19 @@ interface DroppableProps {
 
 export const Droppable: FC<DroppableProps> = (props) => {
   const { isOver, setNodeRef } = useDroppable({ id: props.id });
-  const style = { opacity: isOver ? 1 : 0.5 };
+
+  const dragOverStyles: CSSProperties = {
+    backgroundColor: "lightblue",
+    padding: "10px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    minHeight: "50px",
+  };
+
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={isOver ? dragOverStyles : undefined}>
       {" "}
       {props.children}{" "}
     </div>
   );
-}
+};
