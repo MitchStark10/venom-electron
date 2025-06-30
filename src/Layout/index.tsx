@@ -137,7 +137,12 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <DndContext>
+      <DndContext
+        onDragEnd={(...params) => {
+          // This is a placeholder for any drag end logic
+          console.log("Drag ended", params);
+        }}
+      >
         <FocusContainer className="focus-view">
           <FocusView />
         </FocusContainer>

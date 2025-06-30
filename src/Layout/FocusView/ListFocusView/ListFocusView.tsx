@@ -16,6 +16,9 @@ import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
 import { Droppable } from "../../../components/Droppable";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+
+const NULL_DATE_SECTION_ID = "null-date";
 
 const ListNameText = styled(EditableText)({
   width: "fit-content",
@@ -53,6 +56,30 @@ export const ListFocusView = () => {
         return acc;
       }, {}) || {};
 
+  const onDragEnd = (event: DragEndEvent) => {
+    if (!event.active || !event.over) {
+      return;
+    }
+
+    const activeTaskId = event.active.id;
+    const sectionId = event.over.id;
+
+    const newDueDate = sectionId === NULL_DATE_SECTION_ID ? null : sectionId;
+    const taskList = tasksOrganizedByDate[sectionId];
+
+    if (!taskList) {
+      return;
+    }
+
+    // TODO: Refactor this to support list changes
+    // onReorder({
+    //   activeId: activeTaskId,
+    //   sectionId: sectionId,
+    //   newDueDate,
+    //   selectedListId,
+    // });
+  };
+
   useEffect(() => {
     (window as any)?.subscribe?.refreshTasks(() => refetchLists());
   }, [refetchLists]);
@@ -60,27 +87,29 @@ export const ListFocusView = () => {
   let index = 0;
 
   return (
-    <div>
-      <ListNameText
-        label="List Name"
-        displayAs="h1"
-        initialValue={selectedList?.listName}
-        onSave={handleListNameChange}
-        displayIcon={<TaskAlt sx={{ margin: "0 10px" }} />}
-      />
+    <DndContext onDragEnd={onDragEnd}>
+      <div>
+        <ListNameText
+          label="List Name"
+          displayAs="h1"
+          initialValue={selectedList?.listName}
+          onSave={handleListNameChange}
+          displayIcon={<TaskAlt sx={{ margin: "0 10px" }} />}
+        />
 
-      {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
-        <>
-          <SectionDivider>{dateStr}</SectionDivider>
-          <Droppable id={dateStr}>
-            {tasks.map((task) => (
-              <Draggable key={task.id} id={String(task.id)}>
-                <TaskCard key={task.id} task={task} index={index++} />
-              </Draggable>
-            ))}
-          </Droppable>
-        </>
-      ))}
-    </div>
+        {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
+          <>
+            <SectionDivider>{dateStr}</SectionDivider>
+            <Droppable id={tasks[0]?.dueDate || NULL_DATE_SECTION_ID}>
+              {tasks.map((task) => (
+                <Draggable key={task.id} id={String(task.id)}>
+                  <TaskCard key={task.id} task={task} index={index++} />
+                </Draggable>
+              ))}
+            </Droppable>
+          </>
+        ))}
+      </div>
+    </DndContext>
   );
 };
