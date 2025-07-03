@@ -10,7 +10,6 @@ export const Droppable: FC<DroppableProps> = (props) => {
   const { isOver, setNodeRef } = useDroppable({ id: props.id });
 
   const dragOverStyles: CSSProperties = {
-    backgroundColor: "lightblue",
     padding: "10px",
     border: "1px solid #ccc",
     borderRadius: "4px",
