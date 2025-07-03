@@ -17,6 +17,10 @@ import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
 import { Droppable } from "../../../components/Droppable";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const NULL_DATE_SECTION_ID = "null-date";
 
@@ -98,16 +102,20 @@ export const ListFocusView = () => {
         />
 
         {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
-          <>
-            <SectionDivider>{dateStr}</SectionDivider>
+          <SortableContext
+            key={dateStr}
+            items={tasks.map((task) => String(task.id)) || []}
+            strategy={verticalListSortingStrategy}
+          >
             <Droppable id={tasks[0]?.dueDate || NULL_DATE_SECTION_ID}>
+              <SectionDivider>{dateStr}</SectionDivider>
               {tasks.map((task) => (
                 <Draggable key={task.id} id={String(task.id)}>
                   <TaskCard key={task.id} task={task} index={index++} />
                 </Draggable>
               ))}
             </Droppable>
-          </>
+          </SortableContext>
         ))}
       </div>
     </DndContext>

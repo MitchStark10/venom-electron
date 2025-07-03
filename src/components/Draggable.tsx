@@ -1,6 +1,6 @@
-import { useDraggable } from "@dnd-kit/core";
-import { FC } from "react";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { FC } from "react";
 
 interface DraggableProps {
   id: string;
@@ -8,10 +8,12 @@ interface DraggableProps {
 }
 
 export const Draggable: FC<DraggableProps> = (props) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: props.id,
-  });
-  const style = { transform: CSS.Translate.toString(transform) };
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: props.id,
+    });
+
+  const style = { transform: CSS.Translate.toString(transform), transition };
   return (
     <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {" "}
