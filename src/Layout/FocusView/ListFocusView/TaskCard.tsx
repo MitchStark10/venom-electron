@@ -1,18 +1,24 @@
 import { styled } from "@mui/material";
 import moment from "moment";
-import React, { FC, useRef } from "react";
+import React, { CSSProperties, FC, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { CheckboxWithEditableLabel } from "../../../components/CheckboxWithEditableLabel";
 import { setSelectedTask } from "../../../store/slices/focusViewSlice";
 import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import { useUpdateTaskMutation } from "../../../store/slices/taskSlice";
 import { Task } from "../../../types/Task";
+import { useDndContext } from "@dnd-kit/core";
 
 interface Props {
   task: Task;
   showListName?: boolean;
   index: number;
 }
+
+const dragOverStyle: CSSProperties = {
+  borderBottom: "1px solid lightblue",
+  borderRadius: 0,
+};
 
 const TaskCardContainer = styled("div")(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -32,8 +38,10 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   const dispatch = useDispatch();
   const tags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
   const [isCheckedOverride, setIsCheckedOverride] = React.useState<boolean>(
-    Boolean(task.isCompleted)
+    Boolean(task.isCompleted),
   );
+  const { over } = useDndContext();
+  const isOver = over?.id && parseInt(over.id as string) === task.id;
 
   const onTaskNameChange = (newTaskName: string) => {
     if (newTaskName !== task.taskName) {
@@ -78,6 +86,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
       onClick={onOpenTask}
       tabIndex={index}
       onKeyDown={onKeyDown}
+      sx={isOver ? dragOverStyle : {}}
     >
       <CheckboxWithEditableLabel
         displayAs="p"
