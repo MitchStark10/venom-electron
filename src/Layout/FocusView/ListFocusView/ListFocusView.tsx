@@ -1,6 +1,6 @@
 import { TaskAlt } from "@mui/icons-material";
 import { styled } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { Draggable } from "../../../components/Draggable";
 import { EditableText } from "../../../components/EditableText";
@@ -16,7 +16,12 @@ import { RootState } from "../../../store/store";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "./TaskCard";
 import { Droppable } from "../../../components/Droppable";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -33,6 +38,7 @@ export const ListFocusView = () => {
     (state: RootState) => state.focusView,
     shallowEqual,
   );
+  const [draggingTask, setDraggingTask] = useState<Task | null>(null);
   const [updateListName] = useUpdateListMutation();
   const { data: lists, refetch: refetchLists } = useListsQuery();
   const onReorder = useReorder();
@@ -61,6 +67,7 @@ export const ListFocusView = () => {
       }, {}) || {};
 
   const onDragEnd = (event: DragEndEvent) => {
+    setDraggingTask(null);
     if (!event.active || !event.over) {
       return;
     }
@@ -84,6 +91,18 @@ export const ListFocusView = () => {
     // });
   };
 
+  const onDragStart = (event: DragStartEvent) => {
+    const activeTaskId = event.active.id;
+    const taskList = Object.values(tasksOrganizedByDate).flat();
+    const draggingTask = taskList.find(
+      (task) => String(task.id) === activeTaskId,
+    );
+
+    if (draggingTask) {
+      setDraggingTask(draggingTask);
+    }
+  };
+
   useEffect(() => {
     (window as any)?.subscribe?.refreshTasks(() => refetchLists());
   }, [refetchLists]);
@@ -91,7 +110,7 @@ export const ListFocusView = () => {
   let index = 0;
 
   return (
-    <DndContext onDragEnd={onDragEnd}>
+    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div>
         <ListNameText
           label="List Name"
@@ -118,6 +137,11 @@ export const ListFocusView = () => {
           </SortableContext>
         ))}
       </div>
+      {draggingTask && (
+        <DragOverlay>
+          <TaskCard task={draggingTask} index={0} />
+        </DragOverlay>
+      )}
     </DndContext>
   );
 };
