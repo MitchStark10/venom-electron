@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, useTheme } from "@mui/material";
 import moment from "moment";
 import React, { CSSProperties, FC, useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -15,11 +15,6 @@ interface Props {
   index: number;
 }
 
-const dragOverStyle: CSSProperties = {
-  borderBottom: "1px solid lightblue",
-  borderRadius: 0,
-};
-
 const TaskCardContainer = styled("div")(({ theme }) => ({
   margin: theme.spacing(0.5),
   padding: theme.spacing(0.5),
@@ -33,6 +28,7 @@ const TaskCardContainer = styled("div")(({ theme }) => ({
 }));
 
 export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
+  const theme = useTheme();
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
   const dispatch = useDispatch();
@@ -42,6 +38,11 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   );
   const { over } = useDndContext();
   const isOver = over?.id && parseInt(over.id as string) === task.id;
+
+  const dragOverStyle: CSSProperties = {
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    borderRadius: 0,
+  };
 
   const onTaskNameChange = (newTaskName: string) => {
     if (newTaskName !== task.taskName) {
