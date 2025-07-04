@@ -10,14 +10,15 @@ export const Droppable: FC<DroppableProps> = (props) => {
   const { isOver, setNodeRef } = useDroppable({ id: props.id });
 
   const dragOverStyles: CSSProperties = {
-    padding: "10px",
     border: "1px solid #ccc",
     borderRadius: "4px",
-    minHeight: "50px",
   };
 
   return (
-    <div ref={setNodeRef} style={isOver ? dragOverStyles : undefined}>
+    <div
+      ref={setNodeRef}
+      style={isOver ? dragOverStyles : { border: "1px solid transparent" }}
+    >
       {" "}
       {props.children}{" "}
     </div>
