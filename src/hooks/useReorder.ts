@@ -10,10 +10,19 @@ export const useReorder = () => {
   const [reorderTask] = useReorderTaskMutation();
   const { focusView } = useSelector((state: RootState) => state.focusView);
 
-  const onReorder = (prevPos: number, newPos: number, tasks: Task[]) => {
+  const onReorder = (
+    prevPos: number,
+    newPos: number,
+    tasks: Task[],
+    updatedTask: Task,
+  ) => {
     const tasksCopy = [...tasks];
-    const [removed] = tasksCopy.splice(prevPos, 1);
-    tasksCopy.splice(newPos, 0, removed);
+
+    if (prevPos !== null) {
+      tasksCopy.splice(prevPos, 1);
+    }
+
+    tasksCopy.splice(newPos, 0, updatedTask);
 
     const reorderedTasksRequestBody: UpdateReorderTask[] = tasksCopy.map(
       (task, index) => {
@@ -27,7 +36,7 @@ export const useReorder = () => {
               ? "listViewOrder"
               : "combinedViewOrder",
         };
-      }
+      },
     );
 
     reorderTask({ tasksToUpdate: reorderedTasksRequestBody });

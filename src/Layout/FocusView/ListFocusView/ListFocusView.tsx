@@ -68,27 +68,47 @@ export const ListFocusView = () => {
 
   const onDragEnd = (event: DragEndEvent) => {
     setDraggingTask(null);
+
     if (!event.active || !event.over) {
+      console.warn("Drag end event missing active or over element");
       return;
     }
 
     const activeTaskId = event.active.id;
-    const sectionId = event.over.id;
+    const overId = event.over.id;
 
-    const newDueDate = sectionId === NULL_DATE_SECTION_ID ? null : sectionId;
-    const taskList = tasksOrganizedByDate[sectionId];
+    const matchingTask = selectedList?.tasks.find(
+      (task) => String(task.id) === overId,
+    );
 
-    if (!taskList) {
+    // Over ID will just be the date string if dropped on a section divider
+    const newDueDate = matchingTask ? matchingTask.dueDate : (overId as string);
+
+    const tasks = Object.values(tasksOrganizedByDate).flat();
+    const activeTask = selectedList?.tasks.find(
+      (task) => String(task.id) === activeTaskId,
+    );
+
+    if (!activeTask) {
+      console.error("Task not found for drag end event");
       return;
     }
 
-    // TODO: Refactor this to support list changes
-    // onReorder({
-    //   activeId: activeTaskId,
-    //   sectionId: sectionId,
-    //   newDueDate,
-    //   selectedListId,
-    // });
+    const updatedTask = { ...activeTask, dueDate: newDueDate };
+
+    const prevPos = tasks.findIndex((task) => String(task.id) === activeTaskId);
+    const newPos = tasks.findIndex((task) => String(task.id) === overId) ?? -1;
+
+    console.log("Reorder event details", {
+      prevPos,
+      newPos: newPos + 1,
+      activeTaskId,
+      overId,
+      updatedTask,
+      newDueDate,
+    });
+
+    onReorder(prevPos, newPos + 1, tasks, updatedTask);
   };
 
   const onDragStart = (event: DragStartEvent) => {
