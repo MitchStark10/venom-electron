@@ -26,6 +26,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useDndSensors } from "../../../hooks/useDndSensors";
 
 const NULL_DATE_SECTION_ID = "null-date";
 
@@ -50,6 +51,7 @@ export const ListFocusView = () => {
       updateListName({ id: selectedListId.toString(), listName: newListName });
     }
   };
+  const sensors = useDndSensors();
 
   const tasksOrganizedByDate =
     (selectedList?.tasks ? [...selectedList.tasks] : [])
@@ -97,7 +99,7 @@ export const ListFocusView = () => {
     const updatedTask = { ...activeTask, dueDate: newDueDate };
 
     const prevPos = tasks.findIndex((task) => String(task.id) === activeTaskId);
-    const newPos = tasks.findIndex((task) => String(task.id) === overId) ?? -1;
+    const newPos = tasks.findIndex((task) => String(task.id) === overId) ?? 0;
 
     onReorder(prevPos, newPos, tasks, updatedTask);
   };
@@ -121,7 +123,11 @@ export const ListFocusView = () => {
   let index = 0;
 
   return (
-    <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DndContext
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      sensors={sensors}
+    >
       <div>
         <ListNameText
           label="List Name"

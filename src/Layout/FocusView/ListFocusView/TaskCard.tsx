@@ -8,6 +8,7 @@ import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import { useUpdateTaskMutation } from "../../../store/slices/taskSlice";
 import { Task } from "../../../types/Task";
 import { useDndContext } from "@dnd-kit/core";
+import { OpenWith } from "@mui/icons-material";
 
 interface Props {
   task: Task;
@@ -52,6 +53,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
 
   const onCheckTask = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
+    e?.preventDefault();
     const newIsCompletedValue = !task.isCompleted;
     setIsCheckedOverride(newIsCompletedValue);
     await updateTask({
