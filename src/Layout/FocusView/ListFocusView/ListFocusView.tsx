@@ -99,16 +99,7 @@ export const ListFocusView = () => {
     const prevPos = tasks.findIndex((task) => String(task.id) === activeTaskId);
     const newPos = tasks.findIndex((task) => String(task.id) === overId) ?? -1;
 
-    console.log("Reorder event details", {
-      prevPos,
-      newPos: newPos + 1,
-      activeTaskId,
-      overId,
-      updatedTask,
-      newDueDate,
-    });
-
-    onReorder(prevPos, newPos + 1, tasks, updatedTask);
+    onReorder(prevPos, newPos, tasks, updatedTask);
   };
 
   const onDragStart = (event: DragStartEvent) => {
