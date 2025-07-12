@@ -11,6 +11,7 @@ export const Draggable: FC<DraggableProps> = (props) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: props.id,
+      animateLayoutChanges: () => true,
     });
 
   const style = { transform: CSS.Translate.toString(transform), transition };

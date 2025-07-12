@@ -1,5 +1,5 @@
 import { Button, CircularProgress } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { SectionDivider } from "../../../components/SectionDivider";
 import { Title } from "../../../components/Title";
 import { useReorder } from "../../../hooks/useReorder";
@@ -7,6 +7,19 @@ import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
 import { useTaskSorter } from "../../../lib/taskSorter";
 import { Task } from "../../../types/Task";
 import { TaskCard } from "../ListFocusView/TaskCard";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Droppable } from "../../../components/Droppable";
+import { Draggable } from "../../../components/Draggable";
+import { useDndSensors } from "../../../hooks/useDndSensors";
 
 type GroupByOptions = "date" | "list";
 
@@ -25,9 +38,10 @@ export const TimeBasedFocusView: FC<Props> = ({
   deleteAllTasks,
   groupByOption = "list",
 }) => {
+  const sensors = useDndSensors();
   const onReorder = useReorder();
   const taskSorter = useTaskSorter(
-    groupByOption === "list" ? "listViewOrder" : "combinedViewOrder"
+    groupByOption === "list" ? "listViewOrder" : "combinedViewOrder",
   );
 
   const groupedTasks =
@@ -53,28 +67,63 @@ export const TimeBasedFocusView: FC<Props> = ({
             return acc;
           }, {});
 
+  const [draggingTask, setDraggingTask] = useState<Task | null>(null);
+
+  const onDragStart = (event: DragStartEvent) => {
+    const activeTaskId = event.active.id;
+    const draggingTask = tasks.find((task) => String(task.id) === activeTaskId);
+
+    console.log("Dragging task:", draggingTask);
+    if (draggingTask) {
+      setDraggingTask(draggingTask);
+    }
+  };
+
+  const onDragEnd = (event: DragEndEvent) => {
+    console.log("Done!", event);
+  };
+
   let index = 0;
 
   return (
     <div>
       <Title>{title}</Title>
-      {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
-        return (
-          <div key={key}>
-            <SectionDivider>
-              {groupByOption === "list" ? tasks[0].list?.listName : key}
-            </SectionDivider>
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                showListName={groupByOption === "date"}
-                index={index++}
-              />
-            ))}
-          </div>
-        );
-      })}
+      <DndContext
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        sensors={sensors}
+      >
+        {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
+          return (
+            <SortableContext
+              key={key}
+              items={tasks.map((task) => task.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <Droppable id={key}>
+                <SectionDivider>
+                  {groupByOption === "list" ? tasks[0].list?.listName : key}
+                </SectionDivider>
+                {tasks.map((task) => (
+                  <Draggable id={String(task.id)} key={task.id}>
+                    <TaskCard
+                      task={task}
+                      showListName={groupByOption === "date"}
+                      index={index++}
+                    />
+                  </Draggable>
+                ))}
+              </Droppable>
+            </SortableContext>
+          );
+        })}
+        {draggingTask && (
+          <DragOverlay>
+            <TaskCard task={draggingTask} index={0} />
+          </DragOverlay>
+        )}
+      </DndContext>
+
       {deleteAllTasks && Object.entries(groupedTasks || {}).length > 0 && (
         <Button variant="contained" onClick={() => deleteAllTasks()}>
           Delete All Tasks
