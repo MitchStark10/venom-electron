@@ -73,14 +73,21 @@ export const TimeBasedFocusView: FC<Props> = ({
     const activeTaskId = event.active.id;
     const draggingTask = tasks.find((task) => String(task.id) === activeTaskId);
 
-    console.log("Dragging task:", draggingTask);
     if (draggingTask) {
       setDraggingTask(draggingTask);
     }
   };
 
   const onDragEnd = (event: DragEndEvent) => {
-    console.log("Done!", event);
+    setDraggingTask(null);
+
+    if (!event.active || !event.over) {
+      console.warn("Drag end event missing active or over element");
+      return;
+    }
+
+    const activeTaskId = event.active.id;
+    const overId = event.over.id;
   };
 
   let index = 0;

@@ -2,9 +2,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { useNavigationShortcuts } from "../hooks/useNavigationShortcuts";
 import { getAuthToken } from "../lib/authToken";
+import { HEADER_HEIGHT } from "../muiTheme";
 import { setFocusView, setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
@@ -13,9 +15,6 @@ import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
 import { ModalEntryPoint } from "./Modal/ModalEntryPoint";
 import { SideBar } from "./Sidebar";
-import { useLocation, useNavigate } from "react-router";
-import { HEADER_HEIGHT } from "../muiTheme";
-import { DndContext } from "@dnd-kit/core";
 
 export const StyledLayout = styled("div", {
   shouldForwardProp: (prop) => prop !== "accountForHeader",
@@ -137,16 +136,9 @@ export const Layout = () => {
   return (
     <StyledLayout>
       <SideBar />
-      <DndContext
-        onDragEnd={(...params) => {
-          // This is a placeholder for any drag end logic
-          console.log("Drag ended", params);
-        }}
-      >
-        <FocusContainer className="focus-view">
-          <FocusView />
-        </FocusContainer>
-      </DndContext>
+      <FocusContainer className="focus-view">
+        <FocusView />
+      </FocusContainer>
       <ModalEntryPoint />
       <PositionedFab
         color="primary"

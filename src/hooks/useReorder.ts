@@ -18,12 +18,6 @@ export const useReorder = () => {
     tasks: Task[],
     updatedTask: Task,
   ) => {
-    console.log("updating task details:", {
-      taskName: updatedTask.taskName,
-      prevPos,
-      newPos,
-    });
-
     const tasksCopy = [...tasks];
 
     if (prevPos !== null) {

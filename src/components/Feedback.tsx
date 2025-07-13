@@ -15,12 +15,11 @@ export const Feedback = () => {
   const [submitFeedback] = useSubmitFeedbackMutation();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     try {
       const response = await submitFeedback(data);
       if ("error" in response && response.error) {
         throw new Error(
-          response.error.toString() ?? "Error submitting feedback"
+          response.error.toString() ?? "Error submitting feedback",
         );
       }
       toast.success("Feedback submitted successfully");
