@@ -150,13 +150,9 @@ export const TimeBasedFocusView: FC<Props> = ({
         onDragEnd={onDragEnd}
         sensors={sensors}
       >
-        {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
-          return (
-            <SortableContext
-              key={`sortable-context-${key}`}
-              items={tasks.map((task) => task.id)}
-              strategy={verticalListSortingStrategy}
-            >
+        <div>
+          {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
+            return (
               <Droppable id={key}>
                 <SectionDivider>
                   {groupByOption === "list" ? tasks[0].list?.listName : key}
@@ -172,9 +168,10 @@ export const TimeBasedFocusView: FC<Props> = ({
                   </Draggable>
                 ))}
               </Droppable>
-            </SortableContext>
-          );
-        })}
+            );
+          })}
+        </div>
+
         {draggingTask && (
           <DragOverlay>
             <TaskCard task={draggingTask} index={0} />

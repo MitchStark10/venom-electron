@@ -138,20 +138,14 @@ export const ListFocusView = () => {
         />
 
         {Object.entries(tasksOrganizedByDate).map(([dateStr, tasks]) => (
-          <SortableContext
-            key={dateStr}
-            items={tasks.map((task) => String(task.id)) || []}
-            strategy={verticalListSortingStrategy}
-          >
-            <Droppable id={tasks[0]?.dueDate || NULL_DATE_SECTION_ID}>
-              <SectionDivider>{dateStr}</SectionDivider>
-              {tasks.map((task) => (
-                <Draggable key={task.id} id={String(task.id)}>
-                  <TaskCard key={task.id} task={task} index={index++} />
-                </Draggable>
-              ))}
-            </Droppable>
-          </SortableContext>
+          <Droppable id={tasks[0]?.dueDate || NULL_DATE_SECTION_ID}>
+            <SectionDivider>{dateStr}</SectionDivider>
+            {tasks.map((task) => (
+              <Draggable key={task.id} id={String(task.id)}>
+                <TaskCard key={task.id} task={task} index={index++} />
+              </Draggable>
+            ))}
+          </Droppable>
         ))}
       </div>
       {draggingTask && (

@@ -1,3 +1,4 @@
+import { useDndContext } from "@dnd-kit/core";
 import { styled, useTheme } from "@mui/material";
 import moment from "moment";
 import React, { CSSProperties, FC, useRef } from "react";
@@ -7,8 +8,6 @@ import { setSelectedTask } from "../../../store/slices/focusViewSlice";
 import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import { useUpdateTaskMutation } from "../../../store/slices/taskSlice";
 import { Task } from "../../../types/Task";
-import { useDndContext } from "@dnd-kit/core";
-import { OpenWith } from "@mui/icons-material";
 
 interface Props {
   task: Task;
@@ -16,14 +15,16 @@ interface Props {
   index: number;
 }
 
-const TaskCardContainer = styled("div")(({ theme }) => ({
+const TaskCardContainer = styled("div", {
+  shouldForwardProp: (propName) => propName !== "isDragging",
+})<{ isDragging: boolean }>(({ theme, isDragging }) => ({
   margin: theme.spacing(0.5),
   padding: theme.spacing(0.5),
   marginBottom: theme.spacing(1),
   border: "1px solid transparent",
   borderRadius: theme.spacing(1),
   "&:hover": {
-    border: `1px solid ${theme.palette.divider}`,
+    border: isDragging ? undefined : `1px solid ${theme.palette.divider}`,
   },
   cursor: "pointer",
 }));
@@ -35,7 +36,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   const dispatch = useDispatch();
   const tags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
   const [isCheckedOverride, setIsCheckedOverride] = React.useState<boolean>(
-    Boolean(task.isCompleted),
+    Boolean(task.isCompleted)
   );
   const { over } = useDndContext();
   const isOver = over?.id && parseInt(over.id as string) === task.id;
@@ -86,6 +87,7 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   return (
     <TaskCardContainer
       ref={cardContainerRef}
+      isDragging={Boolean(isOver)}
       onClick={onOpenTask}
       tabIndex={index}
       onKeyDown={onKeyDown}
