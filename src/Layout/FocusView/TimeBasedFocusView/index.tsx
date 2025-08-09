@@ -115,7 +115,6 @@ export const TimeBasedFocusView: FC<Props> = ({
       const listId = matchingOverTask?.list?.id || activeTask.list?.id;
 
       if (!listId) {
-        console.error("List ID not found for drag end event");
         return;
       }
 

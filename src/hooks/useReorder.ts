@@ -21,7 +21,7 @@ export const useReorder = () => {
   ) => {
     const tasksCopy = [...tasks];
 
-    if (prevPos !== null) {
+    if (prevPos !== -1) {
       tasksCopy.splice(prevPos, 1);
     }
 
