@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  tasksApi,
   UpdateReorderTask,
   useReorderTaskMutation,
 } from "../store/slices/taskSlice";
@@ -16,7 +17,7 @@ export const useReorder = () => {
     prevPos: number,
     newPos: number,
     tasks: Task[],
-    updatedTask: Task,
+    updatedTask: Task
   ) => {
     const tasksCopy = [...tasks];
 
@@ -38,7 +39,7 @@ export const useReorder = () => {
               ? "listViewOrder"
               : "combinedViewOrder",
         };
-      },
+      }
     );
 
     try {
@@ -49,7 +50,7 @@ export const useReorder = () => {
 
             list.tasks?.forEach((task, index) => {
               const updatedTaskData = reorderedTasksRequestBody.find(
-                (t) => t.id === task.id,
+                (t) => t.id === task.id
               );
               if (updatedTaskData) {
                 task.listViewOrder = updatedTaskData.newOrder;
@@ -58,12 +59,26 @@ export const useReorder = () => {
               task.combinedViewOrder = index;
             });
           });
-        }),
+        })
+      );
+
+      dispatch(
+        tasksApi.util.updateQueryData("todayTasks", undefined, (draft) => {
+          draft.forEach((task) => {
+            if (updatedTask.id === task.id) {
+              console.log(
+                "swapping task",
+                JSON.stringify({ task, updatedTask })
+              );
+              task = { ...updatedTask, combinedViewOrder: newPos };
+            }
+          });
+        })
       );
     } catch (error) {
       console.error(
         "Error creating reordered tasks request body:",
-        JSON.stringify(error),
+        JSON.stringify(error)
       );
     }
 

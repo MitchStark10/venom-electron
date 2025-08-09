@@ -19,8 +19,7 @@ export const Droppable: FC<DroppableProps> = (props) => {
       ref={setNodeRef}
       style={isOver ? dragOverStyles : { border: "1px solid transparent" }}
     >
-      {" "}
-      {props.children}{" "}
+      {props.children}
     </div>
   );
 };

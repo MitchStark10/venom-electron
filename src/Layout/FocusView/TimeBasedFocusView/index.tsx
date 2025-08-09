@@ -1,12 +1,3 @@
-import { Button, CircularProgress } from "@mui/material";
-import { FC, useState } from "react";
-import { SectionDivider } from "../../../components/SectionDivider";
-import { Title } from "../../../components/Title";
-import { useReorder } from "../../../hooks/useReorder";
-import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
-import { useTaskSorter } from "../../../lib/taskSorter";
-import { Task } from "../../../types/Task";
-import { TaskCard } from "../ListFocusView/TaskCard";
 import {
   DndContext,
   DragEndEvent,
@@ -17,9 +8,18 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Droppable } from "../../../components/Droppable";
+import { Button, CircularProgress } from "@mui/material";
+import { FC, useState } from "react";
 import { Draggable } from "../../../components/Draggable";
+import { Droppable } from "../../../components/Droppable";
+import { SectionDivider } from "../../../components/SectionDivider";
+import { Title } from "../../../components/Title";
 import { useDndSensors } from "../../../hooks/useDndSensors";
+import { useReorder } from "../../../hooks/useReorder";
+import { getTaskDueDateText } from "../../../lib/getTaskDueDateText";
+import { useTaskSorter } from "../../../lib/taskSorter";
+import { Task } from "../../../types/Task";
+import { TaskCard } from "../ListFocusView/TaskCard";
 
 type GroupByOptions = "date" | "list";
 
@@ -41,7 +41,7 @@ export const TimeBasedFocusView: FC<Props> = ({
   const sensors = useDndSensors();
   const onReorder = useReorder();
   const taskSorter = useTaskSorter(
-    groupByOption === "list" ? "listViewOrder" : "combinedViewOrder",
+    groupByOption === "list" ? "listViewOrder" : "combinedViewOrder"
   );
 
   const groupedTasks =
@@ -88,6 +88,40 @@ export const TimeBasedFocusView: FC<Props> = ({
 
     const activeTaskId = event.active.id;
     const overId = event.over.id;
+
+    const matchingOverTask = tasks.find((task) => String(task.id) === overId);
+
+    // Over ID will just be the date string if dropped on a section divider
+    const newDueDate = matchingOverTask
+      ? matchingOverTask.dueDate
+      : (overId as string);
+
+    const activeTask = tasks.find((task) => String(task.id) === activeTaskId);
+
+    if (!activeTask) {
+      console.error("Task not found for drag end event");
+      return;
+    }
+
+    const updatedTask = { ...activeTask, dueDate: newDueDate };
+
+    const taskGroup =
+      Object.entries(groupedTasks).find(([groupKey, group]) => {
+        const groupIds = group.map((task) => String(task.id));
+        return groupIds.includes(String(overId)) || groupKey === overId;
+      })?.[1] || [];
+
+    if (!taskGroup) {
+      console.error("Task group not found for drag end event");
+      return;
+    }
+
+    const prevPos =
+      taskGroup.findIndex((task) => String(task.id) === activeTaskId) ?? null;
+    const newPos =
+      taskGroup.findIndex((task) => String(task.id) === overId) ?? 0;
+
+    onReorder(prevPos, newPos, taskGroup, updatedTask);
   };
 
   let index = 0;
@@ -101,9 +135,10 @@ export const TimeBasedFocusView: FC<Props> = ({
         sensors={sensors}
       >
         {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
+          console.log("key", key);
           return (
             <SortableContext
-              key={key}
+              key={`sortable-context-${key}`}
               items={tasks.map((task) => task.id)}
               strategy={verticalListSortingStrategy}
             >
@@ -112,7 +147,7 @@ export const TimeBasedFocusView: FC<Props> = ({
                   {groupByOption === "list" ? tasks[0].list?.listName : key}
                 </SectionDivider>
                 {tasks.map((task) => (
-                  <Draggable id={String(task.id)} key={task.id}>
+                  <Draggable id={String(task.id)} key={`task-${task.id}`}>
                     <TaskCard
                       task={task}
                       showListName={groupByOption === "date"}
