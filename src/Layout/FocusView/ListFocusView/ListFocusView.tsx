@@ -37,7 +37,7 @@ const ListNameText = styled(EditableText)({
 export const ListFocusView = () => {
   const { selectedListId } = useSelector(
     (state: RootState) => state.focusView,
-    shallowEqual,
+    shallowEqual
   );
   const [draggingTask, setDraggingTask] = useState<Task | null>(null);
   const [updateListName] = useUpdateListMutation();
@@ -80,7 +80,7 @@ export const ListFocusView = () => {
     const overId = event.over.id;
 
     const matchingTask = selectedList?.tasks.find(
-      (task) => String(task.id) === overId,
+      (task) => String(task.id) === overId
     );
 
     // Over ID will just be the date string if dropped on a section divider
@@ -88,7 +88,7 @@ export const ListFocusView = () => {
 
     const tasks = Object.values(tasksOrganizedByDate).flat();
     const activeTask = selectedList?.tasks.find(
-      (task) => String(task.id) === activeTaskId,
+      (task) => String(task.id) === activeTaskId
     );
 
     if (!activeTask) {
@@ -108,7 +108,7 @@ export const ListFocusView = () => {
     const activeTaskId = event.active.id;
     const taskList = Object.values(tasksOrganizedByDate).flat();
     const draggingTask = taskList.find(
-      (task) => String(task.id) === activeTaskId,
+      (task) => String(task.id) === activeTaskId
     );
 
     if (draggingTask) {

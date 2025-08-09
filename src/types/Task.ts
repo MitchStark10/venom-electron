@@ -12,7 +12,7 @@ export interface Task {
   combinedViewOrder?: number;
   isCompleted?: boolean;
   list?: List;
-  listId?: number;
+  listId: number;
   taskTag?: TaskTag[];
   tagIds?: number[];
   recurringSchedule?: {

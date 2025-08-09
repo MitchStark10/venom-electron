@@ -48,10 +48,10 @@ export const TimeBasedFocusView: FC<Props> = ({
     groupByOption === "list"
       ? tasks?.reduce<Record<number, Task[]>>((acc, task) => {
           if (task.list) {
-            if (acc[task.list.id]) {
-              acc[task.list.id].push(task);
+            if (acc[task.listId]) {
+              acc[task.listId].push(task);
             } else {
-              acc[task.list.id] = [task];
+              acc[task.listId] = [task];
             }
           }
           return acc;
@@ -66,6 +66,12 @@ export const TimeBasedFocusView: FC<Props> = ({
             acc[taskDueDateText].push(task);
             return acc;
           }, {});
+
+  if (groupByOption === "list") {
+    Object.values(groupedTasks).forEach((taskGroup) => {
+      taskGroup.sort(taskSorter);
+    });
+  }
 
   const [draggingTask, setDraggingTask] = useState<Task | null>(null);
 
@@ -105,6 +111,17 @@ export const TimeBasedFocusView: FC<Props> = ({
 
     const updatedTask = { ...activeTask, dueDate: newDueDate };
 
+    if (groupByOption === "list") {
+      const listId = matchingOverTask?.list?.id || activeTask.list?.id;
+
+      if (!listId) {
+        console.error("List ID not found for drag end event");
+        return;
+      }
+
+      updatedTask.listId = listId;
+    }
+
     const taskGroup =
       Object.entries(groupedTasks).find(([groupKey, group]) => {
         const groupIds = group.map((task) => String(task.id));
@@ -135,7 +152,6 @@ export const TimeBasedFocusView: FC<Props> = ({
         sensors={sensors}
       >
         {Object.entries(groupedTasks || {}).map(([key, tasks]) => {
-          console.log("key", key);
           return (
             <SortableContext
               key={`sortable-context-${key}`}
@@ -149,6 +165,7 @@ export const TimeBasedFocusView: FC<Props> = ({
                 {tasks.map((task) => (
                   <Draggable id={String(task.id)} key={`task-${task.id}`}>
                     <TaskCard
+                      key={`task-${task.id}`}
                       task={task}
                       showListName={groupByOption === "date"}
                       index={index++}

@@ -25,6 +25,11 @@ export const useReorder = () => {
       tasksCopy.splice(prevPos, 1);
     }
 
+    const fieldToUpdate =
+      focusView === "list" || focusView === "today"
+        ? "listViewOrder"
+        : "combinedViewOrder";
+
     tasksCopy.splice(newPos, 0, updatedTask);
 
     const reorderedTasksRequestBody: UpdateReorderTask[] = tasksCopy.map(
@@ -34,10 +39,8 @@ export const useReorder = () => {
           newOrder: index,
           taskName: task.taskName,
           newDueDate: task.dueDate,
-          fieldToUpdate:
-            focusView === "list" || focusView === "today"
-              ? "listViewOrder"
-              : "combinedViewOrder",
+          fieldToUpdate,
+          listId: task.listId,
         };
       }
     );
@@ -66,11 +69,9 @@ export const useReorder = () => {
         tasksApi.util.updateQueryData("todayTasks", undefined, (draft) => {
           draft.forEach((task) => {
             if (updatedTask.id === task.id) {
-              console.log(
-                "swapping task",
-                JSON.stringify({ task, updatedTask })
-              );
-              task = { ...updatedTask, combinedViewOrder: newPos };
+              task.listId = updatedTask.listId;
+              task[fieldToUpdate] = newPos;
+              task.dueDate = updatedTask.dueDate;
             }
           });
         })
