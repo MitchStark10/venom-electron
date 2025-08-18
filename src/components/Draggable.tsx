@@ -15,8 +15,15 @@ export const Draggable: FC<DraggableProps> = (props) => {
     });
 
   const style = { transform: CSS.Translate.toString(transform), transition };
+
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      tabIndex={undefined}
+    >
       {" "}
       {props.children}{" "}
     </div>
