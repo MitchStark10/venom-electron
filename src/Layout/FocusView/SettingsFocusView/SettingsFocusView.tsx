@@ -6,6 +6,8 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -19,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { DividerWithPadding } from "../../../components/DividerWithPadding";
 import { Title } from "../../../components/Title";
-import { deleteAuthToken } from "../../../lib/authToken";
+import { deleteAuthToken, getAuthToken } from "../../../lib/authToken";
 import { useListsQuery } from "../../../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import {
@@ -27,6 +29,7 @@ import {
   useUpdateSettingsMutation,
 } from "../../../store/slices/userSlice";
 import { AutoDeleteOptions } from "../../../types/Settings";
+import { ContentCopy, Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface AutocompleteOption {
   label: string;
@@ -51,10 +54,19 @@ export const SettingsFocusView = () => {
   const [dailyReportIgnoreWeekends, setDailyReportIgnoreWeekends] =
     useState(false);
   const dispatch = useDispatch();
+  const [showToken, setShowToken] = useState(false);
 
   const handleLogout = () => {
     deleteAuthToken();
     window.location.reload();
+  };
+
+  const handleCopyToken = () => {
+    const token = getAuthToken();
+    if (token) {
+      navigator.clipboard.writeText(token);
+      toast.success("Token copied to clipboard");
+    }
   };
 
   const handleAutoDeleteTasksSelection = async (e: SelectChangeEvent) => {
@@ -170,6 +182,36 @@ export const SettingsFocusView = () => {
                 />
               }
               label="Factor weekends into calculations for daily report and daily recurring tasks (for work lists only)"
+            />
+          </Box>
+          <Typography variant="h6">Account</Typography>
+          <DividerWithPadding />
+          <Box
+            sx={{
+              py: theme.spacing(1),
+              maxWidth: "500px",
+              display: "flex",
+              flexDirection: "column",
+              gap: theme.spacing(2),
+            }}
+          >
+            <TextField
+              label="MCP Token"
+              value={getAuthToken()}
+              type={showToken ? "text" : "password"}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowToken(!showToken)}>
+                      {showToken ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                    <IconButton onClick={handleCopyToken}>
+                      <ContentCopy />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Box>
           <DividerWithPadding />
