@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Box,
   Button,
@@ -29,7 +32,13 @@ import {
   useUpdateSettingsMutation,
 } from "../../../store/slices/userSlice";
 import { AutoDeleteOptions } from "../../../types/Settings";
-import { ContentCopy, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  ContentCopy,
+  ExpandMore,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import { API_BASE_URL } from "../../../lib/constants";
 
 interface AutocompleteOption {
   label: string;
@@ -184,7 +193,9 @@ export const SettingsFocusView = () => {
               label="Factor weekends into calculations for daily report and daily recurring tasks (for work lists only)"
             />
           </Box>
-          <Typography variant="h6">Account</Typography>
+
+          <Typography variant="h6">MCP Setup (BETA)</Typography>
+
           <DividerWithPadding />
           <Box
             sx={{
@@ -213,6 +224,72 @@ export const SettingsFocusView = () => {
                 ),
               }}
             />
+            <TextField
+              label="MCP URL"
+              value={`${API_BASE_URL}/api/mcp`}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `${API_BASE_URL}/api/mcp`
+                        );
+                        toast.success("URL copied to clipboard");
+                      }}
+                    >
+                      <ContentCopy />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              py: theme.spacing(1),
+              maxWidth: "500px",
+            }}
+          >
+            <Accordion
+              sx={{
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[900]
+                    : theme.palette.grey[100],
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Gemini</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  component="pre"
+                  sx={{
+                    padding: theme.spacing(2),
+                    borderRadius: "4px",
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-all",
+                    fontFamily: "monospace",
+                    userSelect: "all",
+                  }}
+                >
+                  <code>
+                    {`"venomTasks": {
+  "httpUrl": "https://venom-backend-sand.onrender.com/api/mcp",
+  "headers": {
+    "Authorization": "Bearer ${getAuthToken()}"
+  }
+}`}
+                  </code>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
           </Box>
           <DividerWithPadding />
           <Box
