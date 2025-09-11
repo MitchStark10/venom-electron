@@ -13,14 +13,12 @@ interface Props {
   task: Task;
   showListName?: boolean;
   index: number;
+  containerId?: string;
 }
 
 const TaskCardContainer = styled("div", {
   shouldForwardProp: (propName) => propName !== "isDragging",
 })<{ isDragging: boolean }>(({ theme, isDragging }) => ({
-  margin: theme.spacing(0.5),
-  padding: theme.spacing(0.5),
-  marginBottom: theme.spacing(1),
   border: "1px solid transparent",
   borderRadius: theme.spacing(1),
   "&:hover": {
@@ -29,7 +27,12 @@ const TaskCardContainer = styled("div", {
   cursor: "pointer",
 }));
 
-export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
+export const TaskCard: FC<Props> = ({
+  task,
+  showListName,
+  index,
+  containerId,
+}) => {
   const theme = useTheme();
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [updateTask] = useUpdateTaskMutation();
@@ -38,10 +41,25 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
   const [isCheckedOverride, setIsCheckedOverride] = React.useState<boolean>(
     Boolean(task.isCompleted)
   );
-  const { over } = useDndContext();
-  const isOver = over?.id && parseInt(over.id as string) === task.id;
+  const { over, active } = useDndContext();
 
-  const dragOverStyle: CSSProperties = {
+  const isOver = over?.id && parseInt(over.id as string) === task.id;
+  const isDraggingDown =
+    isOver &&
+    active?.rect.current?.initial?.top &&
+    over &&
+    active.rect.current?.initial?.top > over.rect.top;
+
+  const shouldShowInitialDragBorder =
+    (over && (over.id as string) === containerId && index === 0) ||
+    isDraggingDown;
+
+  const dragBeforeStyle: CSSProperties = {
+    borderTop: `1px solid ${theme.palette.primary.main}`,
+    borderRadius: 0,
+  };
+
+  const dragAfterStyle: CSSProperties = {
     borderBottom: `1px solid ${theme.palette.primary.main}`,
     borderRadius: 0,
   };
@@ -91,7 +109,13 @@ export const TaskCard: FC<Props> = ({ task, showListName, index }) => {
       onClick={onOpenTask}
       tabIndex={index}
       onKeyDown={onKeyDown}
-      sx={isOver ? dragOverStyle : {}}
+      sx={
+        shouldShowInitialDragBorder
+          ? dragBeforeStyle
+          : isOver
+          ? dragAfterStyle
+          : {}
+      }
     >
       <CheckboxWithEditableLabel
         displayAs="p"

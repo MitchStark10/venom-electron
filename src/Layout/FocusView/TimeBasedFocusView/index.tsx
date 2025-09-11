@@ -1,13 +1,9 @@
 import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
+    DndContext,
+    DragEndEvent,
+    DragOverlay,
+    DragStartEvent,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { Button, CircularProgress } from "@mui/material";
 import { FC, useState } from "react";
 import { Draggable } from "../../../components/Draggable";
@@ -164,6 +160,7 @@ export const TimeBasedFocusView: FC<Props> = ({
                       task={task}
                       showListName={groupByOption === "date"}
                       index={index++}
+                      containerId={String(key)}
                     />
                   </Draggable>
                 ))}
