@@ -21,6 +21,7 @@ const TaskCardContainer = styled("div", {
 })<{ isDragging: boolean }>(({ theme, isDragging }) => ({
   border: "1px solid transparent",
   borderRadius: theme.spacing(1),
+  padding: theme.spacing(1),
   "&:hover": {
     border: isDragging ? undefined : `1px solid ${theme.palette.divider}`,
   },
