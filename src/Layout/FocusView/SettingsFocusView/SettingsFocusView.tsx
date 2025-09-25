@@ -180,7 +180,7 @@ export const SettingsFocusView = () => {
         <CircularProgress />
       ) : (
         <Box sx={{ px: theme.spacing(1) }}>
-          <Typography variant="h6">Daily Report</Typography>
+          <Typography variant="h6">General Settings</Typography>
           <DividerWithPadding />
           <Box
             sx={{
@@ -210,20 +210,33 @@ export const SettingsFocusView = () => {
             <Autocomplete
               options={listOptions}
               renderInput={(params) => (
-                <TextField {...params} label="Work Lists" />
-              )}
-              multiple
-              value={standupLists}
-              onChange={handleStandupListsSelection}
-            />
-            <Autocomplete
-              options={listOptions}
-              renderInput={(params) => (
                 <TextField {...params} label="Show Completed Tasks" />
               )}
               multiple
               value={listsToShowCompletedTasks}
               onChange={handlehowCompletedTasksSelection}
+            />
+          </Box>
+
+          <Typography variant="h6">Daily Report</Typography>
+          <DividerWithPadding />
+          <Box
+            sx={{
+              py: theme.spacing(1),
+              maxWidth: "500px",
+              display: "flex",
+              flexDirection: "column",
+              gap: theme.spacing(2),
+            }}
+          >
+            <Autocomplete
+              options={listOptions}
+              renderInput={(params) => (
+                <TextField {...params} label="Work Lists" />
+              )}
+              multiple
+              value={standupLists}
+              onChange={handleStandupListsSelection}
             />
             <FormControlLabel
               control={
