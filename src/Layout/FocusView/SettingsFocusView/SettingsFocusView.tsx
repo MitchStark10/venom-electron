@@ -1,23 +1,29 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Autocomplete,
-  Box,
-  Button,
-  Checkbox,
-  CircularProgress,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-  useTheme,
+    ContentCopy,
+    ExpandMore,
+    Visibility,
+    VisibilityOff,
+} from "@mui/icons-material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Autocomplete,
+    Box,
+    Button,
+    Checkbox,
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+    Typography,
+    useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -25,20 +31,14 @@ import { toast } from "react-toastify";
 import { DividerWithPadding } from "../../../components/DividerWithPadding";
 import { Title } from "../../../components/Title";
 import { deleteAuthToken, getAuthToken } from "../../../lib/authToken";
+import { API_BASE_URL } from "../../../lib/constants";
 import { useListsQuery } from "../../../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import {
-  useSettingsQuery,
-  useUpdateSettingsMutation,
+    useSettingsQuery,
+    useUpdateSettingsMutation,
 } from "../../../store/slices/userSlice";
 import { AutoDeleteOptions } from "../../../types/Settings";
-import {
-  ContentCopy,
-  ExpandMore,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
-import { API_BASE_URL } from "../../../lib/constants";
 
 interface AutocompleteOption {
   label: string;
@@ -60,6 +60,18 @@ export const SettingsFocusView = () => {
         value: list.id,
       })) || []
   );
+
+  const [listsToShowCompletedTasks, setListsToShowCompletedTasks] = useState<
+    AutocompleteOption[]
+  >(
+    lists
+      ?.filter((list) => list.showCompletedTasks)
+      .map((list) => ({
+        label: list.listName,
+        value: list.id,
+      })) || []
+  );
+
   const [dailyReportIgnoreWeekends, setDailyReportIgnoreWeekends] =
     useState(false);
   const dispatch = useDispatch();
@@ -127,6 +139,27 @@ export const SettingsFocusView = () => {
     }
   };
 
+    const handlehowCompletedTasksSelection = async (
+    _e: SyntheticEvent,
+    newValue: AutocompleteOption[]
+  ) => {
+    setListsToShowCompletedTasks(newValue);
+
+    const listsToShowCompletedTaskIds = newValue.map((list) => list.value);
+    const response = await updateSettings({
+      autoDeleteTasks: autoDeleteTasksSelection as AutoDeleteOptions,
+      standupListIds: standupLists.map((list) => list.value),
+      listsToShowCompletedTaskIds,
+      dailyReportIgnoreWeekends: settingsData?.dailyReportIgnoreWeekends,
+    });
+
+    if (!("error" in response)) {
+      toast.success("Settings updated successfully");
+    } else {
+      toast.error("Failed to update settings");
+    }
+  };
+
   const listOptions: AutocompleteOption[] =
     lists?.map((list) => ({
       label: list.listName,
@@ -183,6 +216,15 @@ export const SettingsFocusView = () => {
               value={standupLists}
               onChange={handleStandupListsSelection}
             />
+            <Autocomplete
+              options={listOptions}
+              renderInput={(params) => (
+                <TextField {...params} label="Show Completed Tasks" />
+              )}
+              multiple
+              value={listsToShowCompletedTasks}
+              onChange={handlehowCompletedTasksSelection}
+            />
             <FormControlLabel
               control={
                 <Checkbox
@@ -195,7 +237,6 @@ export const SettingsFocusView = () => {
           </Box>
 
           <Typography variant="h6">MCP Setup (BETA)</Typography>
-
           <DividerWithPadding />
           <Box
             sx={{

@@ -6,4 +6,5 @@ export interface List {
   listName: string;
   tasks: Task[];
   isStandupList?: boolean;
+  showCompletedTasks?: boolean;
 }
