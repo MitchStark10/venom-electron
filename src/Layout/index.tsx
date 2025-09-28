@@ -10,6 +10,7 @@ import { HEADER_HEIGHT } from "../muiTheme";
 import { setFocusView, setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
+import { useTodayTasksQuery } from "../store/slices/taskSlice";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
@@ -48,6 +49,9 @@ export const Layout = () => {
   const { data: lists, refetch: refetchLists } = useListsQuery(undefined, {
     skip: !getAuthToken(),
   });
+  const { refetch: refetchToday } = useTodayTasksQuery(undefined, {
+    skip: !getAuthToken(),
+  });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -79,6 +83,7 @@ export const Layout = () => {
   useEffect(() => {
     const onVisbiilityChange = () => {
       if (document.visibilityState === "visible" && getAuthToken()) {
+        refetchToday();
         refetchLists();
       }
     };
