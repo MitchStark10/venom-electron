@@ -3,6 +3,14 @@ import { Task } from "../types/Task";
 
 export const useTaskSorter = (field: "listViewOrder" | "combinedViewOrder") => {
   const taskSorter = (a: Task, b: Task) => {
+
+    // Move completed tasks to the bottom
+    if (a.isCompleted && !b.isCompleted) {
+      return 1;
+    } else if (!a.isCompleted && b.isCompleted) {
+      return -1;
+    }
+
     if (!a.dueDate && !b.dueDate) {
       return 0;
     } else if (!a.dueDate) {

@@ -39,6 +39,15 @@ export const TaskCard: FC<Props> = ({
   const [updateTask] = useUpdateTaskMutation();
   const dispatch = useDispatch();
   const tags = task.taskTag?.map((taskTag) => taskTag.tag) || [];
+
+  if (task.isCompleted) {
+    tags.push({
+        id: -1,
+        tagName: `Completed on ${moment(task.dateCompleted).format("MMM D")}`,
+        tagColor: "gray",
+    });
+  }
+
   const [isCheckedOverride, setIsCheckedOverride] = React.useState<boolean>(
     Boolean(task.isCompleted)
   );

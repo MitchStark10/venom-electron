@@ -1,7 +1,9 @@
 import moment from "moment";
 
-export const getTaskDueDateText = (dueDate?: string | null) => {
-  if (
+export const getTaskDueDateText = (dueDate?: string | null, isCompleted?: boolean) => {
+  if (isCompleted) {
+    return "Completed";
+  } else if (
     moment(dueDate).format("YYYY-MM-DD") ===
     moment().startOf("day").format("YYYY-MM-DD")
   ) {

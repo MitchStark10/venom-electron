@@ -59,6 +59,14 @@ export const ListFocusView = () => {
       .reduce<Record<string, Task[]>>((acc, task) => {
         const taskDueDate = getTaskDueDateText(task.dueDate);
 
+        if (task.isCompleted) {
+          if (!acc["Completed"]) {
+            acc["Completed"] = [];
+          }
+          acc["Completed"].push(task);
+          return acc;
+        }
+
         if (!acc[taskDueDate]) {
           acc[taskDueDate] = [];
         }
