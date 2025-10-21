@@ -92,7 +92,10 @@ export const ListFocusView = () => {
     );
 
     // Over ID will just be the date string if dropped on a section divider
-    const newDueDate = matchingTask ? matchingTask.dueDate : (overId as string);
+    let newDueDate = matchingTask ? matchingTask.dueDate : (overId as string);
+    if (newDueDate === NULL_DATE_SECTION_ID) {
+      newDueDate = null;
+    }
 
     const tasks = Object.values(tasksOrganizedByDate).flat();
     const activeTask = selectedList?.tasks.find(
