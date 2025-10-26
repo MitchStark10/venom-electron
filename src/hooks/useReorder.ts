@@ -70,6 +70,11 @@ export const useReorder = () => {
           draft.forEach((task) => {
             if (updatedTask.id === task.id) {
               task.listId = updatedTask.listId;
+              if (newPos < prevPos && prevPos !== -1) {
+                newPos--;
+              } else if (newPos > prevPos && prevPos !== -1) {
+                newPos++;
+              }
               task[fieldToUpdate] = newPos;
               task.dueDate = updatedTask.dueDate;
             }
