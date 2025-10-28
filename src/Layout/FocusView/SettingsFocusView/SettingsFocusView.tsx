@@ -335,7 +335,7 @@ export const SettingsFocusView = () => {
                 >
                   <code>
                     {`"venomTasks": {
-  "httpUrl": "https://venom-backend-sand.onrender.com/api/mcp",
+  "httpUrl": "https://venom-backend.onrender.com/api/mcp",
   "headers": {
     "Authorization": "Bearer ${getAuthToken()}"
   }
