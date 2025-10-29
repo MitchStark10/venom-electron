@@ -1,29 +1,29 @@
 import {
-    ContentCopy,
-    ExpandMore,
-    Visibility,
-    VisibilityOff,
+  ContentCopy,
+  ExpandMore,
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Autocomplete,
-    Box,
-    Button,
-    Checkbox,
-    CircularProgress,
-    FormControl,
-    FormControlLabel,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    TextField,
-    Typography,
-    useTheme,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -35,8 +35,8 @@ import { API_BASE_URL } from "../../../lib/constants";
 import { useListsQuery } from "../../../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../../../store/slices/modalSlice";
 import {
-    useSettingsQuery,
-    useUpdateSettingsMutation,
+  useSettingsQuery,
+  useUpdateSettingsMutation,
 } from "../../../store/slices/userSlice";
 import { AutoDeleteOptions } from "../../../types/Settings";
 
@@ -139,7 +139,7 @@ export const SettingsFocusView = () => {
     }
   };
 
-    const handlehowCompletedTasksSelection = async (
+  const handlehowCompletedTasksSelection = async (
     _e: SyntheticEvent,
     newValue: AutocompleteOption[]
   ) => {
@@ -340,6 +340,34 @@ export const SettingsFocusView = () => {
     "Authorization": "Bearer ${getAuthToken()}"
   }
 }`}
+                  </code>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+              >
+                <Typography>Claude Code</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  component="pre"
+                  sx={{
+                    padding: theme.spacing(2),
+                    borderRadius: "4px",
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-all",
+                    fontFamily: "monospace",
+                    userSelect: "all",
+                  }}
+                >
+                  <code>
+                    claude mcp add --transport http \ --scope user \ venom-tasks
+                    https://venom-backend.onrender.com/api/mcp \ --header
+                    "Authorization : Bearer ${getAuthToken()}"
                   </code>
                 </Box>
               </AccordionDetails>
