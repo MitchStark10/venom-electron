@@ -1,4 +1,4 @@
-import { Autocomplete, Chip, TextField } from "@mui/material";
+import { Autocomplete, Box, Chip, TextField } from "@mui/material";
 import { FC, useMemo } from "react";
 import { TagColorMap, useTagColors } from "../hooks/useTagColors";
 import { useTagsQuery } from "../store/slices/tagSlice";
@@ -56,6 +56,20 @@ export const TagDropdown: FC<Props> = ({ value, onChange }) => {
           disablePortal: true,
         },
       }}
+      renderOption={(props, option) => (
+        <Box component="li" {...props}>
+          <Chip
+            label={option.label}
+            size="small"
+            sx={{
+              fontWeight: "bold",
+              backgroundColor: option.backgroundColor,
+              color: option.color,
+              margin: 0,
+            }}
+          />
+        </Box>
+      )}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
           <Chip
