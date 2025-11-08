@@ -1,6 +1,6 @@
 import { Autocomplete, Box, Button, TextField, useTheme } from "@mui/material";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { ControlledDatePicker } from "../../components/ControlledDatePicker";
@@ -53,9 +53,18 @@ export const TaskModal = () => {
         recurrence: "NONE",
       };
 
-  const { handleSubmit, control } = useForm<FormData>({
+  const { handleSubmit, control, setValue, watch } = useForm<FormData>({
     defaultValues: initialTaskData,
   });
+
+  const currentListId = watch("listId");
+
+  // Update listId when lists load if it's still set to -1
+  useEffect(() => {
+    if (lists && lists.length > 0 && currentListId === -1) {
+      setValue("listId", lists[0].id);
+    }
+  }, [lists, currentListId, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
