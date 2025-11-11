@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
+import moment from "moment";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
@@ -10,8 +11,8 @@ import { HEADER_HEIGHT } from "../muiTheme";
 import { setFocusView, setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
+import { useCompletedTasksQuery, useTodayTasksQuery, useUpcomingTasksQuery, useUpdateTaskMutation } from "../store/slices/taskSlice";
 import { RootState } from "../store/store";
-import { useCompletedTasksQuery, useTodayTasksQuery, useUpcomingTasksQuery } from "../store/slices/taskSlice";
 import { Task } from "../types/Task";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
@@ -66,6 +67,7 @@ export const Layout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { selectedTask } = useSelector((state: RootState) => state.focusView);
+  const [updateTask] = useUpdateTaskMutation();
 
   const onAddNewTask = () => {
     setTimeout(
@@ -118,9 +120,55 @@ export const Layout = () => {
     }
   };
 
+  const handleSetDueDateToday = () => {
+    const focusedTask = getFocusedTask();
+    if (focusedTask) {
+      const updatedTask: Task = {
+        ...focusedTask,
+        dueDate: moment().startOf("day").toISOString(),
+      };
+      updateTask(updatedTask);
+    }
+  };
+
+  const handleAddOneDay = () => {
+    const focusedTask = getFocusedTask();
+    if (focusedTask) {
+      const currentDate = focusedTask.dueDate 
+        ? moment(focusedTask.dueDate) 
+        : moment();
+      const newDate = currentDate.add(1, "day").startOf("day");
+      
+      const updatedTask: Task = {
+        ...focusedTask,
+        dueDate: newDate.toISOString(),
+      };
+      updateTask(updatedTask);
+    }
+  };
+
+  const handleSubtractOneDay = () => {
+    const focusedTask = getFocusedTask();
+    if (focusedTask) {
+      const currentDate = focusedTask.dueDate 
+        ? moment(focusedTask.dueDate) 
+        : moment();
+      const newDate = currentDate.subtract(1, "day").startOf("day");
+      
+      const updatedTask: Task = {
+        ...focusedTask,
+        dueDate: newDate.toISOString(),
+      };
+      updateTask(updatedTask);
+    }
+  };
+
   useNavigationShortcuts();
   useGlobalShortcut("n", handleAddButtonClick);
   useGlobalShortcut("s", handleQuickDueDateEdit, { requireCtrlOrCmd: true });
+  useGlobalShortcut("t", handleSetDueDateToday);
+  useGlobalShortcut("]", handleAddOneDay);
+  useGlobalShortcut("[", handleSubtractOneDay);
 
   useEffect(() => {
     const onVisbiilityChange = () => {
