@@ -4,11 +4,13 @@ import { CoreModal } from "./CoreModal";
 import { NewListModal } from "./NewListModal";
 import { TaskModal } from "./TaskModal";
 import { DeleteAccountModal } from "./DeleteAccountModal";
+import { QuickDueDateModal } from "./QuickDueDateModal";
 
 const MODAL_MAP = {
   newList: NewListModal,
   task: TaskModal,
   deleteAccount: DeleteAccountModal,
+  quickDueDateEdit: QuickDueDateModal,
 };
 
 export const ModalEntryPoint = () => {

@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-export type ModalOptions = "newList" | "task" | "deleteAccount" | null;
+export type ModalOptions = "newList" | "task" | "deleteAccount" | "quickDueDateEdit" | null;
 
 export interface ModalState {
   modalView: ModalOptions;

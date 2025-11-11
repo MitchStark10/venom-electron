@@ -119,6 +119,7 @@ export const TaskCard: FC<Props> = ({
       onClick={onOpenTask}
       tabIndex={index}
       onKeyDown={onKeyDown}
+      data-task-id={task.id}
       sx={
         shouldShowInitialDragBorder
           ? dragBeforeStyle

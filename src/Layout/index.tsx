@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
 import { useNavigationShortcuts } from "../hooks/useNavigationShortcuts";
@@ -10,7 +10,9 @@ import { HEADER_HEIGHT } from "../muiTheme";
 import { setFocusView, setSelectedTask } from "../store/slices/focusViewSlice";
 import { useListsQuery } from "../store/slices/listSlice";
 import { setIsModalOpen, setModalView } from "../store/slices/modalSlice";
+import { RootState } from "../store/store";
 import { useCompletedTasksQuery, useTodayTasksQuery, useUpcomingTasksQuery } from "../store/slices/taskSlice";
+import { Task } from "../types/Task";
 import { FocusView } from "./FocusView";
 import { NewTaskForm } from "./FocusView/ListFocusView/NewTaskForm";
 import { LoginSignUp } from "./LoginSignUp";
@@ -63,6 +65,7 @@ export const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { selectedTask } = useSelector((state: RootState) => state.focusView);
 
   const onAddNewTask = () => {
     setTimeout(
@@ -84,8 +87,40 @@ export const Layout = () => {
     }
   };
 
+  const getFocusedTask = (): Task | null => {
+    // Get the currently focused element from the DOM
+    const focusedElement = document.activeElement as HTMLElement;
+    
+    // Check if the focused element is a task card by looking for task-related data
+    if (focusedElement && focusedElement.hasAttribute('data-task-id')) {
+      const taskId = parseInt(focusedElement.getAttribute('data-task-id') || '0');
+      
+      // Find the task in our current data
+      // We need to search through all possible task sources
+      if (lists) {
+        for (const list of lists) {
+          const task = list.tasks?.find(t => t.id === taskId);
+          if (task) return task;
+        }
+      }
+    }
+    
+    return null;
+  };
+
+  const handleQuickDueDateEdit = () => {
+    const focusedTask = getFocusedTask();
+    if (focusedTask) {
+      // Set the focused task as selected so the modal can use it
+      dispatch(setSelectedTask(focusedTask));
+      dispatch(setModalView("quickDueDateEdit"));
+      dispatch(setIsModalOpen(true));
+    }
+  };
+
   useNavigationShortcuts();
   useGlobalShortcut("n", handleAddButtonClick);
+  useGlobalShortcut("s", handleQuickDueDateEdit, { requireCtrlOrCmd: true });
 
   useEffect(() => {
     const onVisbiilityChange = () => {
