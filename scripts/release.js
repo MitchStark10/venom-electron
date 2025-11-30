@@ -45,12 +45,20 @@ const main = () => {
   console.log(`Created GitHub release v${newVersion}`);
 
   // 5. Upload assets
-  const productName = packageJson.productName || packageJson.name;
-  const macArtifact = `dist/${productName}-${newVersion}.dmg`;
-  const winArtifact = `dist/${productName}-${newVersion}.exe`;
-  const linuxArtifact = `dist/${productName}-${newVersion}-amd64.deb`; // This might need adjustment based on exact output
+  const artifacts = fs
+    .readdirSync("dist")
+    .filter(
+      (file) =>
+        file.endsWith(".dmg") || file.endsWith(".exe") || file.endsWith(".deb")
+    )
+    .map((file) => `dist/${file}`);
 
-  exec(`gh release upload v${newVersion} ${macArtifact} ${winArtifact} ${linuxArtifact}`);
+  if (artifacts.length === 0) {
+    console.error("No release artifacts found in dist/");
+    process.exit(1);
+  }
+
+  exec(`gh release upload v${newVersion} ${artifacts.join(" ")}`);
   console.log(`Uploaded artifacts to GitHub release`);
   
   console.log("Release process completed successfully!");
