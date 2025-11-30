@@ -36,24 +36,17 @@
     "build": "vite build",
     "serve": "vite preview",
     "type-check": "tsc --noEmit",
-    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on tcp:127.0.0.1:3000 && electronmon .\"",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"electronmon .\"",
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
+    "production": ["last 1 electron version"],
+    "development": ["last 1 electron version"]
   },
   "devDependencies": {
     "@types/react": "^18.2.45",
@@ -68,10 +61,7 @@
   "build": {
     "appId": "com.electron.venom",
     "productName": "venom",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "public"
     },

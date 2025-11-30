@@ -4,10 +4,10 @@ import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
-import { DatePicker } from "../../../components/DatePicker";
 import { useListsQuery } from "../../../store/slices/listSlice";
 import { useCreateTaskMutation } from "../../../store/slices/taskSlice";
 import { List } from "../../../types/List";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 interface Props {
   onAddNewTask: () => void;
@@ -24,6 +24,7 @@ interface NewTaskFormData {
 const NewTaskFormContainer = styled("form")({
   width: "fit-content",
   display: "flex",
+  flexDirection: "column",
   alignItems: "center",
   justifyContent: "space-between",
   gap: "10px",
@@ -68,42 +69,6 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
 
   return (
     <NewTaskFormContainer autoComplete="off">
-      <Controller
-        control={control}
-        name="taskName"
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            label="Task Name"
-            sx={{ width: "250px" }}
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                e.stopPropagation();
-                onClick();
-              }
-            }}
-            value={value}
-            onChange={onChange}
-            autoComplete="off"
-            InputProps={{ autoComplete: "off" }}
-            inputProps={{ autoComplete: "off" }}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="dueDate"
-        render={({ field: { onChange, value } }) => (
-          <DatePicker
-            label="Due Date"
-            sx={{ width: "250px" }}
-            value={value}
-            onChange={onChange}
-            clearable
-          />
-        )}
-      />
       {!listId && (
         <Controller
           control={control}
@@ -129,6 +94,7 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
                     variant="outlined"
                     value={value}
                     autoComplete="off"
+                    fullWidth
                   />
                 )}
               />
@@ -136,6 +102,57 @@ export const NewTaskForm: FC<Props> = ({ onAddNewTask, listId }) => {
           }}
         />
       )}
+      <Controller
+        control={control}
+        name="taskName"
+        render={({ field: { onChange, value } }) => (
+          <TextField
+            label="Task Name"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                e.stopPropagation();
+                onClick();
+              }
+            }}
+            value={value}
+            onChange={onChange}
+            autoComplete="off"
+            InputProps={{ autoComplete: "off" }}
+            inputProps={{ autoComplete: "off" }}
+            fullWidth
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="dueDate"
+        render={({ field: { onChange, value } }) => (
+          <MobileDatePicker
+            label="Due Date"
+            sx={{ width: "100%" }}
+            value={value}
+            onChange={onChange}
+            slotProps={{
+              dialog: {
+                sx: {
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  margin: 0,
+                  width: "320px",
+                  height: "450px",
+                  ".MuiDialogContent-root": {
+                    overflow: "hidden",
+                    padding: 0,
+                  },
+                },
+              },
+            }}
+          />
+        )}
+      />
 
       <Button variant="contained" onClick={onClick}>
         Add Task

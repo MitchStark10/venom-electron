@@ -16,8 +16,8 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
 
   const newWindow = new BrowserWindow({
     autoHideMenuBar: true,
-    width: isNewTaskOnly ? 1000 : displayWidth,
-    height: isNewTaskOnly ? 400 : displayHeight,
+    width: isNewTaskOnly ? 320 : displayWidth,
+    height: isNewTaskOnly ? 450 : displayHeight,
     icon: path.join(__dirname, "public/icon.png"),
 
     // Set the path of an additional "preload" script that can be used to
@@ -114,14 +114,13 @@ app.on("ready", () => {
   const ret = globalShortcut.register("CommandOrControl+G", () => {
     tempTaskWindow = createWindow({ isNewTaskOnly: true });
   });
-
   if (!ret) {
     console.log("registration failed");
   }
 
   console.log(
     "Has registered global shorctut",
-    globalShortcut.isRegistered("CommandOrControl+X")
+    globalShortcut.isRegistered("CommandOrControl+G")
   );
 });
 
