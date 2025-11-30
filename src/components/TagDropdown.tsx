@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Chip, TextField } from "@mui/material";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { TagColorMap, useTagColors } from "../hooks/useTagColors";
 import { useTagsQuery } from "../store/slices/tagSlice";
 import { Tag } from "../types/Tag";
@@ -19,10 +19,21 @@ const mapTagsToOptions = (tags: Tag[] | undefined, colorMap: TagColorMap) =>
     backgroundColor: colorMap.background[tag.tagColor],
   })) ?? [];
 
-export const TagDropdown: FC<Props> = ({ value, onChange, autoFocus = false, autoHighlight = false }) => {
+export const TagDropdown: FC<Props> = ({
+  value,
+  onChange,
+  autoFocus = false,
+  autoHighlight = false,
+}) => {
   const { data: tags } = useTagsQuery();
   const colorMap = useTagColors();
-  const [highlightedOption, setHighlightedOption] = useState<{ id: number; label: string; color: string; backgroundColor: string } | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [highlightedOption, setHighlightedOption] = useState<{
+    id: number;
+    label: string;
+    color: string;
+    backgroundColor: string;
+  } | null>(null);
 
   const options = useMemo(
     () => mapTagsToOptions(tags, colorMap),
@@ -35,14 +46,18 @@ export const TagDropdown: FC<Props> = ({ value, onChange, autoFocus = false, aut
   );
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Backspace" && highlightedOption && event.currentTarget === event.target) {
+    if (
+      event.key === "Backspace" &&
+      highlightedOption &&
+      event.currentTarget === event.target
+    ) {
       // Check if the highlighted option is currently selected
       const isSelected = value.some((tag) => tag.id === highlightedOption.id);
-      
+
       if (isSelected && highlightedOption.id !== -1) {
         event.preventDefault();
         event.stopPropagation();
-        
+
         // Remove the tag
         const newTags = value.filter((tag) => tag.id !== highlightedOption.id);
         onChange(newTags);
@@ -53,6 +68,13 @@ export const TagDropdown: FC<Props> = ({ value, onChange, autoFocus = false, aut
   return (
     <Autocomplete
       value={autocompleteValue}
+      inputValue={inputValue}
+      onInputChange={(e, newInputValue) => {
+        if (e) {
+          setInputValue(newInputValue);
+        }
+      }}
+      isOptionEqualToValue={(option, val) => option.id === val.id}
       options={options}
       onHighlightChange={(_, option) => {
         setHighlightedOption(option);
@@ -76,7 +98,9 @@ export const TagDropdown: FC<Props> = ({ value, onChange, autoFocus = false, aut
       autoHighlight={autoHighlight}
       openOnFocus
       onKeyDown={handleKeyDown}
-      renderInput={(params) => <TextField {...params} label="Tags"  autoFocus={autoFocus} />}
+      renderInput={(params) => (
+        <TextField {...params} label="Tags" autoFocus={autoFocus} />
+      )}
       slotProps={{
         popper: {
           disablePortal: true,
