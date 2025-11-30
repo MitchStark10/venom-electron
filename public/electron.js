@@ -1,5 +1,6 @@
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol, screen, ipcMain } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const url = require("url");
 const { globalShortcut } = require("electron");
@@ -63,6 +64,7 @@ function setupLocalFilesNormalizerProxy() {
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  autoUpdater.checkForUpdatesAndNotify();
   driverWindow = createWindow();
   setupLocalFilesNormalizerProxy();
 
