@@ -92,4 +92,6 @@ export const useNavigationShortcuts = () => {
   useEffect(() => {
     setViewFocusIndex(0);
   }, [focusView, selectedListId]);
+
+  return setFocusedIndex;
 };
