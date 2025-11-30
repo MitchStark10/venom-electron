@@ -28,9 +28,7 @@ const main = () => {
   console.log(`Updated version from ${currentVersion} to ${newVersion}`);
 
   // 2. Build for all platforms
-  exec("yarn electron:package:mac");
-  exec("yarn electron:package:win");
-  exec("yarn electron:package:linux");
+  exec("yarn electron:package");
 
   // 3. Git commit, tag, and push
   exec(`git add package.json`);
@@ -51,7 +49,7 @@ const main = () => {
       (file) =>
         file.endsWith(".dmg") || file.endsWith(".exe") || file.endsWith(".deb")
     )
-    .map((file) => `dist/${file}`);
+    .map((file) => `"dist/${file}"`);
 
   if (artifacts.length === 0) {
     console.error("No release artifacts found in dist/");

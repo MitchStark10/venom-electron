@@ -59,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "@electron/notarize": "^3.1.1",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "concurrently": "^8.2.2",
@@ -69,6 +70,7 @@
     "wait-on": "^7.2.0"
   },
   "build": {
+    "afterSign": "./scripts/notarize.js",
     "appId": "com.electron.venom",
     "productName": "venom",
     "files": [
@@ -79,8 +81,11 @@
       "buildResources": "public"
     },
     "mac": {
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "target": "dmg",
-      "icon": "dist/icon.icns"
+      "icon": "dist/icon.icns",
+      "identity": null
     },
     "win": {
       "target": "nsis"
