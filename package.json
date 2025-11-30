@@ -1,6 +1,6 @@
 {
   "name": "venom-electron",
-  "version": "0.2.8",
+  "version": "0.2.16",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -84,8 +84,7 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "target": "dmg",
-      "icon": "dist/icon.icns",
-      "identity": null
+      "icon": "dist/icon.icns"
     },
     "win": {
       "target": "nsis"
