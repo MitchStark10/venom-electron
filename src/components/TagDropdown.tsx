@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Chip, TextField } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { TagColorMap, useTagColors } from "../hooks/useTagColors";
 import { useTagsQuery } from "../store/slices/tagSlice";
 import { Tag } from "../types/Tag";
