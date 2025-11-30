@@ -19,13 +19,21 @@ const LoginSignUpContainer = styled("div")(({ theme }) => ({
       : theme.palette.grey[900],
 }));
 
-export const LoginSignUp = () => {
+interface LoginSignUpProps {
+  onLoginSuccess: () => void;
+}
+
+export const LoginSignUp = ({ onLoginSuccess }: LoginSignUpProps) => {
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
   const theme = useTheme();
 
   return (
     <LoginSignUpContainer>
-      {formMode === "login" ? <LoginForm /> : <SignUpForm />}
+      {formMode === "login" ? (
+        <LoginForm onLoginSuccess={onLoginSuccess} />
+      ) : (
+        <SignUpForm onLoginSuccess={onLoginSuccess} />
+      )}
       <DividerWithPadding
         flexItem
         uniformSpacing

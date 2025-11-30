@@ -20,6 +20,10 @@ interface LoginFormData {
   password: string;
 }
 
+interface LoginFormProps {
+  onLoginSuccess: () => void;
+}
+
 const LoginFormContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -28,7 +32,7 @@ const LoginFormContainer = styled("div")(({ theme }) => ({
   gap: theme.spacing(3),
 }));
 
-export const LoginForm = () => {
+export const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const { control, handleSubmit, getValues } = useForm<LoginFormData>();
   const [error, setError] = useState<string | null>(null);
   const [isInResetPassword, setIsInResetPassword] = useState(false);
@@ -60,7 +64,7 @@ export const LoginForm = () => {
     }
 
     writeAuthToken(response.data.token);
-    document.location.reload();
+    onLoginSuccess();
   });
 
   const requestPasswordResetEmail = async () => {

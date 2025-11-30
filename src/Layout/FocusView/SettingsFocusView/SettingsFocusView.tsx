@@ -45,7 +45,13 @@ interface AutocompleteOption {
   value: number;
 }
 
-export const SettingsFocusView = () => {
+interface SettingsFocusViewProps {
+  onLogoutSuccess: () => void;
+}
+
+export const SettingsFocusView = ({
+  onLogoutSuccess,
+}: SettingsFocusViewProps) => {
   const { data: settingsData, isLoading } = useSettingsQuery();
   const [updateSettings] = useUpdateSettingsMutation();
   const theme = useTheme();
@@ -79,7 +85,7 @@ export const SettingsFocusView = () => {
 
   const handleLogout = () => {
     deleteAuthToken();
-    window.location.reload();
+    onLogoutSuccess();
   };
 
   const handleCopyToken = () => {

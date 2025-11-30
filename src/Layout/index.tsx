@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, styled } from "@mui/material";
 import moment from "moment";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { useGlobalShortcut } from "../hooks/useGlobalShortcuts";
@@ -56,22 +56,24 @@ const PositionedFab = styled(Fab)({
 });
 
 export const Layout = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getAuthToken());
+
   const { data: lists, refetch: refetchLists } = useListsQuery(undefined, {
-    skip: !getAuthToken(),
+    skip: !isAuthenticated,
   });
   const { data: todayTasks, refetch: refetchToday } = useTodayTasksQuery(
     undefined,
     {
-      skip: !getAuthToken(),
+      skip: !isAuthenticated,
     }
   );
   const { data: upcomingTasks, refetch: refetchUpcoming } =
     useUpcomingTasksQuery(undefined, {
-      skip: !getAuthToken(),
+      skip: !isAuthenticated,
     });
 
   const { refetch: refetchCompleted } = useCompletedTasksQuery(undefined, {
-    skip: !getAuthToken(),
+    skip: !isAuthenticated,
   });
 
   const onReorder = useReorder();
@@ -240,7 +242,7 @@ export const Layout = () => {
       document.removeEventListener("visibilitychange", onVisbiilityChange);
       window.removeEventListener("focus", onVisbiilityChange);
     };
-  }, [refetchLists]);
+  }, [refetchLists, refetchToday, refetchCompleted, refetchUpcoming]);
 
   useEffect(() => {
     const interval = setInterval(
@@ -265,10 +267,18 @@ export const Layout = () => {
     }
   }, [location.pathname, dispatch, navigate]);
 
-  if (!getAuthToken()) {
+  const onLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  const onLogoutSuccess = () => {
+    setIsAuthenticated(false);
+  };
+
+  if (!isAuthenticated) {
     return (
       <StyledLayout>
-        <LoginSignUp />
+        <LoginSignUp onLoginSuccess={onLoginSuccess} />
       </StyledLayout>
     );
   }
@@ -287,7 +297,7 @@ export const Layout = () => {
     <StyledLayout>
       <SideBar />
       <FocusContainer className="focus-view">
-        <FocusView />
+        <FocusView onLogoutSuccess={onLogoutSuccess} />
       </FocusContainer>
       <ModalEntryPoint />
       <PositionedFab

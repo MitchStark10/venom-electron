@@ -18,6 +18,10 @@ interface SignUpFormData {
   confirmPassword: string;
 }
 
+interface SignUpFormProps {
+  onLoginSuccess: () => void;
+}
+
 const SignUpFormContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -26,7 +30,7 @@ const SignUpFormContainer = styled("div")(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const SignUpForm = () => {
+export const SignUpForm = ({ onLoginSuccess }: SignUpFormProps) => {
   const { control, handleSubmit, getValues } = useForm<SignUpFormData>();
   const [error, setError] = useState<string | null>(null);
   const [signup, { isLoading }] = useSignupMutation();
@@ -58,7 +62,7 @@ export const SignUpForm = () => {
     }
 
     writeAuthToken(response.data.token);
-    document.location.reload();
+    onLoginSuccess();
   });
 
   return (

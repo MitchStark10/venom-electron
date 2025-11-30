@@ -9,7 +9,11 @@ import { TagsEditor } from "./TagsEditor";
 import { TodayFocusView } from "./TodayFocusView";
 import { UpcomingFocusView } from "./UpcomingFocusView";
 
-export const FocusView = () => {
+interface FocusViewProps {
+  onLogoutSuccess: () => void;
+}
+
+export const FocusView = ({ onLogoutSuccess }: FocusViewProps) => {
   const { focusView } = useSelector((state: RootState) => state.focusView);
 
   switch (focusView) {
@@ -24,7 +28,7 @@ export const FocusView = () => {
     case "tags":
       return <TagsEditor />;
     case "settings":
-      return <SettingsFocusView />;
+      return <SettingsFocusView onLogoutSuccess={onLogoutSuccess} />;
     case "standup":
       return <StandupFocusView />;
     default:
