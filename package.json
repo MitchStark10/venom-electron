@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start": "vite --port 3000",
-    "dev": "vite --port 3000 --host",
+    "dev": "vite --port 3000 --mode development",
     "build": "vite build --mode production",
     "serve": "vite preview",
     "type-check": "tsc --noEmit",
@@ -45,18 +45,11 @@
     "release": "node scripts/release.js"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
+    "production": ["last 1 electron version"],
+    "development": ["last 1 electron version"]
   },
   "devDependencies": {
     "@electron/notarize": "^3.1.1",
@@ -73,10 +66,7 @@
     "afterSign": "./scripts/notarize.js",
     "appId": "com.electron.venom",
     "productName": "venom",
-    "files": [
-      "dist/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["dist/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "public"
     },

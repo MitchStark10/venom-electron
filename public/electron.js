@@ -20,6 +20,8 @@ function createWindow({ isNewTaskOnly } = { isNewTaskOnly: false }) {
     width: isNewTaskOnly ? 320 : displayWidth,
     height: isNewTaskOnly ? 450 : displayHeight,
     icon: path.join(__dirname, "public/icon.png"),
+    ...(isNewTaskOnly &&
+      process.platform === "darwin" && { type: "panel" }),
 
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
@@ -93,6 +95,10 @@ app.on("ready", () => {
 
   // Register a ctrl+. listener
   const ret = globalShortcut.register("CommandOrControl+G", () => {
+    if (tempTaskWindow && !tempTaskWindow.isDestroyed()) {
+      tempTaskWindow.focus();
+      return;
+    }
     tempTaskWindow = createWindow({ isNewTaskOnly: true });
   });
   if (!ret) {
