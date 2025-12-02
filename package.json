@@ -1,6 +1,6 @@
 {
   "name": "venom-electron",
-  "version": "0.2.19",
+  "version": "0.2.20",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -45,11 +45,18 @@
     "release": "node scripts/release.js"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": ["last 1 electron version"],
-    "development": ["last 1 electron version"]
+    "production": [
+      "last 1 electron version"
+    ],
+    "development": [
+      "last 1 electron version"
+    ]
   },
   "devDependencies": {
     "@electron/notarize": "^3.1.1",
@@ -66,7 +73,10 @@
     "afterSign": "./scripts/notarize.js",
     "appId": "com.electron.venom",
     "productName": "venom",
-    "files": ["dist/**/*", "node_modules/**/*"],
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "public"
     },
