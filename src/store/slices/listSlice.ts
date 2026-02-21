@@ -65,6 +65,21 @@ export const listsApi = createApi({
           Authorization: `Bearer ${getAuthToken()}`,
         },
       }),
+      async onQueryStarted(lists, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          listsApi.util.updateQueryData("lists", undefined, (draft) => {
+            // Replace the entire draft with the new ordered lists
+            // We need to mutate the draft directly
+            draft.length = 0;
+            draft.push(...lists);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: ["Lists"],
     }),
   }),
